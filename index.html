@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#11151e">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Surya Leads">
+<title>SuryaIOTech · Lead Capture</title>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/png" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+<script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
+<style>
+:root{
+  --brand:#11151e; --brand-2:#eaaa18; --brand-soft:#fdf3dc; --sun:#eaaa18; --gold:#eaaa18; --gold-ink:#9a6a00;
+  --ink:#11151e; --muted:#5d6470; --line:#e1e4ea; --bg:#f4f5f7; --card:#fff;
+  --warn:#b45309; --warn-soft:#fff4e0; --bad:#b42318; --bad-soft:#fdecea; --ok:#11151e;
+  --r:14px; --shadow:0 1px 2px rgba(0,0,0,.05),0 4px 14px rgba(0,0,0,.05);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans",sans-serif}
+button,input,select,textarea{font:inherit;color:inherit}
+.app{max-width:760px;margin:0 auto;min-height:100vh;padding-bottom:calc(76px + env(safe-area-inset-bottom))}
+header.top{position:sticky;top:0;z-index:20;background:var(--brand);color:#fff;padding:calc(10px + env(safe-area-inset-top)) 16px 10px;display:flex;align-items:center;gap:10px}
+.logo{width:34px;height:34px;display:grid;place-items:center}.logo img{width:34px;height:auto;display:block}
+header.top{border-bottom:3px solid var(--gold)} header.top h1 b{color:var(--gold);font-weight:700}
+header.top h1{font-size:16px;margin:0;font-weight:650;letter-spacing:.2px}
+header.top .sub{font-size:12px;opacity:.8}
+header.top .right{margin-left:auto;text-align:right;font-size:12px;opacity:.95}
+.pill{display:inline-flex;align-items:center;gap:5px;padding:2px 9px;border-radius:99px;font-size:12px;font-weight:600}
+.pill.off{background:#fde68a;color:#7c4a03}.pill.on{background:#ffffff22;color:#fff}
+main{padding:14px}
+.card{background:var(--card);border-radius:var(--r);box-shadow:var(--shadow);padding:16px;margin-bottom:12px}
+.card h2{font-size:15px;margin:0 0 10px;font-weight:650}
+.muted{color:var(--muted)} .small{font-size:12.5px}
+label.f{display:block;font-size:12.5px;color:var(--muted);margin:10px 0 4px;font-weight:550}
+input.i,select.i,textarea.i{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:10px;background:#fff;outline:none}
+input.i:focus,select.i:focus,textarea.i:focus{border-color:var(--brand-2);box-shadow:0 0 0 3px #eaaa1833}
+input.i.need{border-color:#f0b35a;background:#fffaf0}
+textarea.i{min-height:74px;resize:vertical}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:11px;padding:12px 16px;font-weight:650;cursor:pointer;background:var(--brand);color:#fff;min-height:46px}
+.btn:active{transform:scale(.985)} .btn[disabled]{opacity:.55}
+.btn.block{width:100%} .btn.ghost{background:var(--brand-soft);color:var(--brand)}
+.btn.line{background:#fff;color:var(--ink);border:1px solid var(--line)}
+.btn.danger{background:var(--bad-soft);color:var(--bad)} .btn.sm{min-height:36px;padding:7px 12px;font-size:13.5px}
+.row{display:flex;gap:10px;align-items:center}.row>*{flex:1}.row.wrap{flex-wrap:wrap}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(min-width:620px){.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}}
+nav.tabs{position:fixed;bottom:0;left:0;right:0;z-index:30;background:#fff;border-top:1px solid var(--line);display:flex;justify-content:center;padding-bottom:env(safe-area-inset-bottom)}
+nav.tabs .in{display:flex;max-width:760px;width:100%}
+nav.tabs button{flex:1;border:0;background:none;padding:9px 4px 8px;font-size:11.5px;color:var(--muted);display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer}
+nav.tabs button svg{width:23px;height:23px}
+nav.tabs button.act{color:var(--brand);font-weight:650;box-shadow:inset 0 3px 0 var(--gold)} nav.tabs button.act svg{color:var(--gold-ink)}
+#reader{width:100%;border-radius:12px;overflow:hidden;background:#11151e;min-height:260px;position:relative}
+#reader video{object-fit:cover}
+.scanph{color:#e8e9ec;display:grid;place-items:center;min-height:260px;text-align:center;padding:20px;font-size:14px}
+.or{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:12px;margin:14px 0}
+.or:before,.or:after{content:"";flex:1;height:1px;background:var(--line)}
+.banner{border-radius:var(--r);padding:14px 16px;margin-bottom:12px;color:#fff;box-shadow:var(--shadow)}
+.banner.new{background:linear-gradient(135deg,#232a36,#11151e);border-left:5px solid var(--gold)} .banner.new .t{color:var(--gold)}
+.banner.dup{background:linear-gradient(135deg,#f3bd3a,#eaaa18);color:#11151e}
+.banner .t{font-weight:800;letter-spacing:.4px;font-size:15px}
+.banner .d{font-size:13px;opacity:.95;margin-top:4px}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;font-size:13.5px;margin-top:8px}
+.kv b{font-weight:600}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1.5px solid var(--line);background:#fff;border-radius:99px;padding:9px 14px;font-weight:600;font-size:14px;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+.chip.on{background:var(--gold);border-color:var(--gold);color:#11151e}
+.chip.locked{background:var(--brand-soft);border-color:#f0d28a;color:#6b4a00;cursor:default}
+.notes{white-space:pre-wrap;font-size:13.5px;background:#f7f8fa;border:1px solid var(--line);border-radius:10px;padding:10px;max-height:180px;overflow:auto}
+.lead{display:flex;gap:12px;align-items:flex-start;padding:12px 2px;border-bottom:1px solid var(--line);cursor:pointer}
+.lead:last-child{border-bottom:0}
+.av{width:38px;height:38px;flex:0 0 38px;border-radius:50%;background:var(--brand);color:var(--gold);display:grid;place-items:center;font-weight:700}
+.lead .nm{font-weight:650}.lead .meta{font-size:12.5px;color:var(--muted)}
+.tag{display:inline-block;font-size:11px;font-weight:650;padding:1px 7px;border-radius:99px;background:#eef1ef;color:#3d4842;margin:3px 4px 0 0}
+.tag.rep{background:#fdf0d2;color:#8a5d00}.tag.st{background:#e7e9ee;color:#11151e}
+.stat{background:#fff;border-radius:var(--r);box-shadow:var(--shadow);padding:14px}
+.stat{border-top:3px solid var(--gold)}.stat .n{font-size:28px;font-weight:800;color:var(--brand);line-height:1.1}.stat .l{font-size:12.5px;color:var(--muted)}
+.bar{display:grid;grid-template-columns:150px 1fr 34px;gap:10px;align-items:center;font-size:13.5px;margin:8px 0}
+.bar .tr{height:12px;background:#eceef2;border-radius:99px;overflow:hidden}.bar .fl{height:100%;background:var(--brand-2);border-radius:99px}
+.bar .v{text-align:right;font-weight:700}
+table.t{width:100%;border-collapse:collapse;font-size:13.5px}
+table.t th{text-align:left;color:var(--muted);font-weight:600;font-size:12px;border-bottom:1px solid var(--line);padding:6px 4px}
+table.t td{padding:8px 4px;border-bottom:1px solid var(--line)} table.t td.n{text-align:right;font-weight:650}
+.toast{position:fixed;left:50%;bottom:calc(88px + env(safe-area-inset-bottom));transform:translateX(-50%);background:#16201b;color:#fff;padding:11px 16px;border-radius:12px;font-size:14px;z-index:99;box-shadow:0 8px 28px rgba(0,0,0,.25);max-width:90vw}
+.toast.err{background:var(--bad)}
+.center{text-align:center}.mt{margin-top:12px}.mb0{margin-bottom:0}
+.login{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:24px;max-width:420px;margin:0 auto}
+.login .brandbox{text-align:center;margin-bottom:22px}.login .brandbox img{width:220px;max-width:70%;height:auto}.login .brandbox .tag2{margin-top:8px;color:var(--muted);font-size:13px;letter-spacing:.3px}
+details summary{cursor:pointer;color:var(--muted);font-size:13px;margin-top:14px}
+.empty{padding:26px 10px;text-align:center;color:var(--muted)}
+.spin{width:18px;height:18px;border:2.5px solid #fff6;border-top-color:#fff;border-radius:50%;animation:sp .7s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+.filters{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:8px}.filters .span2{grid-column:1/-1}.filters input[type=date]{min-width:0}
+.filters select,.filters input{padding:9px 10px;font-size:13.5px}
+.callrow{display:flex;gap:8px;margin-top:10px}.callrow a{flex:1;text-decoration:none}
+.inst{position:fixed;left:10px;right:10px;bottom:calc(76px + env(safe-area-inset-bottom));z-index:60;max-width:740px;margin:0 auto;background:#16201b;color:#fff;border-radius:14px;padding:12px 14px;box-shadow:0 10px 30px rgba(0,0,0,.3);display:flex;gap:12px;align-items:center;font-size:14px}
+.inst img{width:42px;height:42px;border-radius:10px;flex:0 0 42px}
+.inst .x{background:none;border:0;color:#fff;opacity:.7;font-size:22px;line-height:1;padding:4px 6px;cursor:pointer}
+.inst .btn{min-height:38px;padding:8px 14px;background:var(--sun);color:#16201b}
+.inst.ios:after{content:"";position:absolute;bottom:-8px;left:50%;margin-left:-8px;border:8px solid transparent;border-bottom:0;border-top-color:#16201b}
+.inst.ios.nonav{bottom:calc(14px + env(safe-area-inset-bottom))}
+.shareic{display:inline-block;width:16px;height:16px;vertical-align:-3px}
+input[type=checkbox],input[type=radio]{accent-color:#11151e}
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script>
+/* ==========================================================================
+   CONFIG — paste your Apps Script Web App URL here so the team never has to.
+   (Leave '' to let users paste it on the login screen, or use 'demo'.)
+   ========================================================================== */
+const DEFAULT_SERVER = '';
+
+/* ============================== UTILITIES ============================== */
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const uuid = () => (crypto.randomUUID ? crypto.randomUUID() : 'id-' + Date.now().toString(36) + Math.random().toString(36).slice(2));
+const LS = {
+  get(k, d) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch { return d; } },
+  set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} },
+  del(k) { try { localStorage.removeItem(k); } catch {} }
+};
+const fmt = iso => {
+  if (!iso) return '—';
+  const d = new Date(iso); if (isNaN(d)) return String(iso);
+  return d.toLocaleString('en-IN', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit', hour12: true });
+};
+const initials = n => (String(n || '?').trim().split(/\s+/).map(w => w[0]).slice(0, 2).join('') || '?').toUpperCase();
+const FIELDS = ['name', 'jobTitle', 'email', 'mobile'];
+const splitInt = s => String(s || '').split(',').map(x => x.trim()).filter(Boolean);
+const normMob = m => { const d = String(m || '').replace(/\D/g, ''); return d.length >= 10 ? d.slice(-10) : d; };
+function toast(msg, err) {
+  document.querySelectorAll('.toast').forEach(t => t.remove());
+  const t = document.createElement('div'); t.className = 'toast' + (err ? ' err' : ''); t.textContent = msg;
+  document.body.appendChild(t); setTimeout(() => t.remove(), err ? 4200 : 2400);
+}
+function beep(ok = true) {
+  try {
+    const ac = new (window.AudioContext || window.webkitAudioContext)(); const o = ac.createOscillator(), g = ac.createGain();
+    o.frequency.value = ok ? 1150 : 520; o.connect(g); g.connect(ac.destination); g.gain.value = .12; o.start();
+    setTimeout(() => { o.stop(); ac.close(); }, ok ? 120 : 320);
+  } catch {}
+  if (navigator.vibrate) navigator.vibrate(ok ? 60 : [80, 60, 80]);
+}
+
+/* ============================== QR PARSER ==============================
+   Exhibition badges vary. We accept: plain ID, URL (with ?id= etc.), JSON,
+   vCard, MECARD, "key: value" lines, and delimited text like
+   "V1023|Rahul Sharma|9876543210|rahul@x.com".                              */
+const KEYMAP = {
+  visitorId: ['tc','id','visitorid','visitor_id','vid','uid','regno','reg_no','registrationno','registration_no','registrationid','registration_id','badge','badgeid','badge_id','barcode','code','ticket','ticketid','delegateid','attendeeid','attendee_id','regid'],
+  name: ['name','fullname','full_name','visitorname','visitor_name','fn','customername','attendee'],
+  mobile: ['mobile','phone','mob','mobileno','mobile_no','phoneno','phone_no','contact','contactno','tel','cell','whatsapp'],
+  email: ['email','e-mail','mail','emailid','email_id'],
+  jobTitle: ['designation','jobtitle','job_title','title','position','profession','occupation','company','organisation','organization','org','firm','companyname','company_name']
+};
+const keyFor = k => { k = String(k).toLowerCase().replace(/[\s.]/g, ''); for (const f in KEYMAP) if (KEYMAP[f].includes(k) || KEYMAP[f].includes(k.replace(/-/g,'_'))) return f; return null; };
+const EMAIL_RE = /[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/i;
+const fmtMob = m => { const raw = String(m || '').trim(); if (!raw) return ''; const d = raw.replace(/\D/g, '');
+  if (d.length === 10 && /^[6-9]/.test(d)) return '(+91) ' + d; if (d.length === 12 && d.startsWith('91')) return '(+91) ' + d.slice(2); return raw.replace(/\s+/g, ' '); };
+const tcFromUrl = u => { const m = String(u || '').match(/[?&]tc=([^&#]+)/i); if (!m) return ''; let t = m[1]; try { t = decodeURIComponent(t); } catch {} return t.replace(/ /g, '+').trim(); };
+const PHONE_RE = /(?:\+?91[\s-]?)?[6-9]\d{4}[\s-]?\d{5}|\+?\d[\d\s-]{8,14}\d/;
+
+function shortHash(s) { let h = 2166136261; for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); } return 'QR-' + (h >>> 0).toString(36).toUpperCase(); }
+
+function parseQR(raw) {
+  const text = String(raw || '').trim();
+  const o = { visitorId: '', name: '', jobTitle: '', mobile: '', email: '', url: '', raw: text, format: 'id' };
+  const put = (k, v) => { const f = keyFor(k); if (f && v != null && String(v).trim() && !o[f]) o[f] = String(v).trim(); };
+
+  if (/^[\[{]/.test(text)) {
+    try { let j = JSON.parse(text); if (Array.isArray(j)) j = j[0] || {}; const walk = (x) => { for (const k in x) { if (x[k] && typeof x[k] === 'object') walk(x[k]); else put(k, x[k]); } }; walk(j); o.format = 'json'; } catch {}
+  } else if (/^BEGIN:VCARD/i.test(text)) {
+    o.format = 'vcard';
+    text.split(/\r?\n/).forEach(l => {
+      const m = l.match(/^([A-Z-]+)[^:]*:(.*)$/i); if (!m) return; const k = m[1].toUpperCase(), v = m[2].trim();
+      if (k === 'FN') o.name = o.name || v;
+      else if (k === 'N' && !o.name) o.name = v.split(';').filter(Boolean).reverse().join(' ');
+      else if (k === 'TEL') o.mobile = o.mobile || v;
+      else if (k === 'EMAIL') o.email = o.email || v;
+      else if (k === 'TITLE') o.jobTitle = o.jobTitle || v;
+      else if (k === 'ORG') o.jobTitle = o.jobTitle || v.replace(/;/g, ' ');
+      else if (k === 'UID' || k === 'NOTE' && /id/i.test(v)) o.visitorId = o.visitorId || v;
+    });
+  } else if (/^MECARD:/i.test(text)) {
+    o.format = 'mecard';
+    text.replace(/^MECARD:/i, '').split(';').forEach(p => {
+      const i = p.indexOf(':'); if (i < 0) return; const k = p.slice(0, i).toUpperCase(), v = p.slice(i + 1);
+      if (k === 'N') o.name = v.split(',').reverse().join(' ').trim(); else if (k === 'TEL') o.mobile = v; else if (k === 'EMAIL') o.email = v; else if (k === 'ORG') o.jobTitle = v;
+    });
+  } else if (/^https?:\/\//i.test(text)) {
+    o.format = 'url'; o.url = text;
+    const tc = tcFromUrl(text); if (tc) o.visitorId = tc;
+    try {
+      const u = new URL(text);
+      u.searchParams.forEach((v, k) => put(k, v));
+      if (!o.visitorId) { const seg = u.pathname.split('/').filter(Boolean).pop(); if (seg && /\d/.test(seg) && seg.length <= 40) o.visitorId = decodeURIComponent(seg); }
+      if (!o.visitorId) o.visitorId = text;
+    } catch { o.visitorId = text; }
+  } else if (/[:=]/.test(text) && /\n|&|;/.test(text) || /^[a-z _]+\s*[:=]/i.test(text)) {
+    o.format = 'fields';
+    text.split(/\r?\n|&|;/).forEach(p => { const m = p.match(/^\s*([^:=]+?)\s*[:=]\s*(.+)$/); if (m) put(decodeURIComponent(m[1]), decodeURIComponent(m[2].replace(/\+/g, ' '))); });
+  } else if (/[|,\t;]/.test(text) && text.split(/[|,\t;]/).length >= 2) {
+    o.format = 'delimited';
+    const parts = text.split(/[|\t;]|,(?=\s*\S)/).map(s => s.trim()).filter(Boolean);
+    parts.forEach((p, i) => {
+      if (!o.email && EMAIL_RE.test(p)) o.email = p.match(EMAIL_RE)[0];
+      else if (!o.mobile && /^[+\d][\d\s-]{8,}$/.test(p)) o.mobile = p;
+      else if (i === 0 && /\d/.test(p) && !/\s/.test(p)) o.visitorId = p;
+      else if (!o.name && /^[A-Za-z][A-Za-z .']{1,60}$/.test(p)) o.name = p;
+      else if (!o.jobTitle && /[A-Za-z]/.test(p)) o.jobTitle = p;
+    });
+  }
+  // Fallback: sniff email / phone anywhere in the text
+  if (!o.email) { const m = text.match(EMAIL_RE); if (m) o.email = m[0]; }
+  if (!o.mobile && o.format !== 'id' && o.format !== 'url') { const m = text.match(PHONE_RE); if (m) o.mobile = m[0]; }
+  if (o.mobile) o.mobile = fmtMob(o.mobile);
+  if (!o.visitorId) o.visitorId = o.format === 'id' ? text : (o.mobile ? 'M-' + normMob(o.mobile) : shortHash(text));
+  if (o.visitorId.length > 120) o.visitorId = shortHash(o.visitorId);
+  return o;
+}
+
+/* ============================== DEMO BACKEND ==============================
+   Same rules as Code.gs but stored in this browser — for trying the app only. */
+const Demo = (() => {
+  const INTERESTS = ['Heater','Controller','Full Shed Automation','Fan','Electrical Power Panel','Other'];
+  const STATUSES = ['New Lead','Follow-Up Required','Quotation Sent','Order Confirmed','Not Interested'];
+  const KEY = 'surya_demo_db_v2';
+  // Pretend badge pages, so the demo can show auto-fill (the real server opens the organiser's page instead)
+  const DEMO_BADGES = {
+    'DEMO7781+Pq==': { name: 'Priya Nair', jobTitle: 'Farm Manager', email: 'priya.nair@example.com', mobile: '(+91) 9845012345' },
+    'DEMO5520+Kx==': { name: 'Suresh Yadav', jobTitle: 'Owner', email: '', mobile: '(+91) 9123456780' }
+  };
+  function seed() {
+    const ev = 'Poultry India 2026', t = Date.now(), h = 36e5;
+    const L = (id, name, job, mob, email, by, src, ago, ints, st, rep, notes) => ({ leadId: uuid(), visitorId: id, source: src, name, jobTitle: job, mobile: mob, email,
+      url: src === 'Scanned' ? 'https://2025.poultryindia.co.in/bc?tc=' + id : '', event: ev,
+      firstScan: new Date(t - ago * h).toISOString(), lastScan: new Date(t - (rep ? ago / 3 : ago) * h).toISOString(), firstBy: by, lastBy: rep ? 'Ravi Kumar' : by,
+      interests: ints, notes, repeatCount: rep, status: st, consent: true, updatedBy: by, updatedAt: new Date(t - ago * h).toISOString() });
+    const leads = [
+      L('DEMOa1Rahul+Sh==','Rahul Sharma','Poultry farm owner','(+91) 9876543210','rahul.sharma@example.com','Administrator','Scanned',5,'Heater, Controller, Full Shed Automation','Follow-Up Required',1,'[demo · Administrator] Interested in complete poultry shed automation, 3 sheds.'),
+      L('DEMOb2Sunita+P==','Sunita Patil','Farmer','(+91) 9822012345','sunita.p@example.com','Ravi Kumar','Scanned',4,'Fan, Electrical Power Panel','New Lead',0,''),
+      L('M-9900112233','Mohd. Irfan','MD','(+91) 9900112233','','Ravi Kumar','Manual Entry',3,'Controller','Quotation Sent',2,'[demo · Ravi Kumar] Wants price for 2 controllers.'),
+      L('DEMOc3Kavita+R==','Kavita Reddy','Senior officer','(+91) 9811122334','kavita.r@example.com','Administrator','Scanned',2,'Heater','New Lead',0,''),
+      L('DEMOd4Gurpreet==','Gurpreet Singh','CEO','(+91) 9876001122','gurpreet@example.com','Ravi Kumar','Scanned',1,'Full Shed Automation, Fan','Order Confirmed',0,''),
+    ];
+    const scans = [];
+    leads.forEach(l => { scans.push({ time: l.firstScan, leadId: l.leadId, visitorId: l.visitorId, name: l.name, event: ev, member: l.firstBy, type: 'New' });
+      for (let i = 0; i < l.repeatCount; i++) scans.push({ time: l.lastScan, leadId: l.leadId, visitorId: l.visitorId, name: l.name, event: ev, member: 'Ravi Kumar', type: 'Repeat' }); });
+    return { users: [{ username: 'admin', name: 'Administrator', role: 'admin', active: true, pw: 'admin123' }, { username: 'ravi', name: 'Ravi Kumar', role: 'member', active: true, pw: 'ravi123' }],
+      settings: { activeEvent: ev, events: [ev] }, leads, scans, tokens: {} };
+  }
+  const db = () => LS.get(KEY) || (LS.set(KEY, seed()), LS.get(KEY));
+  const save = d => LS.set(KEY, d);
+  const settings = d => ({ ...d.settings, interests: INTERESTS, statuses: STATUSES, sources: ['Scanned', 'Manual Entry'] });
+  const pub = u => ({ username: u.username, name: u.name, role: u.role });
+  function find(d, ev, vid, mob, leadId) {
+    vid = String(vid || '').trim().toLowerCase(); mob = normMob(mob); let byM = null;
+    for (const l of d.leads) {
+      if (leadId && l.leadId === leadId) return l;
+      if (l.event !== ev) continue;
+      if (vid && String(l.visitorId).toLowerCase() === vid) return l;
+      if (!byM && mob.length === 10 && normMob(l.mobile) === mob) byM = l;
+    }
+    return byM;
+  }
+  async function handle(req) {
+    await new Promise(r => setTimeout(r, 120));
+    const d = db(); const a = req.action;
+    if (a === 'login') {
+      const u = d.users.find(u => u.username.toLowerCase() === String(req.username || '').toLowerCase());
+      if (!u || !u.active || u.pw !== req.password) throw new Error('Wrong username or password');
+      const token = uuid(); d.tokens[token] = u.username; save(d);
+      return { token, user: pub(u), settings: settings(d) };
+    }
+    const un = d.tokens[req.token]; const me = un && d.users.find(u => u.username === un && u.active);
+    if (!me) throw new Error('AUTH: Session expired, please log in again');
+    const admin = () => { if (me.role !== 'admin') throw new Error('Admin access required'); };
+    const ev = (req.data && req.data.event) || d.settings.activeEvent;
+    switch (a) {
+      case 'me': return { user: pub(me), settings: settings(d) };
+      case 'logout': delete d.tokens[req.token]; save(d); return {};
+      case 'scan': {
+        const x = req.data, when = x.time || new Date().toISOString(), source = x.manual ? 'Manual Entry' : 'Scanned';
+        if (x.url) { const tc = tcFromUrl(x.url); if (tc) x.visitorId = tc; }
+        if (x.mobile) x.mobile = fmtMob(x.mobile);
+        const vid = String(x.visitorId || '').trim() || (x.mobile ? 'M-' + normMob(x.mobile) : 'MAN-' + uuid().slice(0, 8).toUpperCase());
+        let l = find(d, ev, vid, x.mobile);
+        if (!l && DEMO_BADGES[vid]) Object.entries(DEMO_BADGES[vid]).forEach(([k, v]) => { if (!x[k]) x[k] = v; });
+        if (l) {
+          l.lastScan = when; l.lastBy = me.name; l.repeatCount++;
+          FIELDS.forEach(k => { if (!l[k] && x[k]) l[k] = x[k]; });
+          d.scans.push({ time: when, leadId: l.leadId, visitorId: l.visitorId, name: l.name, event: ev, member: me.name, type: 'Repeat' }); save(d);
+          return { status: 'existing', lead: l };
+        }
+        l = { leadId: x.leadId || uuid(), visitorId: vid, source, name: x.name || '', jobTitle: x.jobTitle || '', mobile: x.mobile || '', email: x.email || '', url: x.url || '', event: ev,
+          firstScan: when, lastScan: when, firstBy: me.name, lastBy: me.name, interests: '', notes: '', repeatCount: 0, status: 'New Lead', consent: !!x.consent,
+          updatedBy: me.name, updatedAt: new Date().toISOString() };
+        d.leads.push(l); d.scans.push({ time: when, leadId: l.leadId, visitorId: vid, name: l.name, event: ev, member: me.name, type: 'New' }); save(d);
+        return { status: 'new', lead: l, autoFilled: !!DEMO_BADGES[vid] };
+      }
+      case 'updateLead': {
+        const x = req.data; const l = find(d, ev, x.visitorId, null, x.leadId); if (!l) throw new Error('Customer record not found');
+        FIELDS.forEach(k => { if (x[k] === undefined) return; const v = k === 'mobile' ? fmtMob(x[k]) : String(x[k]).trim(); if (v === String(l[k] || '')) return; if (!l[k] || me.role === 'admin') l[k] = v; });
+        if (Array.isArray(x.interests)) { const next = me.role === 'admin' && x.replaceInterests ? x.interests : splitInt(l.interests).concat(x.interests); l.interests = [...new Set(next)].join(', '); }
+        if (x.noteAppend && x.noteAppend.trim()) { const line = '[' + new Date().toLocaleString('en-IN', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit', hour12: false }) + ' · ' + me.name + '] ' + x.noteAppend.trim(); l.notes = l.notes ? l.notes + '\n' + line : line; }
+        if (x.status && STATUSES.includes(x.status)) l.status = x.status;
+        if (x.consent !== undefined) l.consent = !!x.consent;
+        l.updatedBy = me.name; l.updatedAt = new Date().toISOString(); save(d); return { lead: l };
+      }
+      case 'leads': return { leads: d.leads, settings: settings(d) };
+      case 'stats': {
+        const e = req.event; const leads = d.leads.filter(l => !e || l.event === e), sc = d.scans.filter(s => !e || s.event === e);
+        const byInterest = Object.fromEntries(INTERESTS.map(i => [i, 0])), byStatus = Object.fromEntries(STATUSES.map(s => [s, 0])), bySource = { 'Scanned': 0, 'Manual Entry': 0 }, team = {};
+        leads.forEach(l => { splitInt(l.interests).forEach(i => byInterest[i] = (byInterest[i] || 0) + 1); byStatus[l.status] = (byStatus[l.status] || 0) + 1; bySource[l.source] = (bySource[l.source] || 0) + 1; });
+        sc.forEach(s => { const t = team[s.member] = team[s.member] || { member: s.member, scans: 0, newLeads: 0, repeats: 0 }; t.scans++; s.type.startsWith('New') ? t.newLeads++ : t.repeats++; });
+        return { totals: { uniqueVisitors: leads.length, totalScans: sc.length, repeatVisitors: leads.filter(l => l.repeatCount > 0).length }, byInterest, byStatus, bySource, team: Object.values(team).sort((a, b) => b.scans - a.scans) };
+      }
+      case 'deleteLead': admin(); d.leads = d.leads.filter(l => l.leadId !== req.leadId); save(d); return {};
+      case 'users': admin(); return { users: d.users.map(u => ({ ...pub(u), active: u.active })) };
+      case 'saveUser': {
+        admin(); const x = req.data; if (!/^[a-zA-Z0-9._-]{3,30}$/.test(x.username || '')) throw new Error('Username: 3-30 letters/numbers, no spaces');
+        let u = d.users.find(u => u.username.toLowerCase() === x.username.toLowerCase());
+        if (u) { if (u.username === 'admin' && (x.active === false || x.role !== 'admin')) throw new Error('The main admin account cannot be disabled or demoted');
+          u.name = x.name || u.name; u.role = x.role === 'admin' ? 'admin' : 'member'; u.active = x.active !== false; if (x.password) { if (x.password.length < 6) throw new Error('Password must be at least 6 characters'); u.pw = x.password; } }
+        else { if (!x.password || x.password.length < 6) throw new Error('Password must be at least 6 characters'); d.users.push({ username: x.username, name: x.name || x.username, role: x.role === 'admin' ? 'admin' : 'member', active: true, pw: x.password }); }
+        save(d); return { users: d.users.map(u => ({ ...pub(u), active: u.active })) };
+      }
+      case 'saveSettings': { admin(); const x = req.data; const evs = (x.events || []).filter(Boolean); if (x.activeEvent && !evs.includes(x.activeEvent)) evs.push(x.activeEvent); if (evs.length) d.settings.events = evs; if (x.activeEvent) d.settings.activeEvent = x.activeEvent; save(d); return { settings: settings(d) }; }
+      case 'changePassword': { if (me.pw !== req.oldPassword) throw new Error('Current password is wrong'); if (!req.newPassword || req.newPassword.length < 6) throw new Error('New password must be at least 6 characters'); me.pw = req.newPassword; save(d); return {}; }
+    }
+    throw new Error('Unknown action');
+  }
+  return { handle, reset: () => LS.del(KEY) };
+})();
+
+/* ============================== API + OFFLINE QUEUE ============================== */
+const urlServer = new URLSearchParams(location.search).get('server');
+if (urlServer) LS.set('surya_server', urlServer);
+const S = {
+  server: LS.get('surya_server', DEFAULT_SERVER),
+  session: LS.get('surya_session', null),     // {token,user,settings}
+  leads: LS.get('surya_leads_cache', []),
+  queue: LS.get('surya_queue', []),
+  tab: 'scan', view: null, online: navigator.onLine, syncing: false,
+  filters: { q: '', interest: '', status: '', member: '', from: '', to: '', type: '', event: '', source: '' }
+};
+class NetErr extends Error {}
+
+/** Explains the common deployment mistakes in plain words. */
+function serverUrlProblem(u) {
+  u = String(u || '').trim();
+  if (/\/dev(\?|$)/.test(u)) return 'This is the test (/dev) link. Use the Web app URL that ends in /exec (Deploy → Manage deployments → copy Web app URL).';
+  if (/script\.google\.com\/(home|d\/)/.test(u)) return 'This is the Apps Script editor link, not the server link. Use Deploy → Manage deployments → copy the Web app URL ending in /exec.';
+  if (/docs\.google\.com\/spreadsheets/.test(u)) return 'This is the Google Sheet link. The Server URL comes from Apps Script → Deploy → Manage deployments → Web app URL (ends in /exec).';
+  if (!/^https:\/\/script\.google\.com\/(a\/macros\/[^/]+|macros)\/s\/[\w-]+\/exec\/?$/.test(u)) return 'The Server URL should look like https://script.google.com/macros/s/AKfy…/exec — please copy it again from Deploy → Manage deployments.';
+  return '';
+}
+function diagnoseServerPage(text, status) {
+  const t = String(text || '');
+  if (/function not found:?\s*doPost|Script function not found/i.test(t))
+    return 'The server is running old code. In Apps Script: Deploy → Manage deployments → ✏ → Version: New version → Deploy.';
+  if (/Authori[sz]ation is required|needs your permission|requires authori[sz]ation/i.test(t))
+    return 'The server needs permission. In Apps Script: select "setup" → Run → Allow, then Deploy → Manage deployments → ✏ → Version: New version → Deploy.';
+  if (/accounts\.google\.com|ServiceLogin|Sign in/i.test(t))
+    return 'Google is asking for a sign-in. In Deploy → Manage deployments → ✏ set "Who has access" to "Anyone" (not "Only myself" / "Anyone with Google account"), then Deploy a New version. If "Anyone" is missing, your company Google account blocks it — use a personal Gmail account.';
+  if (/Exception|TypeError|ReferenceError|SyntaxError/i.test(t)) {
+    const m = t.replace(/<[^>]+>/g, ' ').match(/(Exception|TypeError|ReferenceError|SyntaxError)[^.]{0,160}/i);
+    return 'Server code error: ' + (m ? m[0].trim() : 'see Apps Script → Executions') + '. Make sure the whole Code.gs was pasted, run "setup", then deploy a New version.';
+  }
+  if (status === 404) return 'Server not found (404). The deployment may have been deleted — copy the Web app URL again from Deploy → Manage deployments.';
+  return 'Server did not reply with app data (HTTP ' + status + '). Check: Who has access = Anyone, Execute as = Me, and that you deployed a New version after pasting Code.gs.';
+}
+
+async function api(action, payload = {}) {
+  const body = { action, token: S.session && S.session.token, ...payload };
+  if (S.server === 'demo') return Demo.handle(body);
+  if (!S.server) throw new Error('Server URL not set');
+  const urlProblem = serverUrlProblem(S.server);
+  if (urlProblem) throw new Error(urlProblem);
+  let r;
+  try {
+    r = await fetch(S.server.trim(), { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(body), redirect: 'follow' });
+  } catch (e) {
+    if (action === 'login' && navigator.onLine)
+      throw new Error('Could not reach the server. In Apps Script → Deploy → Manage deployments → ✏: set "Who has access" to "Anyone" and "Execute as" to "Me", choose Version: New version, then Deploy.');
+    throw new NetErr('No internet connection');
+  }
+  const text = await r.text();
+  let j; try { j = JSON.parse(text); } catch { throw new Error(diagnoseServerPage(text, r.status)); }
+  if (!j.ok) {
+    if (String(j.error).startsWith('AUTH:')) { logoutLocal(); toast(j.error.slice(5).trim(), true); }
+    throw new Error(String(j.error).replace(/^AUTH:\s*/, ''));
+  }
+  return j;
+}
+const isNet = e => e instanceof NetErr;
+function saveQueue() { LS.set('surya_queue', S.queue); renderHeader(); }
+function cacheLead(l) {
+  const i = S.leads.findIndex(x => x.leadId === l.leadId || (x.event === l.event && String(x.visitorId).toLowerCase() === String(l.visitorId).toLowerCase()));
+  if (i >= 0) S.leads[i] = l; else S.leads.unshift(l);
+  LS.set('surya_leads_cache', S.leads);
+}
+async function syncQueue() {
+  if (S.syncing || !S.queue.length || S.server === 'demo') return;
+  S.syncing = true; renderHeader();
+  try {
+    while (S.queue.length) {
+      const job = S.queue[0];
+      try {
+        const res = await api(job.action, { data: job.data });
+        if (res.lead) cacheLead(res.lead);
+        S.queue.shift(); saveQueue();
+      } catch (e) {
+        if (isNet(e)) break;
+        console.warn('Dropped queued job', job, e); S.queue.shift(); saveQueue();   // server rejected — don't block the queue
+      }
+    }
+    if (!S.queue.length) toast('All offline scans synced ✓');
+  } finally { S.syncing = false; renderHeader(); }
+}
+window.addEventListener('online', () => { S.online = true; renderHeader(); syncQueue(); });
+window.addEventListener('offline', () => { S.online = false; renderHeader(); });
+setInterval(syncQueue, 30000);
+
+function logoutLocal() { S.session = null; LS.del('surya_session'); stopScanner(); render(); }
+const me = () => S.session && S.session.user;
+const isAdmin = () => me() && me().role === 'admin';
+const SET = () => (S.session && S.session.settings) || { activeEvent: '', events: [], interests: ['Heater','Controller','Full Shed Automation','Fan','Electrical Power Panel','Other'], statuses: ['New Lead','Follow-Up Required','Quotation Sent','Order Confirmed','Not Interested'] };
+
+/* ============================== SCANNER ============================== */
+let qr = null, lastCode = '', lastAt = 0, busy = false;
+async function startScanner() {
+  const el = $('#reader'); if (!el) return;
+  if (!window.Html5Qrcode) { el.innerHTML = '<div class="scanph">Camera scanner could not load (no internet?).<br>Use the handheld scanner box or manual entry below.</div>'; return; }
+  try {
+    if (qr) { try { await qr.stop(); } catch {} qr.clear(); }
+    el.innerHTML = '';
+    qr = new Html5Qrcode('reader', { verbose: false });
+    await qr.start({ facingMode: 'environment' },
+      { fps: 12, qrbox: (w, h) => { const s = Math.floor(Math.min(w, h) * 0.72); return { width: s, height: Math.floor(s * 0.85) }; }, aspectRatio: 1.15 },
+      code => onCode(code), () => {});
+  } catch (e) {
+    el.innerHTML = `<div class="scanph">Camera not available.<br><span class="small">${esc(e && e.message || e)}</span><br><br>Allow camera permission in your browser, or use the handheld scanner box / manual entry below.<br><br><button class="btn sm ghost" onclick="startScanner()">Try again</button></div>`;
+  }
+}
+async function stopScanner() { if (qr) { try { await qr.stop(); } catch {} try { qr.clear(); } catch {} qr = null; } }
+
+async function onCode(code) {
+  const now = Date.now();
+  if (busy || (code === lastCode && now - lastAt < 4000)) return;
+  lastCode = code; lastAt = now;
+  await processScan(parseQR(code), false);
+}
+
+async function processScan(parsed, manual) {
+  if (busy) return; busy = true;
+  const data = { ...parsed, manual, event: SET().activeEvent, leadId: uuid(), time: new Date().toISOString() };
+  try {
+    let res;
+    try { res = await api('scan', { data }); }
+    catch (e) {
+      if (!isNet(e)) throw e;
+      res = offlineScan(data);
+    }
+    cacheLead(res.lead);
+    beep(res.status === 'new');
+    await stopScanner();
+    S.view = { type: 'lead', lead: res.lead, status: res.status, offline: !!res.offline, parsed, autoFilled: !!res.autoFilled };
+    render();
+  } catch (e) { beep(false); toast(e.message, true); }
+  finally { busy = false; }
+}
+
+function offlineScan(data) {
+  const ev = data.event, vid = String(data.visitorId || '').toLowerCase(), mob = normMob(data.mobile);
+  const l = S.leads.find(x => x.event === ev && ((vid && String(x.visitorId).toLowerCase() === vid) || (mob.length === 10 && normMob(x.mobile) === mob)));
+  S.queue.push({ action: 'scan', data }); saveQueue();
+  if (l) {
+    const u = { ...l, lastScan: data.time, lastBy: me().name, repeatCount: (l.repeatCount || 0) + 1 };
+    return { status: 'existing', lead: u, offline: true };
+  }
+  return { status: 'new', offline: true, lead: { leadId: data.leadId, visitorId: data.visitorId || (data.mobile ? 'M-' + normMob(data.mobile) : 'MAN-' + data.leadId.slice(0, 8).toUpperCase()), source: data.manual ? 'Manual Entry' : 'Scanned',
+    name: data.name || '', jobTitle: data.jobTitle || '', mobile: fmtMob(data.mobile), email: data.email || '', url: data.url || '', event: ev,
+    firstScan: data.time, lastScan: data.time, firstBy: me().name, lastBy: me().name, interests: '', notes: '', repeatCount: 0, status: 'New Lead', consent: !!data.consent } };
+}
+
+/* ============================== RENDER ============================== */
+const ICON = {
+  scan: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 8V5a1 1 0 0 1 1-1h3M16 4h3a1 1 0 0 1 1 1v3M20 16v3a1 1 0 0 1-1 1h-3M8 20H5a1 1 0 0 1-1-1v-3M7 12h10"/></svg>',
+  leads: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.6-3.4 3.3-5.5 6.5-5.5s5.9 2.1 6.5 5.5M16 4.8a3.4 3.4 0 0 1 0 6.4M18.5 14.8c1.7.8 2.8 2.6 3 5.2"/></svg>',
+  dash: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>',
+  admin: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>',
+  me: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4.2-6 8-6s7 2 8 6"/></svg>'
+};
+
+function render() {
+  const root = $('#root');
+  if (!S.session) { root.innerHTML = loginView(); bindLogin(); return; }
+  const tabs = isAdmin() ? [['scan','Scan'],['leads','Customers'],['dash','Dashboard'],['admin','Admin']] : [['scan','Scan'],['leads','Customers'],['me','Me']];
+  root.innerHTML = `<div class="app"><header class="top" id="hdr"></header><main id="main"></main></div>
+    <nav class="tabs"><div class="in">${tabs.map(([k, l]) => `<button data-tab="${k}" class="${S.tab === k && !S.view ? 'act' : ''}">${ICON[k]}<span>${l}</span></button>`).join('')}</div></nav>`;
+  root.querySelectorAll('[data-tab]').forEach(b => b.onclick = () => go(b.dataset.tab));
+  renderHeader();
+  const m = $('#main');
+  if (S.view && S.view.type === 'lead') return leadView(m);
+  if (S.view && S.view.type === 'manual') return manualView(m);
+  ({ scan: scanView, leads: leadsView, dash: dashView, admin: adminView, me: meView })[S.tab](m);
+}
+function go(tab) { S.tab = tab; S.view = null; if (tab !== 'scan') stopScanner(); render(); window.scrollTo(0, 0); }
+function renderHeader() {
+  const h = $('#hdr'); if (!h || !S.session) return;
+  const q = S.queue.length;
+  h.innerHTML = `<div class="logo"><img src="icons/mark-96.png" alt=""></div><div><h1>SuryaIOTech <b>· Leads</b></h1><div class="sub">${esc(SET().activeEvent || '')}${S.server === 'demo' ? ' · DEMO' : ''}</div></div>
+    <div class="right">${esc(me().name)}<br>${q ? `<span class="pill off">${S.syncing ? 'Syncing' : 'Offline'} · ${q} pending</span>` : (S.online ? '' : '<span class="pill off">Offline</span>')}</div>`;
+}
+
+/* ---------- Login ---------- */
+function loginView() {
+  return `<div class="login">
+    <div class="brandbox"><img src="icons/logo-full.png" alt="SuryaIOTech Pvt Ltd"><div class="tag2">Exhibition Lead Capture</div></div>
+    <div class="card">
+      <h2>Team login</h2>
+      <label class="f">Username</label><input class="i" id="lu" autocomplete="username" autocapitalize="none" value="${esc(LS.get('surya_last_user', ''))}">
+      <label class="f">Password</label><input class="i" id="lp" type="password" autocomplete="current-password">
+      <button class="btn block mt" id="lbtn">Log in</button>
+      <details ${S.server ? '' : 'open'}><summary>Server settings</summary>
+        <label class="f">Server URL (from Google Apps Script deployment)</label>
+        <input class="i" id="ls" placeholder="https://script.google.com/macros/s/…/exec" value="${esc(S.server === 'demo' ? '' : S.server)}">
+        <button class="btn line block mt sm" id="demo">Try demo mode (no setup, data stays on this phone)</button>
+        ${S.server === 'demo' ? '<p class="small muted mb0">Demo logins: <b>admin / admin123</b> (manager) · <b>ravi / ravi123</b> (team member)</p>' : ''}
+      </details>
+    </div></div>`;
+}
+function bindLogin() {
+  const go = async () => {
+    const sv = $('#ls').value.trim(); if (sv) { S.server = sv; LS.set('surya_server', sv); }
+    if (!S.server) return toast('Enter the Server URL first (or tap Try demo)', true);
+    const b = $('#lbtn'); b.disabled = true; b.innerHTML = '<span class="spin"></span>';
+    try {
+      const r = await api('login', { username: $('#lu').value.trim(), password: $('#lp').value });
+      S.session = { token: r.token, user: r.user, settings: r.settings }; LS.set('surya_session', S.session); LS.set('surya_last_user', r.user.username);
+      S.tab = 'scan'; S.view = null; render(); refreshLeads(); syncQueue();
+    } catch (e) { toast(e.message, true); b.disabled = false; b.textContent = 'Log in'; }
+  };
+  $('#lbtn').onclick = go; $('#lp').onkeydown = e => { if (e.key === 'Enter') go(); };
+  $('#demo').onclick = () => { S.server = 'demo'; LS.set('surya_server', 'demo'); render(); $('#lu').value = 'admin'; $('#lp').value = 'admin123'; toast('Demo mode — tap Log in'); };
+}
+async function refreshLeads() {
+  try { const r = await api('leads'); S.leads = r.leads.sort((a, b) => String(b.lastScan).localeCompare(String(a.lastScan))); LS.set('surya_leads_cache', S.leads);
+    if (r.settings) { S.session.settings = r.settings; LS.set('surya_session', S.session); renderHeader(); } return true; }
+  catch (e) { if (!isNet(e)) toast(e.message, true); return false; }
+}
+
+/* ---------- Scan ---------- */
+function scanView(m) {
+  const recent = S.leads.filter(l => l.event === SET().activeEvent).slice(0, 5);
+  m.innerHTML = `
+    <div class="card"><div id="reader"><div class="scanph">Starting camera…</div></div>
+      <p class="small muted center mb0" style="margin-top:8px">Point at the QR / barcode on the visitor's badge</p></div>
+    <div class="card">
+      <label class="f" style="margin-top:0">Handheld scanner / type badge ID</label>
+      <div class="row"><input class="i" id="hw" placeholder="Scan or type ID, press Enter" autocomplete="off" style="flex:3"><button class="btn" id="hwgo" style="flex:1">Go</button></div>
+      <div class="or">or</div>
+      <button class="btn ghost block" id="man">+ Enter visitor manually</button>
+    </div>
+    ${S.server === 'demo' ? `<div class="card"><h2>Demo: tap a sample badge to "scan" it</h2><div class="chips">
+      ${[['https://2025.poultryindia.co.in/bc?tc=DEMOa1Rahul+Sh==', 'Rahul (already scanned)'], ['https://2025.poultryindia.co.in/bc?tc=DEMO7781+Pq==', 'Poultry India badge (auto-fill)'], ['https://2025.poultryindia.co.in/bc?tc=DEMO5520+Kx==', 'Badge without email'], ['https://2025.poultryindia.co.in/bc?tc=NEW' + Math.floor(Math.random() * 1e6) + '==', 'Badge the server can\'t read']]
+        .map(([c, l]) => `<button class="chip" data-sample="${esc(c)}">${esc(l)}</button>`).join('')}</div></div>` : ''}
+    ${recent.length ? `<div class="card"><h2>Recent at this event</h2>${recent.map(leadRow).join('')}</div>` : ''}
+    <p class="small muted center">Privacy: ask the visitor before saving their contact details. Data is used only for SuryaIOTech follow-ups.</p>`;
+  const sub = () => { const v = $('#hw').value.trim(); if (v) { $('#hw').value = ''; processScan(parseQR(v), false); } };
+  $('#hwgo').onclick = sub; $('#hw').onkeydown = e => { if (e.key === 'Enter') { e.preventDefault(); sub(); } };
+  $('#man').onclick = () => { stopScanner(); S.view = { type: 'manual' }; render(); };
+  m.querySelectorAll('[data-sample]').forEach(b => b.onclick = () => processScan(parseQR(b.dataset.sample), false));
+  bindLeadRows(m);
+  if (matchMedia('(pointer:fine)').matches) $('#hw').focus();
+  startScanner();
+}
+
+function manualView(m) {
+  m.innerHTML = `<div class="card"><h2>Add visitor manually</h2>
+    <p class="small muted" style="margin-top:-4px">Use this when the badge has no QR or the QR doesn't contain contact details.</p>
+    <label class="f">Name *</label><input class="i" id="m_name" autocomplete="off">
+    <label class="f">Job title / Farm</label><input class="i" id="m_jobTitle" autocomplete="off">
+    <label class="f">Contact no. *</label><input class="i" id="m_mobile" inputmode="tel" autocomplete="off">
+    <label class="f">Email</label><input class="i" id="m_email" inputmode="email" autocomplete="off" autocapitalize="none">
+    <label class="f">Badge / Visitor ID (optional)</label><input class="i" id="m_vid" autocomplete="off">
+    <label class="row small" style="margin-top:12px;gap:8px;justify-content:flex-start"><input type="checkbox" id="m_consent" style="flex:0;width:20px;height:20px"> <span>Visitor agreed to share contact details</span></label>
+    <div class="row mt"><button class="btn line" id="m_cancel">Cancel</button><button class="btn" id="m_save">Save &amp; continue</button></div></div>`;
+  $('#m_cancel').onclick = () => { S.view = null; render(); };
+  $('#m_save').onclick = () => {
+    const v = id => $('#' + id).value.trim();
+    if (!v('m_name') || !v('m_mobile')) return toast('Name and contact no. are required', true);
+    if (normMob(v('m_mobile')).length < 10) return toast('Contact number looks too short', true);
+    processScan({ visitorId: v('m_vid'), name: v('m_name'), jobTitle: v('m_jobTitle'), mobile: fmtMob(v('m_mobile')), email: v('m_email'), consent: $('#m_consent').checked, raw: '' }, true);
+  };
+}
+
+/* ---------- Lead detail ---------- */
+function leadView(m) {
+  const { lead: L, status, offline, autoFilled } = S.view; const st = SET();
+  const saved = splitInt(L.interests); const sel = new Set(saved);
+  const admin = isAdmin();
+  const canEdit = k => admin || !L[k];
+  const need = k => !L[k] && ['name', 'mobile'].includes(k);
+  const fld = (k, label, type = 'text', mode = '') => `<div><label class="f">${label}${need(k) ? ' <span style="color:var(--warn)">· not found, please type</span>' : ''}</label>
+     <input class="i ${need(k) ? 'need' : ''}" id="e_${k}" type="${type}" ${mode ? `inputmode="${mode}"` : ''} value="${esc(L[k])}" ${canEdit(k) ? '' : 'readonly style="background:#f7f8fa"'}></div>`;
+  const dup = status === 'existing';
+  m.innerHTML = `
+    ${status ? `<div class="banner ${dup ? 'dup' : 'new'}">
+      <div class="t">${dup ? '⚠ ALREADY SCANNED – EXISTING CUSTOMER' : '✓ NEW VISITOR SAVED'}</div>
+      ${dup ? `<div class="kv"><span>Customer</span><b>${esc(L.name || '—')}</b><span>Mobile</span><b>${esc(L.mobile || '—')}</b><span>First scan</span><b>${fmt(L.firstScan)}</b><span>Scanned by</span><b>${esc(L.firstBy)}</b><span>Visits</span><b>${(L.repeatCount || 0) + 1}</b></div>`
+             : `<div class="d">${esc(L.source)} by ${esc(L.lastBy)} · ${fmt(L.firstScan)}${autoFilled ? '<br>Details filled in automatically from the badge ✓' : (L.source === 'Scanned' && !L.name ? '<br>Badge details could not be read. Please type name and contact no.' : '')}</div>`}
+      ${offline ? '<div class="d" style="margin-top:6px"><span class="pill off">Saved offline — will sync automatically</span></div>' : ''}
+    </div>` : `<button class="btn line sm" id="back" style="margin-bottom:10px">← Back</button>`}
+
+    <div class="card">
+      <h2>Customer details</h2>
+      <div class="grid2">${fld('name', 'Name')}${fld('jobTitle', 'Job title / Farm')}</div>
+      <div class="grid2">${fld('mobile', 'Contact no.', 'tel', 'tel')}${fld('email', 'Email', 'email', 'email')}</div>
+      ${L.mobile ? `<div class="callrow"><a class="btn line sm" href="tel:${esc(L.mobile)}">📞 Call</a><a class="btn line sm" target="_blank" href="https://wa.me/${esc((normMob(L.mobile).length === 10 ? '91' : '') + normMob(L.mobile))}">💬 WhatsApp</a></div>` : ''}
+      <p class="small muted mb0" style="margin-top:10px"><span class="tag ${L.source === 'Manual Entry' ? 'rep' : ''}" style="margin:0 4px 0 0">${esc(L.source || 'Scanned')}</span>${esc(L.event)}${L.url ? ` · <a href="${esc(L.url)}" target="_blank" rel="noopener">badge link</a>` : ''}<br>First: ${fmt(L.firstScan)} by ${esc(L.firstBy)} · Last: ${fmt(L.lastScan)} by ${esc(L.lastBy)}</p>
+    </div>
+
+    <div class="card">
+      <h2>Interested in <span class="muted small" style="font-weight:400">(tap all that apply)</span></h2>
+      <div class="chips" id="chips">${st.interests.map(i => `<button class="chip ${sel.has(i) ? (saved.includes(i) && !admin ? 'locked' : 'on') : ''}" data-i="${esc(i)}">${sel.has(i) ? '✓ ' : ''}${esc(i)}</button>`).join('')}</div>
+      <label class="f">Follow-up status</label>
+      <select class="i" id="e_status">${st.statuses.map(s => `<option ${s === (L.status || 'New Lead') ? 'selected' : ''}>${esc(s)}</option>`).join('')}</select>
+    </div>
+
+    <div class="card">
+      <h2>Discussion notes</h2>
+      ${L.notes ? `<div class="notes">${esc(L.notes)}</div>` : '<p class="small muted" style="margin-top:-4px">No notes yet.</p>'}
+      <label class="f">Add a note</label>
+      <textarea class="i" id="e_note" placeholder="e.g. Has 3 sheds, wants full automation quote by next week"></textarea>
+      <label class="row small" style="margin-top:12px;gap:8px;justify-content:flex-start"><input type="checkbox" id="e_consent" ${L.consent ? 'checked' : ''} style="flex:0;width:20px;height:20px"> <span>Visitor agreed to share contact details</span></label>
+    </div>
+
+    <div class="row" style="position:sticky;bottom:calc(70px + env(safe-area-inset-bottom));z-index:5">
+      <button class="btn block" id="save" style="box-shadow:0 6px 18px rgba(17,21,30,.3)">${status ? 'Save & scan next' : 'Save changes'}</button>
+    </div>
+    ${admin && !status ? `<button class="btn danger block mt" id="del">Delete this customer record</button>` : ''}
+    <div style="height:10px"></div>`;
+
+  m.querySelectorAll('#chips .chip').forEach(c => c.onclick = () => {
+    if (c.classList.contains('locked')) return toast('Saved interests can only be removed by an admin');
+    const i = c.dataset.i; if (sel.has(i)) { sel.delete(i); c.classList.remove('on'); c.textContent = i; } else { sel.add(i); c.classList.add('on'); c.textContent = '✓ ' + i; }
+  });
+  const back = $('#back'); if (back) back.onclick = () => { S.view = null; render(); };
+  const del = $('#del'); if (del) del.onclick = async () => {
+    if (!confirm('Delete ' + (L.name || L.visitorId) + '? This cannot be undone.')) return;
+    try { await api('deleteLead', { leadId: L.leadId }); S.leads = S.leads.filter(x => x.leadId !== L.leadId); LS.set('surya_leads_cache', S.leads); toast('Deleted'); S.view = null; render(); } catch (e) { toast(e.message, true); }
+  };
+  $('#save').onclick = async () => {
+    const b = $('#save'); b.disabled = true;
+    const data = { leadId: L.leadId, visitorId: L.visitorId, event: L.event, interests: [...sel], replaceInterests: admin, status: $('#e_status').value, noteAppend: $('#e_note').value, consent: $('#e_consent').checked };
+    FIELDS.forEach(k => { const el = $('#e_' + k); if (el && !el.readOnly) data[k] = k === 'mobile' ? fmtMob(el.value) : el.value.trim(); });
+    try {
+      let lead;
+      try { lead = (await api('updateLead', { data })).lead; }
+      catch (e) {
+        if (!isNet(e)) throw e;
+        S.queue.push({ action: 'updateLead', data }); saveQueue();
+        lead = { ...L, ...Object.fromEntries(FIELDS.filter(k => data[k] !== undefined && (admin || !L[k])).map(k => [k, data[k]])),
+          interests: [...new Set(admin ? data.interests : saved.concat(data.interests))].join(', '), status: data.status, consent: data.consent,
+          notes: data.noteAppend.trim() ? (L.notes ? L.notes + '\n' : '') + '[offline · ' + me().name + '] ' + data.noteAppend.trim() : L.notes };
+        toast('Saved offline — will sync');
+      }
+      cacheLead(lead);
+      if (status) { toast('Saved ✓  Ready for next scan'); S.view = null; S.tab = 'scan'; }
+      else { toast('Saved ✓'); S.view = { type: 'lead', lead }; }
+      render();
+    } catch (e) { toast(e.message, true); b.disabled = false; }
+  };
+}
+
+/* ---------- Customers list ---------- */
+function leadRow(l) {
+  return `<div class="lead" data-lid="${esc(l.leadId)}"><div class="av">${esc(initials(l.name))}</div><div style="flex:1;min-width:0">
+    <div class="nm">${esc(l.name || '(no name)')} ${l.repeatCount ? `<span class="tag rep">${l.repeatCount + 1} visits</span>` : ''}</div>
+    ${l.jobTitle ? `<div class="meta">${esc(l.jobTitle)}</div>` : ''}
+    <div class="meta">${esc(l.mobile || '—')}${l.email ? ' · ' + esc(l.email) : ''}</div>
+    <div class="meta">${fmt(l.firstScan)} · ${esc(l.firstBy)}${l.lastBy && l.lastBy !== l.firstBy ? ' · last: ' + esc(l.lastBy) : ''}</div>
+    <div><span class="tag ${l.source === 'Manual Entry' ? 'rep' : ''}">${esc(l.source || 'Scanned')}</span>${splitInt(l.interests).map(i => `<span class="tag">${esc(i)}</span>`).join('')}<span class="tag st">${esc(l.status || 'New Lead')}</span></div></div></div>`;
+}
+function bindLeadRows(m) { m.querySelectorAll('[data-lid]').forEach(r => r.onclick = () => { const l = S.leads.find(x => x.leadId === r.dataset.lid); if (l) { stopScanner(); S.view = { type: 'lead', lead: l }; render(); window.scrollTo(0, 0); } }); }
+
+function filtered() {
+  const f = S.filters, q = f.q.toLowerCase();
+  return S.leads.filter(l =>
+    (!f.event || l.event === f.event) &&
+    (!q || [l.name, l.jobTitle, l.mobile, l.email, l.visitorId, l.notes].join(' ').toLowerCase().includes(q)) &&
+    (!f.interest || splitInt(l.interests).includes(f.interest)) &&
+    (!f.status || (l.status || 'New Lead') === f.status) &&
+    (!f.member || l.firstBy === f.member || l.lastBy === f.member) &&
+    (!f.source || (l.source || 'Scanned') === f.source) &&
+    (!f.type || (f.type === 'repeat' ? l.repeatCount > 0 : !l.repeatCount)) &&
+    (!f.from || String(l.lastScan).slice(0, 10) >= f.from) &&
+    (!f.to || String(l.firstScan).slice(0, 10) <= f.to));
+}
+function leadsView(m) {
+  const st = SET(), f = S.filters;
+  const members = [...new Set(S.leads.flatMap(l => [l.firstBy, l.lastBy]).filter(Boolean))].sort();
+  const events = [...new Set(S.leads.map(l => l.event).concat(st.events || []))].filter(Boolean);
+  const opt = (arr, cur, all) => `<option value="">${all}</option>` + arr.map(x => `<option ${x === cur ? 'selected' : ''}>${esc(x)}</option>`).join('');
+  m.innerHTML = `<div class="card">
+      <input class="i" id="fq" placeholder="Search name, mobile, email, ID, notes…" value="${esc(f.q)}">
+      <div class="filters">
+        <select class="i" data-f="interest">${opt(st.interests, f.interest, 'All products')}</select>
+        <select class="i" data-f="status">${opt(st.statuses, f.status, 'All statuses')}</select>
+        <select class="i" data-f="member">${opt(members, f.member, 'All team members')}</select>
+        <select class="i" data-f="type"><option value="">New + repeat</option><option value="new" ${f.type === 'new' ? 'selected' : ''}>New only</option><option value="repeat" ${f.type === 'repeat' ? 'selected' : ''}>Repeat visitors</option></select>
+        <select class="i" data-f="event">${opt(events, f.event, 'All events')}</select>
+        <select class="i" data-f="source">${opt(['Scanned', 'Manual Entry'], f.source, 'Scanned + manual')}</select>
+        <div class="row span2" style="gap:6px"><span class="small muted" style="flex:0 0 auto">Date</span><input class="i" type="date" data-f="from" value="${f.from}" title="From"><input class="i" type="date" data-f="to" value="${f.to}" title="To"></div>
+      </div>
+      <div class="row mt"><button class="btn line sm" id="rf">↻ Refresh</button><button class="btn line sm" id="clr">Clear filters</button>${isAdmin() ? '<button class="btn sm" id="xl">⬇ Export Excel</button>' : ''}</div>
+    </div>
+    <div class="card" id="list"></div>`;
+  const draw = () => { const L = filtered(); $('#list').innerHTML = `<div class="small muted">${L.length} customer${L.length === 1 ? '' : 's'}</div>` + (L.length ? L.map(leadRow).join('') : '<div class="empty">No customers match.</div>'); bindLeadRows(m); };
+  $('#fq').oninput = e => { f.q = e.target.value; draw(); };
+  m.querySelectorAll('[data-f]').forEach(s => s.onchange = e => { f[s.dataset.f] = e.target.value; draw(); });
+  $('#clr').onclick = () => { S.filters = { q: '', interest: '', status: '', member: '', from: '', to: '', type: '', event: '', source: '' }; leadsView(m); };
+  $('#rf').onclick = async () => { $('#rf').disabled = true; if (await refreshLeads()) toast('Up to date'); leadsView(m); };
+  const xl = $('#xl'); if (xl) xl.onclick = () => exportExcel(filtered(), 'Surya_Customers');
+  draw();
+  if (!m.dataset.loaded) { m.dataset.loaded = 1; refreshLeads().then(ok => { if (ok && S.tab === 'leads' && !S.view) draw(); }); }
+}
+
+function exportExcel(leads, name) {
+  const ts = iso => { if (!iso) return ''; const d = new Date(iso); if (isNaN(d)) return String(iso); const z = n => String(n).padStart(2, '0');
+    return `${d.getFullYear()}-${z(d.getMonth() + 1)}-${z(d.getDate())} ${z(d.getHours())}:${z(d.getMinutes())}:${z(d.getSeconds())}`; };
+  const rows = leads.map(l => ({
+    'scanned_by': l.firstBy, 'source': l.source || 'Scanned', 'name': l.name, 'job_title': l.jobTitle, 'email': l.email, 'contact_no': l.mobile, 'url': l.url,
+    'scan_date': ts(l.firstScan), 'event': l.event, 'interests': l.interests, 'notes': l.notes, 'follow_up_status': l.status,
+    'repeat_scans': l.repeatCount, 'last_scan': ts(l.lastScan), 'last_scanned_by': l.lastBy
+  }));
+  const fn = name + '_' + new Date().toISOString().slice(0, 10);
+  if (window.XLSX) {
+    const ws = XLSX.utils.json_to_sheet(rows); ws['!cols'] = Object.keys(rows[0] || { a: 1 }).map(k => ({ wch: Math.min(40, Math.max(12, k.length + 2)) }));
+    const wb = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, ws, 'Customers'); XLSX.writeFile(wb, fn + '.xlsx');
+  } else {
+    const cols = Object.keys(rows[0] || {}); const csv = [cols.join(',')].concat(rows.map(r => cols.map(c => '"' + String(r[c] ?? '').replace(/"/g, '""') + '"').join(','))).join('\n');
+    const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob(['﻿' + csv], { type: 'text/csv' })); a.download = fn + '.csv'; a.click();
+  }
+  toast('Exported ' + rows.length + ' customers');
+}
+
+/* ---------- Dashboard ---------- */
+async function dashView(m) {
+  const st = SET(); const ev = S.dashEvent ?? st.activeEvent;
+  m.innerHTML = `<div class="card"><label class="f" style="margin-top:0">Event</label><select class="i" id="dev"><option value="">All events</option>${(st.events || []).map(e => `<option ${e === ev ? 'selected' : ''}>${esc(e)}</option>`).join('')}</select></div><div id="dbody"><div class="empty">Loading…</div></div>`;
+  $('#dev').onchange = e => { S.dashEvent = e.target.value; dashView(m); };
+  let s;
+  try { s = await api('stats', { event: ev }); refreshLeads(); }
+  catch (e) { $('#dbody').innerHTML = `<div class="empty">${esc(e.message)}</div>`; return; }
+  if (S.tab !== 'dash' || S.view) return;
+  const max = Math.max(1, ...Object.values(s.byInterest));
+  const fu = S.leads.filter(l => (!ev || l.event === ev) && ['New Lead', 'Follow-Up Required', 'Quotation Sent'].includes(l.status || 'New Lead') && (l.interests || l.notes));
+  $('#dbody').innerHTML = `
+    <div class="grid3" style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px">
+      <div class="stat"><div class="n">${s.totals.uniqueVisitors}</div><div class="l">Unique visitors</div></div>
+      <div class="stat"><div class="n">${s.totals.totalScans}</div><div class="l">Total QR scans</div></div>
+      <div class="stat"><div class="n">${s.totals.repeatVisitors}</div><div class="l">Repeat visitors</div></div>
+    </div>
+    <div class="card"><h2>Product-wise customer interest</h2>
+      ${Object.entries(s.byInterest).map(([k, v]) => `<div class="bar" data-int="${esc(k)}" style="cursor:pointer"><span>${esc(k)}</span><div class="tr"><div class="fl" style="width:${(v / max * 100).toFixed(1)}%"></div></div><span class="v">${v}</span></div>`).join('')}
+      <p class="small muted mb0">Tap a product to see those customers.</p></div>
+    ${s.bySource ? `<div class="card"><h2>How leads were captured</h2>${Object.entries(s.bySource).map(([k, v]) => `<div class="bar"><span>${esc(k)}</span><div class="tr"><div class="fl" style="width:${(v / Math.max(1, s.totals.uniqueVisitors) * 100).toFixed(1)}%;background:${k === 'Manual Entry' ? '#11151e' : 'var(--gold)'}"></div></div><span class="v">${v}</span></div>`).join('')}</div>` : ''}
+    <div class="card"><h2>Team member performance</h2>
+      ${s.team.length ? `<table class="t"><tr><th>Team member</th><th style="text-align:right">Scans</th><th style="text-align:right">New leads</th><th style="text-align:right">Repeat</th></tr>
+      ${s.team.map(t => `<tr><td>${esc(t.member)}</td><td class="n">${t.scans}</td><td class="n">${t.newLeads}</td><td class="n">${t.repeats}</td></tr>`).join('')}</table>` : '<div class="empty">No scans yet.</div>'}</div>
+    <div class="card"><h2>Follow-up status</h2>
+      ${Object.entries(s.byStatus).map(([k, v]) => `<div class="bar"><span>${esc(k)}</span><div class="tr"><div class="fl" style="width:${(v / Math.max(1, s.totals.uniqueVisitors) * 100).toFixed(1)}%;background:#11151e"></div></div><span class="v">${v}</span></div>`).join('')}</div>
+    <div class="card"><div class="row"><h2 class="mb0">Customer follow-up list</h2><button class="btn sm" id="fux" style="flex:0 0 auto">⬇ Excel</button></div>
+      <div class="small muted" style="margin:4px 0 6px">${fu.length} customers waiting for follow-up</div>
+      ${fu.slice(0, 15).map(leadRow).join('') || '<div class="empty">Nothing pending.</div>'}</div>`;
+  m.querySelectorAll('[data-int]').forEach(b => b.onclick = () => { S.filters = { ...S.filters, interest: b.dataset.int, event: ev || '' }; go('leads'); });
+  $('#fux').onclick = () => exportExcel(fu, 'Surya_FollowUp');
+  bindLeadRows(m);
+}
+
+/* ---------- Admin ---------- */
+async function adminView(m) {
+  const st = SET();
+  m.innerHTML = `
+    <div class="card"><h2>Exhibition / event</h2>
+      <label class="f" style="margin-top:0">Active event (new scans go here)</label>
+      <select class="i" id="aev">${(st.events || []).map(e => `<option ${e === st.activeEvent ? 'selected' : ''}>${esc(e)}</option>`).join('')}</select>
+      <div class="row mt"><input class="i" id="newev" placeholder="Add new event, e.g. IPEMA Hyderabad 2026" style="flex:3"><button class="btn ghost" id="addev" style="flex:1">Add</button></div>
+    </div>
+    <div class="card"><h2>Team members</h2><div id="ulist"><div class="empty">Loading…</div></div></div>
+    <div class="card"><h2 id="uft">Add team member</h2>
+      <div class="grid2"><div><label class="f">Username</label><input class="i" id="u_un" autocapitalize="none" autocomplete="off"></div><div><label class="f">Full name</label><input class="i" id="u_nm" autocomplete="off"></div></div>
+      <div class="grid2"><div><label class="f">Role</label><select class="i" id="u_rl"><option value="member">Team member</option><option value="admin">Admin (management)</option></select></div>
+      <div><label class="f">Password <span id="u_pwh"></span></label><input class="i" id="u_pw" type="text" autocomplete="off"></div></div>
+      <label class="row small" style="margin-top:12px;gap:8px;justify-content:flex-start"><input type="checkbox" id="u_ac" checked style="flex:0;width:20px;height:20px"> <span>Active (can log in)</span></label>
+      <div class="row mt"><button class="btn line" id="u_clr">Clear</button><button class="btn" id="u_save">Save member</button></div>
+    </div>
+    ${accountCard()}`;
+  const saveEv = async (data) => { try { const r = await api('saveSettings', { data }); S.session.settings = r.settings; LS.set('surya_session', S.session); toast('Event updated'); adminView(m); renderHeader(); } catch (e) { toast(e.message, true); } };
+  $('#aev').onchange = e => saveEv({ activeEvent: e.target.value, events: st.events });
+  $('#addev').onclick = () => { const v = $('#newev').value.trim(); if (!v) return; saveEv({ activeEvent: v, events: (st.events || []).concat(v) }); };
+  const clr = () => { ['u_un','u_nm','u_pw'].forEach(i => $('#' + i).value = ''); $('#u_un').readOnly = false; $('#u_rl').value = 'member'; $('#u_ac').checked = true; $('#uft').textContent = 'Add team member'; $('#u_pwh').textContent = ''; };
+  $('#u_clr').onclick = clr;
+  $('#u_save').onclick = async () => {
+    try { const r = await api('saveUser', { data: { username: $('#u_un').value.trim(), name: $('#u_nm').value.trim(), role: $('#u_rl').value, password: $('#u_pw').value, active: $('#u_ac').checked } });
+      drawUsers(r.users); clr(); toast('Team member saved'); } catch (e) { toast(e.message, true); }
+  };
+  const drawUsers = users => {
+    $('#ulist').innerHTML = `<table class="t"><tr><th>Name</th><th>Username</th><th>Role</th><th></th></tr>${users.map(u => `<tr style="${u.active ? '' : 'opacity:.5'}"><td>${esc(u.name)}</td><td>${esc(u.username)}</td><td>${u.role === 'admin' ? 'Admin' : 'Member'}${u.active ? '' : ' (off)'}</td><td style="text-align:right"><button class="btn line sm" data-u="${esc(u.username)}">Edit</button></td></tr>`).join('')}</table>`;
+    $('#ulist').querySelectorAll('[data-u]').forEach(b => b.onclick = () => { const u = users.find(x => x.username === b.dataset.u);
+      $('#u_un').value = u.username; $('#u_un').readOnly = true; $('#u_nm').value = u.name; $('#u_rl').value = u.role; $('#u_ac').checked = u.active; $('#u_pw').value = '';
+      $('#uft').textContent = 'Edit ' + u.name; $('#u_pwh').textContent = '(leave blank to keep)'; $('#u_nm').scrollIntoView({ behavior: 'smooth', block: 'center' }); });
+  };
+  bindAccount();
+  try { drawUsers((await api('users')).users); } catch (e) { $('#ulist').innerHTML = `<div class="empty">${esc(e.message)}</div>`; }
+}
+
+function accountCard() {
+  return `<div class="card"><h2>My account</h2>
+    <p class="small muted" style="margin-top:-4px">${esc(me().name)} · ${esc(me().username)} · ${isAdmin() ? 'Admin' : 'Team member'}</p>
+    <div class="grid2"><div><label class="f">Current password</label><input class="i" id="cp_o" type="password"></div><div><label class="f">New password</label><input class="i" id="cp_n" type="password"></div></div>
+    <button class="btn ghost block mt" id="cp">Change password</button>
+    ${S.queue.length ? `<p class="small" style="color:var(--warn)">${S.queue.length} offline change(s) waiting to sync. Don't log out until they sync.</p><button class="btn line block" id="sync">Sync now</button>` : ''}
+    <button class="btn line block mt" id="lo">Log out</button>
+    <p class="small muted center">Server: ${S.server === 'demo' ? 'Demo mode (this phone only)' : esc(S.server.replace(/^https:\/\/script\.google\.com\/macros\/s\/(.{8}).*$/, 'Google Sheet ($1…)'))}</p>
+    ${S.server === 'demo' ? '<button class="btn danger block sm" id="dreset">Reset demo data</button>' : ''}</div>`;
+}
+function bindAccount() {
+  $('#cp').onclick = async () => { try { await api('changePassword', { oldPassword: $('#cp_o').value, newPassword: $('#cp_n').value }); toast('Password changed'); $('#cp_o').value = $('#cp_n').value = ''; } catch (e) { toast(e.message, true); } };
+  $('#lo').onclick = async () => {
+    if (S.queue.length && !confirm('You have unsynced offline scans. Log out anyway? (They stay on this phone and sync after next login.)')) return;
+    try { await api('logout'); } catch {} logoutLocal();
+  };
+  const sy = $('#sync'); if (sy) sy.onclick = () => syncQueue();
+  const dr = $('#dreset'); if (dr) dr.onclick = () => { if (confirm('Reset all demo data?')) { Demo.reset(); LS.del('surya_leads_cache'); S.leads = []; logoutLocal(); } };
+}
+function meView(m) { m.innerHTML = accountCard(); bindAccount(); }
+
+/* ============================== INSTALL AS APP ==============================
+   Android/Chrome: shows an "Install" button using the browser's install prompt.
+   iPhone/iPad: Apple has no install prompt, so we show a one-time tip instead. */
+const Install = (() => {
+  const standalone = () => navigator.standalone === true || matchMedia('(display-mode: standalone)').matches;
+  const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  const iosSafari = isIOS && !/CriOS|FxiOS|EdgiOS|OPiOS|GSA\//i.test(navigator.userAgent);
+  let deferred = null;
+  const SHARE = '<svg class="shareic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3v12M8 7l4-4 4 4M5 11v9h14v-9"/></svg>';
+  function hide(remember) { document.querySelectorAll('.inst').forEach(e => e.remove()); if (remember) LS.set('surya_install_dismissed', Date.now()); }
+  function dismissedRecently() { const t = LS.get('surya_install_dismissed', 0); return t && Date.now() - t < 3 * 864e5; }   // ask again after 3 days
+  function show(html, cls) {
+    hide(false);
+    const d = document.createElement('div'); d.className = 'inst ' + (cls || '') + (document.querySelector('nav.tabs') ? '' : ' nonav');
+    d.innerHTML = `<img src="icons/icon-192.png" alt=""><div style="flex:1">${html}</div><button class="x" aria-label="Close">×</button>`;
+    d.querySelector('.x').onclick = () => hide(true);
+    document.body.appendChild(d); return d;
+  }
+  function maybeShow() {
+    if (standalone() || dismissedRecently()) return;
+    if (deferred) {
+      const d = show('<b>Install SuryaIOTech Leads</b><div class="small" style="opacity:.8">Opens full-screen, works offline</div>');
+      const b = document.createElement('button'); b.className = 'btn'; b.textContent = 'Install';
+      b.onclick = async () => { hide(false); deferred.prompt(); const r = await deferred.userChoice; deferred = null; if (r.outcome !== 'accepted') LS.set('surya_install_dismissed', Date.now()); };
+      d.insertBefore(b, d.querySelector('.x'));
+    } else if (iosSafari) {
+      show(`<b>Install on your iPhone</b><div class="small" style="opacity:.9;margin-top:2px">Tap ${SHARE} <b>Share</b> below, then <b>Add to Home Screen</b></div>`, 'ios');
+    } else if (isIOS) {
+      show('<b>Install on your iPhone</b><div class="small" style="opacity:.9;margin-top:2px">Open this link in <b>Safari</b>, then Share → <b>Add to Home Screen</b></div>');
+    }
+  }
+  window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); deferred = e; setTimeout(maybeShow, 1500); });
+  window.addEventListener('appinstalled', () => { hide(false); toast('Installed ✓  Open Surya Leads from your home screen'); });
+  if ('serviceWorker' in navigator && location.protocol !== 'file:') navigator.serviceWorker.register('sw.js').catch(() => {});
+  return { maybeShow, isIOS, standalone };
+})();
+
+/* ============================== BOOT ============================== */
+render();
+setTimeout(Install.maybeShow, 2500);
+if (S.session) { api('me').then(r => { S.session.user = r.user; S.session.settings = r.settings; LS.set('surya_session', S.session); render(); refreshLeads(); syncQueue(); }).catch(() => {}); }
+</script>
+</body>
+</html>
