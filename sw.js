@@ -1,7 +1,7 @@
 /* Surya Leads – offline helper. Keeps the app screen available without internet.
    Customer data never goes through this cache (server calls are POST and are not touched). */
-const VERSION = 'surya-v3';
-const SHELL = ['./', './index.html', './manifest.json', './icons/icon-192.png', './icons/icon-512.png', './icons/apple-touch-icon.png', './icons/mark-96.png', './icons/logo-full.png'];
+const VERSION = 'surya-v6';
+const SHELL = ['./', './index.html', './manifest.json', './icons/icon-192.png', './icons/icon-512.png', './icons/apple-touch-icon.png', './icons/mark-96.png', './icons/logo-full.png', './fonts/outfit.woff2'];
 const LIBS = ['https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js', 'https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js'];
 
 self.addEventListener('install', e => {

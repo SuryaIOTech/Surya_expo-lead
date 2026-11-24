@@ -106,6 +106,128 @@ details summary{cursor:pointer;color:var(--muted);font-size:13px;margin-top:14px
 .inst.ios.nonav{bottom:calc(14px + env(safe-area-inset-bottom))}
 .shareic{display:inline-block;width:16px;height:16px;vertical-align:-3px}
 input[type=checkbox],input[type=radio]{accent-color:#11151e}
+header.top .right{display:flex;flex-direction:column;align-items:flex-end;gap:3px;flex:0 0 auto;max-width:46%}
+header.top .who{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.syncchip{display:inline-flex;align-items:center;gap:6px;border:0;border-radius:99px;padding:3px 10px 3px 8px;font-size:11.5px;font-weight:650;cursor:pointer;background:#ffffff1f;color:#fff;white-space:nowrap}
+.dot{width:8px;height:8px;border-radius:50%;background:#35c46b;display:inline-block;flex:0 0 8px}
+.syncchip.off{background:#fde68a;color:#7c4a03}.off .dot{background:#d97706}
+.syncchip.bad{background:#fdecea;color:#b42318}.bad .dot{background:#b42318}
+.syncchip.sy{background:#ffffff1f;color:#fff}.sy .dot{background:var(--gold);animation:pulse 1s ease-in-out infinite}
+@keyframes pulse{50%{opacity:.25}}
+.sheet{position:fixed;inset:0;z-index:80;background:rgba(17,21,30,.45);display:flex;align-items:flex-end;justify-content:center}
+.sheet-in{background:#fff;width:100%;max-width:560px;border-radius:18px 18px 0 0;padding:16px 16px calc(18px + env(safe-area-inset-bottom));max-height:86vh;overflow:auto}
+.sheet .x{background:none;border:0;font-size:26px;line-height:1;color:var(--muted);cursor:pointer;padding:0 4px}
+.syncbig{display:flex;align-items:center;gap:10px;font-weight:700;font-size:17px;margin-top:10px;padding:12px 14px;border-radius:12px;background:#eaf7ef;color:#14603a}
+.syncbig .dot{width:12px;height:12px;flex:0 0 12px}
+.syncbig.off{background:#fff4d6;color:#7c4a03}.syncbig.bad{background:var(--bad-soft);color:var(--bad)}.syncbig.sy{background:var(--brand-soft);color:#6b4a00}
+.joblist{border:1px solid var(--line);border-radius:10px;padding:4px 10px;margin-top:8px;font-size:13.5px}.joblist>div{padding:6px 0;border-bottom:1px solid var(--line)}.joblist>div:last-child{border-bottom:0}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#fff}
+.seg button{border:0;background:none;padding:7px 12px;font-size:13.5px;font-weight:600;cursor:pointer;color:var(--muted)}
+.seg button.on{background:var(--brand);color:var(--gold)}
+nav.tabs button{position:relative}
+.badge{position:absolute;top:4px;left:calc(50% + 6px);min-width:18px;height:18px;padding:0 5px;border-radius:99px;background:var(--bad);color:#fff;font-size:11px;font-weight:700;font-style:normal;display:grid;place-items:center}
+.tag.ns{background:#fff4d6;color:#7c4a03}
+.lead .meta.fu{color:#11151e;font-weight:600}.lead .meta.fu.over{color:var(--bad)}.lead .meta.fu.tod{color:#8a5d00}
+.chip.sm{padding:6px 11px;font-size:13px}
+.duec{border-left:5px solid var(--gold)}
+.stat.red{border-top-color:var(--bad)}.stat.red .n{color:var(--bad)}
+h2.h-over{color:var(--bad)}
+.bulk{margin-top:12px;padding-top:12px;border-top:1px dashed var(--line)}
+:lang(hi) body,:lang(mr) body{line-height:1.55}
+
+/* ===== Polish layer: type, icons, sync indicator ===== */
+@font-face{font-family:"Outfit";src:url("fonts/outfit.woff2") format("woff2");font-weight:100 900;font-display:swap}
+:root{--disp:"Outfit",system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans",sans-serif;--line:#e4e6ec;--bg:#f3f4f6}
+.ic{width:18px;height:18px;flex:0 0 auto;vertical-align:-3.5px}
+h1,h2,.btn,.stat .n,nav.tabs button span,.banner .t,.lead .nm,.sy-t,.syncbtn b,.avatar,.seg button{font-family:var(--disp)}
+:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+header.top{display:block;padding:0;border-bottom:0}
+.hrow{display:flex;align-items:center;gap:10px;padding:calc(9px + env(safe-area-inset-top)) 12px 9px 14px}
+.ttl{min-width:0;flex:1}.ttl h1{font-size:17px;font-weight:600;letter-spacing:.1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+header.top .sub{font-size:12px;opacity:.62;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.syncbtn{position:relative;width:38px;height:38px;border-radius:50%;border:0;background:transparent;color:#ffffffb3;display:grid;place-items:center;cursor:pointer;flex:0 0 38px}
+.syncbtn .ic{width:23px;height:23px}
+.syncbtn:active{background:#ffffff1a}
+.syncbtn.off{color:var(--gold)}.syncbtn.bad{color:#ff8f85}.syncbtn.sy{color:var(--gold)}
+.syncbtn.sy .ic{animation:lift 1.1s ease-in-out infinite}
+@keyframes lift{50%{transform:translateY(-2px);opacity:.55}}
+.syncbtn b{position:absolute;top:1px;right:-1px;min-width:17px;height:17px;padding:0 4px;border-radius:9px;background:var(--gold);color:#11151e;font-size:11px;font-weight:700;line-height:17px;text-align:center;box-shadow:0 0 0 2px var(--brand)}
+.syncbtn.bad b{background:#ff8f85}
+.avatar{width:32px;height:32px;flex:0 0 32px;border-radius:50%;border:1.5px solid #ffffff40;background:transparent;color:#fff;font-size:12px;font-weight:600;letter-spacing:.3px;cursor:pointer;padding:0}
+.netbar{display:flex;align-items:center;gap:8px;padding:7px 14px;font-size:13px;font-weight:550;background:var(--gold);color:#11151e}
+.netbar span{flex:1;min-width:0}.netbar .ic{width:17px;height:17px}
+.netbar button{border:0;background:#11151e;color:#fff;border-radius:7px;padding:5px 11px;font:600 12.5px var(--disp);cursor:pointer;flex:0 0 auto}
+.netbar.bad{background:#fbe3e0;color:#8f1d13}.netbar.bad button{background:#8f1d13}
+.netbar.sy{background:#232a36;color:#e9eaee}
+
+.sheet{animation:fadein .160s ease-out}.sheet-in{animation:rise .220s cubic-bezier(.2,.8,.2,1);padding:8px 18px calc(20px + env(safe-area-inset-bottom));border-radius:20px 20px 0 0}
+.sheet.still,.sheet.still .sheet-in{animation:none}
+@keyframes fadein{from{opacity:0}}@keyframes rise{from{transform:translateY(24px);opacity:.4}}
+.grab{width:38px;height:4px;border-radius:2px;background:#d6d9e0;margin:0 auto 14px}
+.sy-head{display:flex;gap:13px;align-items:flex-start}
+.sy-ic{width:44px;height:44px;flex:0 0 44px;border-radius:13px;display:grid;place-items:center;background:#e9f6ee;color:#17693f}
+.sy-ic .ic{width:25px;height:25px}
+.sy-head.off .sy-ic,.sy-head.sy .sy-ic{background:var(--brand-soft);color:#7a5200}.sy-head.bad .sy-ic{background:var(--bad-soft);color:var(--bad)}
+.sy-tx{flex:1;min-width:0}.sy-t{font-size:18px;font-weight:600;line-height:1.25}.sy-s{font-size:13.5px;color:var(--muted);margin-top:3px;line-height:1.45}
+.xb{border:0;background:#f0f1f4;color:var(--muted);width:30px;height:30px;border-radius:50%;display:grid;place-items:center;cursor:pointer;flex:0 0 30px;padding:0}.xb .ic{width:16px;height:16px}
+.sy-meta{display:grid;grid-template-columns:1fr 1fr;gap:0;margin:16px 0 0;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.sy-meta div{padding:10px 13px}.sy-meta div+div{border-left:1px solid var(--line)}
+.sy-meta dt{font-size:12px;color:var(--muted)}.sy-meta dd{margin:2px 0 0;font:600 15px var(--disp)}
+.sy-list{list-style:none;margin:12px 0 0;padding:0}
+.sy-list li{display:flex;align-items:center;gap:11px;padding:9px 0;border-bottom:1px solid var(--line)}.sy-list li:last-child{border-bottom:0}
+.li-ic{width:32px;height:32px;flex:0 0 32px;border-radius:9px;background:#f0f1f4;color:#3c4350;display:grid;place-items:center}.li-ic.bad{background:var(--bad-soft);color:var(--bad)}.li-ic .ic{width:17px;height:17px}
+.li-t{flex:1;min-width:0;display:flex;flex-direction:column}.li-t b{font-weight:600;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.li-t small{font-size:12px;color:var(--muted)}
+.sy-list time{font-size:12px;color:var(--muted);flex:0 0 auto}.sy-list .more{color:var(--muted);font-size:13px;justify-content:center}
+.switch{display:flex;align-items:center;gap:12px;margin-top:16px;padding-top:14px;border-top:1px solid var(--line);font-size:13.5px;color:var(--muted);cursor:pointer}
+.switch span{flex:1}.switch input{position:absolute;opacity:0;pointer-events:none}
+.switch i{width:42px;height:25px;border-radius:13px;background:#d6d9e0;position:relative;flex:0 0 42px;transition:background .150s}
+.switch i:after{content:"";position:absolute;top:3px;left:3px;width:19px;height:19px;border-radius:50%;background:#fff;transition:transform .150s;box-shadow:0 1px 2px rgba(0,0,0,.25)}
+.switch input:checked+i{background:var(--brand)}.switch input:checked+i:after{transform:translateX(17px)}
+.switch input:focus-visible+i{outline:2px solid var(--gold);outline-offset:2px}
+
+.card{box-shadow:none;border:1px solid var(--line);border-radius:14px}
+.card h2{font-size:15.5px;font-weight:600;letter-spacing:.1px}
+.btn{border-radius:11px;font-weight:600;letter-spacing:.1px}.btn .ic{width:17px;height:17px}
+.btn.line{border-color:#d9dce3}
+.banner{box-shadow:none;border-radius:14px}.banner .t{display:flex;gap:9px;align-items:flex-start;font-weight:700;letter-spacing:.2px;font-size:15.5px;line-height:1.3}.banner .t .ic{width:20px;height:20px;margin-top:1px}
+.banner.new{border-left:0}.banner.new .t .ic{color:var(--gold)}.banner.new .t{color:#fff}
+.chip{border-width:1px;border-color:#d9dce3;padding:9px 14px}
+.chip.on:before,.chip.locked:before{content:"";width:14px;height:14px;flex:0 0 14px;background:currentColor;-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E") center/contain no-repeat}
+.tag{border-radius:6px;padding:2px 7px;font-size:11.5px;font-weight:600;background:#eff0f3;color:#3c4350;margin:4px 5px 0 0}
+.lead{padding:13px 0}.lead .nm{font-weight:600;font-size:15.5px}.lead .meta{line-height:1.5}
+.lead .meta.fu{display:flex;align-items:center;gap:5px;margin-top:2px}.lead .meta.fu .ic{width:14px;height:14px}
+.av{font-family:var(--disp);font-weight:600;font-size:13.5px;letter-spacing:.3px}
+.stat{box-shadow:none;border:1px solid var(--line);border-top:1px solid var(--line);padding:13px 14px}
+.stat .n{font-size:30px;font-weight:600;letter-spacing:-.5px}.stat.red{border-top-color:var(--line)}
+.bar .tr{height:8px}.bar{grid-template-columns:minmax(0,150px) 1fr 30px}.bar .v{font-family:var(--disp);font-weight:600}
+table.t td.n{font-family:var(--disp);font-weight:600}
+nav.tabs button{padding:10px 4px 8px;font-size:11.5px}nav.tabs button.act{box-shadow:none;font-weight:600}
+nav.tabs button.act:before{content:"";position:absolute;top:0;left:50%;width:26px;height:3px;margin-left:-13px;border-radius:0 0 3px 3px;background:var(--gold)}
+.badge{top:5px;left:calc(50% + 5px);height:17px;min-width:17px;font:700 10.5px var(--disp);box-shadow:0 0 0 2px #fff}
+.duec{border-left:1px solid var(--line);background:#fffaf0;border-color:#f3dfae}
+.due-ic{flex:0 0 38px!important;width:38px;height:38px;border-radius:11px;background:var(--gold);color:#11151e;display:grid;place-items:center}.due-ic .ic{width:20px;height:20px}
+.toast{background:#11151e;border-radius:11px;font-weight:550}
+.pill{border-radius:7px}
+.seg{border-radius:9px}.seg button{padding:6px 11px;font-size:13px}
+.callrow .btn{gap:7px}
+.btn{white-space:nowrap}.btn.sm{padding:7px 11px;gap:6px}
+.card>.row.mt{flex-wrap:wrap}.card>.row.mt>.btn{flex:1 1 auto}
+
+.hrow2{gap:10px;margin-bottom:4px}.hrow2 h2{flex:1}
+.cardnote{display:none;align-items:center;gap:8px;font-size:13px;font-weight:550;border-radius:10px;padding:8px 11px;margin:8px 0 2px}
+.cardnote .ic{width:16px;height:16px}
+.cardnote.busy{display:flex;background:#f0f1f4;color:#3c4350}.cardnote.ok{display:flex;background:#fdf3dc;color:#6b4a00}.cardnote.warn{display:flex;background:var(--bad-soft);color:#8f1d13}
+.spin.dark{width:15px;height:15px;border-color:#11151e33;border-top-color:#11151e}
+input.i.fromcard{border-color:var(--gold);background:#fffbf1}
+.cap{position:relative;margin-top:14px;border-radius:14px;overflow:hidden;background:#11151e;aspect-ratio:4/3}
+.cap video{width:100%;height:100%;object-fit:cover;display:block}
+.cap-guide{position:absolute;inset:12% 14%;border:2px solid var(--gold);border-radius:12px;box-shadow:0 0 0 999px rgba(17,21,30,.35)}
+
+.seg.wide{display:flex;width:100%}.seg.wide button{flex:1;padding:10px 8px;font-size:14.5px}
+.seg.wide button+button{border-left:1px solid var(--line)}
+.tag.ct{background:#11151e;color:var(--gold)}
 </style>
 </head>
 <body>
@@ -133,13 +255,131 @@ const fmt = iso => {
   return d.toLocaleString('en-IN', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit', hour12: true });
 };
 const initials = n => (String(n || '?').trim().split(/\s+/).map(w => w[0]).slice(0, 2).join('') || '?').toUpperCase();
-const FIELDS = ['name', 'jobTitle', 'email', 'mobile'];
+const FIELDS = ['name', 'jobTitle', 'company', 'country', 'email', 'mobile'];
 const splitInt = s => String(s || '').split(',').map(x => x.trim()).filter(Boolean);
 const normMob = m => { const d = String(m || '').replace(/\D/g, ''); return d.length >= 10 ? d.slice(-10) : d; };
+/* ---------- Languages: English / Hindi / Marathi ----------
+   Screen text is translated; customer data, notes and the Google Sheet stay as typed (product and status names are saved in English). */
+const LANGS = { en: 'EN', hi: 'हिंदी', mr: 'मराठी' };
+let LANG = LS.get('surya_lang', 'en'); if (!LANGS[LANG]) LANG = 'en';
+function setLang(l) { LANG = LANGS[l] ? l : 'en'; LS.set('surya_lang', LANG); }
+function t(s, v) {
+  let o = LANG === 'en' ? s : ((TR[s] && TR[s][LANG === 'hi' ? 0 : 1]) || s);
+  if (v) for (const k in v) o = String(o).split('{' + k + '}').join(v[k]);
+  return o;
+}
+const TR = {   // 'English text': ['हिंदी', 'मराठी']
+  // products, statuses, sources (saved in English in the sheet; translated only on screen)
+  'Green Mind': ['Green Mind', 'Green Mind'], 'Climax': ['Climax', 'Climax'], 'Trio': ['Trio', 'Trio'],
+  'Power Panel': ['पावर पैनल', 'पॉवर पॅनल'], 'Gas Heater': ['गैस हीटर', 'गॅस हीटर'], 'Diesel Heater': ['डीज़ल हीटर', 'डिझेल हीटर'], 'Heater': ['हीटर', 'हीटर'],
+  'Feeding System': ['फीडिंग सिस्टम', 'फीडिंग सिस्टीम'], 'Nipple System': ['निप्पल सिस्टम', 'निप्पल सिस्टीम'], 'Cone Fan': ['कोन फैन', 'कोन फॅन'], 'Cooling Pad': ['कूलिंग पैड', 'कूलिंग पॅड'],
+  'Controller': ['कंट्रोलर', 'कंट्रोलर'], 'Full Shed Automation': ['फुल शेड ऑटोमेशन', 'फुल शेड ऑटोमेशन'], 'Fan': ['फैन', 'फॅन'], 'Electrical Power Panel': ['इलेक्ट्रिकल पावर पैनल', 'इलेक्ट्रिकल पॉवर पॅनल'], 'Other': ['अन्य', 'इतर'],
+  'Company': ['कंपनी', 'कंपनी'], 'Country': ['देश', 'देश'], 'Job title': ['पद', 'पद'],
+  'Farmer': ['किसान', 'शेतकरी'], 'Group': ['ग्रुप', 'ग्रुप'], 'Dealer': ['डीलर', 'डीलर'], 'Customer type': ['ग्राहक का प्रकार', 'ग्राहकाचा प्रकार'], 'Products': ['प्रोडक्ट', 'प्रॉडक्ट'],
+  'All customer types': ['सभी ग्राहक प्रकार', 'सर्व ग्राहक प्रकार'], 'Type not set': ['प्रकार नहीं चुना', 'प्रकार निवडलेला नाही'],
+  'New Lead': ['नया लीड', 'नवीन लीड'], 'Follow-Up Required': ['फॉलो-अप ज़रूरी', 'फॉलो-अप आवश्यक'], 'Quotation Sent': ['कोटेशन भेजा', 'कोटेशन पाठवले'],
+  'Order Confirmed': ['ऑर्डर पक्का', 'ऑर्डर निश्चित'], 'Not Interested': ['रुचि नहीं', 'रस नाही'],
+  'Scanned': ['स्कैन किया', 'स्कॅन केले'], 'Manual Entry': ['हाथ से दर्ज', 'हाताने नोंद'],
+  // tabs and header
+  'Scan': ['स्कैन', 'स्कॅन'], 'Customers': ['ग्राहक', 'ग्राहक'], 'Follow-ups': ['फॉलो-अप', 'फॉलो-अप'], 'Dashboard': ['डैशबोर्ड', 'डॅशबोर्ड'], 'Admin': ['एडमिन', 'ॲडमिन'], 'Me': ['मैं', 'मी'],
+  // sync status
+  'Synced': ['सिंक हो गया', 'सिंक झाले'], 'Syncing… {n}': ['सिंक हो रहा है… {n}', 'सिंक होत आहे… {n}'], 'Offline': ['ऑफ़लाइन', 'ऑफलाइन'],
+  'Offline · {n} pending': ['ऑफ़लाइन · {n} बाकी', 'ऑफलाइन · {n} बाकी'], '{n} pending': ['{n} बाकी', '{n} बाकी'], '{n} not saved': ['{n} सेव नहीं हुए', '{n} सेव्ह झाले नाहीत'],
+  'Sync status': ['सिंक की स्थिति', 'सिंकची स्थिती'], 'Close': ['बंद करें', 'बंद करा'], 'Last synced': ['पिछला सिंक', 'शेवटचे सिंक'], 'Waiting to upload': ['अपलोड बाकी', 'अपलोड बाकी'],
+  'Not saved': ['सेव नहीं हुआ', 'सेव्ह झाले नाही'], 'New scan': ['नया स्कैन', 'नवीन स्कॅन'], 'Edit': ['बदलाव', 'बदल'], 'Retry': ['फिर कोशिश करें', 'पुन्हा प्रयत्न करा'], 'Discard': ['हटा दें', 'काढून टाका'],
+  'Sync now': ['अभी सिंक करें', 'आता सिंक करा'], 'Demo: pretend the internet is off': ['डेमो: मान लें कि इंटरनेट बंद है', 'डेमो: इंटरनेट बंद आहे असे समजा'],
+  'Everything on this phone is saved in the Google Sheet.': ['इस फ़ोन का सारा डेटा Google Sheet में सेव है।', 'या फोनवरील सर्व माहिती Google Sheet मध्ये सेव्ह आहे.'],
+  'Uploading saved scans to the Google Sheet…': ['सेव किए गए स्कैन Google Sheet में अपलोड हो रहे हैं…', 'सेव्ह केलेले स्कॅन Google Sheet मध्ये अपलोड होत आहेत…'],
+  'No internet. Keep scanning: everything is saved on this phone and uploads automatically when the internet returns.': ['इंटरनेट नहीं है। स्कैन करते रहें: सब कुछ इस फ़ोन में सेव हो रहा है और इंटरनेट आते ही अपने-आप अपलोड हो जाएगा।', 'इंटरनेट नाही. स्कॅन करत राहा: सर्व काही या फोनवर सेव्ह होत आहे आणि इंटरनेट आल्यावर आपोआप अपलोड होईल.'],
+  'Some changes are waiting to upload. Tap Sync now.': ['कुछ बदलाव अपलोड होने बाकी हैं। "अभी सिंक करें" दबाएँ।', 'काही बदल अपलोड व्हायचे बाकी आहेत. "आता सिंक करा" दाबा.'],
+  'Some changes could not be saved by the server. Retry, or discard them.': ['कुछ बदलाव सर्वर पर सेव नहीं हो सके। फिर कोशिश करें या उन्हें हटा दें।', 'काही बदल सर्व्हरवर सेव्ह होऊ शकले नाहीत. पुन्हा प्रयत्न करा किंवा ते काढून टाका.'],
+  'Discard the changes that could not be saved?': ['जो बदलाव सेव नहीं हो सके, उन्हें हटा दें?', 'सेव्ह न झालेले बदल काढून टाकायचे?'],
+  'Nothing is waiting to sync': ['सिंक के लिए कुछ बाकी नहीं है', 'सिंकसाठी काहीही बाकी नाही'], 'No internet connection': ['इंटरनेट कनेक्शन नहीं है', 'इंटरनेट कनेक्शन नाही'],
+  'All offline changes synced ✓': ['सभी ऑफ़लाइन बदलाव सिंक हो गए ✓', 'सर्व ऑफलाइन बदल सिंक झाले ✓'], 'Synced, but some changes could not be saved': ['सिंक हो गया, पर कुछ बदलाव सेव नहीं हो सके', 'सिंक झाले, पण काही बदल सेव्ह होऊ शकले नाहीत'],
+  'Saved on this phone. Will sync automatically': ['इस फ़ोन में सेव है। अपने-आप सिंक हो जाएगा', 'या फोनवर सेव्ह आहे. आपोआप सिंक होईल'], 'Not synced yet': ['अभी सिंक नहीं हुआ', 'अजून सिंक नाही'],
+  'Uploading…': ['अपलोड हो रहा है…', 'अपलोड होत आहे…'], 'Uploading {n}…': ['{n} अपलोड हो रहे हैं…', '{n} अपलोड होत आहेत…'], 'You are offline': ['आप ऑफ़लाइन हैं', 'तुम्ही ऑफलाइन आहात'],
+  'Offline. {n} saved on this phone.': ['ऑफ़लाइन। {n} इस फ़ोन में सेव हैं।', 'ऑफलाइन. {n} या फोनवर सेव्ह आहेत.'], 'Offline. Scans are saved on this phone.': ['ऑफ़लाइन। स्कैन इस फ़ोन में सेव हो रहे हैं।', 'ऑफलाइन. स्कॅन या फोनवर सेव्ह होत आहेत.'],
+  'Details': ['जानकारी', 'तपशील'], 'Review': ['देखें', 'पाहा'], 'Changes not saved: {n}': ['सेव नहीं हुए बदलाव: {n}', 'सेव्ह न झालेले बदल: {n}'], '{n} waiting to upload': ['{n} अपलोड होने बाकी', '{n} अपलोड व्हायचे बाकी'],
+  'Everything is saved': ['सब कुछ सेव है', 'सर्व काही सेव्ह आहे'],
+  'Read name from card': ['कार्ड से नाम पढ़ें', 'कार्डवरून नाव वाचा'], 'Reading the name on the card…': ['कार्ड पर लिखा नाम पढ़ा जा रहा है…', 'कार्डवरील नाव वाचत आहे…'],
+  'Check the name and type the contact no.': ['नाम जाँचें और संपर्क नंबर टाइप करें।', 'नाव तपासा आणि संपर्क क्रमांक टाइप करा.'],
+  'Name read from the card. Check the spelling.': ['नाम कार्ड से पढ़ा गया। स्पेलिंग जाँच लें।', 'नाव कार्डवरून वाचले. स्पेलिंग तपासा.'],
+  "Couldn't read the name. Tap Read name from card and hold the badge steady.": ['नाम पढ़ा नहीं जा सका। "कार्ड से नाम पढ़ें" दबाएँ और बैज स्थिर रखें।', 'नाव वाचता आले नाही. "कार्डवरून नाव वाचा" दाबा आणि बॅज स्थिर धरा.'],
+  'Card reader could not load. Type the name instead.': ['कार्ड रीडर लोड नहीं हो सका। नाम टाइप करें।', 'कार्ड रीडर लोड झाला नाही. नाव टाइप करा.'],
+  'Fit the printed name and the QR code inside the frame.': ['छपा हुआ नाम और QR कोड फ्रेम के अंदर रखें।', 'छापलेले नाव आणि QR कोड फ्रेममध्ये ठेवा.'], 'Capture': ['फ़ोटो लें', 'फोटो घ्या'],
+  // login
+  'Exhibition Lead Capture': ['प्रदर्शनी लीड कैप्चर', 'प्रदर्शन लीड कॅप्चर'], 'Team login': ['टीम लॉगिन', 'टीम लॉगिन'], 'Username': ['यूज़रनेम', 'युजरनेम'], 'Password': ['पासवर्ड', 'पासवर्ड'], 'Log in': ['लॉग इन करें', 'लॉग इन करा'],
+  'Server settings': ['सर्वर सेटिंग', 'सर्व्हर सेटिंग'], 'Server URL (from Google Apps Script deployment)': ['सर्वर URL (Google Apps Script डिप्लॉयमेंट से)', 'सर्व्हर URL (Google Apps Script डिप्लॉयमेंटमधून)'],
+  'Try demo mode (no setup, data stays on this phone)': ['डेमो मोड आज़माएँ (कोई सेटअप नहीं, डेटा इसी फ़ोन में रहता है)', 'डेमो मोड वापरून पाहा (सेटअप नको, माहिती याच फोनवर राहते)'], 'Demo logins': ['डेमो लॉगिन', 'डेमो लॉगिन'],
+  'Enter the Server URL first (or tap Try demo)': ['पहले सर्वर URL डालें (या डेमो आज़माएँ)', 'आधी सर्व्हर URL टाका (किंवा डेमो वापरून पाहा)'], 'Demo mode: tap Log in': ['डेमो मोड: "लॉग इन करें" दबाएँ', 'डेमो मोड: "लॉग इन करा" दाबा'],
+  'Wrong username or password': ['यूज़रनेम या पासवर्ड गलत है', 'युजरनेम किंवा पासवर्ड चुकीचा आहे'], 'Session expired, please log in again': ['सेशन समाप्त हो गया, फिर से लॉग इन करें', 'सेशन संपले, पुन्हा लॉग इन करा'],
+  // scan
+  'Follow-ups due: {n}': ['बाकी फॉलो-अप: {n}', 'बाकी फॉलो-अप: {n}'],
+  'Customers assigned to you are waiting for a call.': ['आपको सौंपे गए ग्राहक आपके कॉल का इंतज़ार कर रहे हैं।', 'तुमच्याकडे सोपवलेले ग्राहक तुमच्या कॉलची वाट पाहत आहेत.'], 'View': ['देखें', 'पाहा'],
+  'Starting camera…': ['कैमरा चालू हो रहा है…', 'कॅमेरा सुरू होत आहे…'], "Point at the QR / barcode on the visitor's badge": ['विज़िटर के बैज के QR / बारकोड पर कैमरा रखें', 'व्हिजिटरच्या बॅजवरील QR / बारकोडवर कॅमेरा धरा'],
+  'Handheld scanner / type badge ID': ['हैंडहेल्ड स्कैनर / बैज ID टाइप करें', 'हँडहेल्ड स्कॅनर / बॅज ID टाइप करा'], 'Scan or type ID, press Enter': ['ID स्कैन या टाइप करें, Enter दबाएँ', 'ID स्कॅन किंवा टाइप करा, Enter दाबा'],
+  'Go': ['आगे', 'पुढे'], 'or': ['या', 'किंवा'], '+ Enter visitor manually': ['+ विज़िटर हाथ से दर्ज करें', '+ व्हिजिटरची हाताने नोंद करा'],
+  'Try it: tap a sample badge to "scan" it': ['आज़माएँ: "स्कैन" करने के लिए कोई नमूना बैज दबाएँ', 'वापरून पाहा: "स्कॅन" करण्यासाठी नमुना बॅज दाबा'],  "This year's badge (name read from card)": ['इस साल का बैज (नाम कार्ड से पढ़ा जाएगा)', 'या वर्षीचा बॅज (नाव कार्डवरून वाचले जाईल)'], 'Rahul (already scanned)': ['राहुल (पहले से स्कैन)', 'राहुल (आधीच स्कॅन)'],
+  'Poultry India badge (auto-fill)': ['पोल्ट्री इंडिया बैज (अपने-आप भरता है)', 'पोल्ट्री इंडिया बॅज (आपोआप भरतो)'], 'Badge without email': ['बिना ईमेल वाला बैज', 'ईमेल नसलेला बॅज'], "Badge the server can't read": ['बैज जो सर्वर पढ़ नहीं पाता', 'सर्व्हरला वाचता न येणारा बॅज'],
+  'Recent at this event': ['इस इवेंट के हाल के ग्राहक', 'या इव्हेंटमधील अलीकडचे ग्राहक'],
+  'Privacy: ask the visitor before saving their contact details. Data is used only for SuryaIOTech follow-ups.': ['गोपनीयता: संपर्क जानकारी सेव करने से पहले विज़िटर से पूछें। डेटा सिर्फ़ SuryaIOTech के फॉलो-अप के लिए है।', 'गोपनीयता: संपर्क माहिती सेव्ह करण्याआधी व्हिजिटरला विचारा. माहिती फक्त SuryaIOTech च्या फॉलो-अपसाठी वापरली जाते.'],
+  'Camera scanner could not load (no internet?).': ['कैमरा स्कैनर लोड नहीं हो सका (इंटरनेट नहीं?)।', 'कॅमेरा स्कॅनर लोड होऊ शकला नाही (इंटरनेट नाही?).'], 'Use the handheld scanner box or manual entry below.': ['नीचे हैंडहेल्ड स्कैनर बॉक्स या हाथ से दर्ज करने का विकल्प इस्तेमाल करें।', 'खालील हँडहेल्ड स्कॅनर बॉक्स किंवा हाताने नोंद वापरा.'],
+  'Camera not available.': ['कैमरा उपलब्ध नहीं है।', 'कॅमेरा उपलब्ध नाही.'], 'Allow camera permission in your browser, or use the handheld scanner box / manual entry below.': ['ब्राउज़र में कैमरे की अनुमति दें, या नीचे हैंडहेल्ड स्कैनर बॉक्स / हाथ से दर्ज करने का विकल्प इस्तेमाल करें।', 'ब्राउझरमध्ये कॅमेऱ्याची परवानगी द्या, किंवा खालील हँडहेल्ड स्कॅनर बॉक्स / हाताने नोंद वापरा.'], 'Try again': ['फिर कोशिश करें', 'पुन्हा प्रयत्न करा'],
+  // manual entry
+  'Add visitor manually': ['विज़िटर हाथ से दर्ज करें', 'व्हिजिटरची हाताने नोंद करा'], "Use this when the badge has no QR or the QR doesn't contain contact details.": ['इसे तब इस्तेमाल करें जब बैज पर QR न हो या QR में संपर्क जानकारी न हो।', 'बॅजवर QR नसेल किंवा QR मध्ये संपर्क माहिती नसेल तेव्हा हे वापरा.'],
+  'Name': ['नाम', 'नाव'], 'Job title / Farm': ['पद / फ़ार्म', 'पद / फार्म'], 'Contact no.': ['संपर्क नंबर', 'संपर्क क्रमांक'], 'Email': ['ईमेल', 'ईमेल'], 'Badge / Visitor ID (optional)': ['बैज / विज़िटर ID (वैकल्पिक)', 'बॅज / व्हिजिटर ID (ऐच्छिक)'],
+  'Visitor agreed to share contact details': ['विज़िटर संपर्क जानकारी देने के लिए सहमत है', 'व्हिजिटरने संपर्क माहिती देण्यास संमती दिली'], 'Cancel': ['रद्द करें', 'रद्द करा'], 'Save & continue': ['सेव करें और आगे बढ़ें', 'सेव्ह करा आणि पुढे जा'],
+  'Name and contact no. are required': ['नाम और संपर्क नंबर ज़रूरी हैं', 'नाव आणि संपर्क क्रमांक आवश्यक आहेत'], 'Contact number looks too short': ['संपर्क नंबर बहुत छोटा लग रहा है', 'संपर्क क्रमांक खूप लहान वाटतो'],
+  // customer screen
+  'not found, please type': ['नहीं मिला, कृपया टाइप करें', 'सापडले नाही, कृपया टाइप करा'], 'ALREADY SCANNED – EXISTING CUSTOMER': ['पहले से स्कैन – पुराना ग्राहक', 'आधीच स्कॅन – जुना ग्राहक'], 'NEW VISITOR SAVED': ['नया विज़िटर सेव हुआ', 'नवीन व्हिजिटर सेव्ह झाला'],
+  'Customer': ['ग्राहक', 'ग्राहक'], 'Mobile': ['मोबाइल', 'मोबाइल'], 'First scan': ['पहला स्कैन', 'पहिले स्कॅन'], 'Scanned by': ['किसने स्कैन किया', 'कोणी स्कॅन केले'], 'Visits': ['विज़िट', 'भेटी'],
+  'Details filled in automatically from the badge': ['जानकारी बैज से अपने-आप भर गई', 'माहिती बॅजवरून आपोआप भरली'], 'Badge details could not be read. Please type name and contact no.': ['बैज की जानकारी पढ़ी नहीं जा सकी। कृपया नाम और संपर्क नंबर टाइप करें।', 'बॅजची माहिती वाचता आली नाही. कृपया नाव आणि संपर्क क्रमांक टाइप करा.'],
+  'Back': ['वापस', 'मागे'], 'Customer details': ['ग्राहक की जानकारी', 'ग्राहकाची माहिती'], 'Call': ['कॉल', 'कॉल'], 'badge link': ['बैज लिंक', 'बॅज लिंक'], 'First': ['पहला', 'पहिले'], 'Last': ['आख़िरी', 'शेवटचे'],
+  'Interested in': ['किसमें रुचि है', 'कशात रस आहे'], 'tap all that apply': ['जो लागू हों, सब चुनें', 'लागू असलेले सर्व निवडा'], 'Follow-up': ['फॉलो-अप', 'फॉलो-अप'], 'Follow-up status': ['फॉलो-अप की स्थिति', 'फॉलो-अपची स्थिती'],
+  'Assigned to': ['किसे सौंपा गया', 'कोणाकडे सोपवले'], 'Unassigned': ['किसी को नहीं सौंपा', 'कोणाकडेही नाही'], 'Follow-up date': ['फॉलो-अप की तारीख', 'फॉलो-अपची तारीख'], 'Tomorrow': ['कल', 'उद्या'], 'In 3 days': ['3 दिन बाद', '3 दिवसांनी'], 'In 7 days': ['7 दिन बाद', '7 दिवसांनी'], 'No date': ['तारीख नहीं', 'तारीख नाही'],
+  'Only an admin can assign customers.': ['ग्राहक सिर्फ़ एडमिन सौंप सकते हैं।', 'ग्राहक फक्त ॲडमिन सोपवू शकतो.'], 'Discussion notes': ['बातचीत के नोट्स', 'चर्चेच्या नोंदी'], 'No notes yet.': ['अभी कोई नोट नहीं।', 'अजून नोंद नाही.'], 'Add a note': ['नोट जोड़ें', 'नोंद जोडा'],
+  'e.g. Has 3 sheds, wants full automation quote by next week': ['जैसे: 3 शेड हैं, अगले हफ़्ते तक फुल ऑटोमेशन का कोटेशन चाहिए', 'उदा. 3 शेड आहेत, पुढच्या आठवड्यापर्यंत फुल ऑटोमेशनचे कोटेशन हवे'],
+  'Save & scan next': ['सेव करें और अगला स्कैन करें', 'सेव्ह करा आणि पुढचे स्कॅन करा'], 'Save changes': ['बदलाव सेव करें', 'बदल सेव्ह करा'], 'Delete this customer record': ['इस ग्राहक का रिकॉर्ड हटाएँ', 'या ग्राहकाची नोंद हटवा'],
+  'Delete {name}? This cannot be undone.': ['{name} को हटाएँ? यह वापस नहीं हो सकता।', '{name} हटवायचे? हे परत आणता येणार नाही.'], 'Saved interests can only be removed by an admin': ['सेव की गई रुचि सिर्फ़ एडमिन हटा सकते हैं', 'सेव्ह केलेला रस फक्त ॲडमिन काढू शकतो'],
+  'Deleted': ['हटा दिया गया', 'हटवले'], 'Saved ✓  Ready for next scan': ['सेव हो गया ✓  अगले स्कैन के लिए तैयार', 'सेव्ह झाले ✓  पुढच्या स्कॅनसाठी तयार'], 'Saved ✓': ['सेव हो गया ✓', 'सेव्ह झाले ✓'],
+  'Customer record not found': ['ग्राहक का रिकॉर्ड नहीं मिला', 'ग्राहकाची नोंद सापडली नाही'], 'Admin access required': ['इसके लिए एडमिन होना ज़रूरी है', 'यासाठी ॲडमिन असणे आवश्यक आहे'],
+  // customers list
+  'Overdue': ['समय निकल गया', 'मुदत उलटली'], 'Due today': ['आज करना है', 'आज करायचे'], '(no name)': ['(नाम नहीं)', '(नाव नाही)'], '{n} visits': ['{n} विज़िट', '{n} भेटी'],
+  'Search name, mobile, email, ID, notes…': ['नाम, मोबाइल, ईमेल, ID, नोट्स खोजें…', 'नाव, मोबाइल, ईमेल, ID, नोंदी शोधा…'], 'All products': ['सभी प्रोडक्ट', 'सर्व प्रॉडक्ट'], 'All statuses': ['सभी स्थितियाँ', 'सर्व स्थिती'],
+  'Scanned by: all': ['स्कैन करने वाले: सभी', 'स्कॅन करणारे: सर्व'], 'Assigned to: all': ['सौंपे गए: सभी', 'सोपवलेले: सर्व'], 'New + repeat': ['नए + दोबारा आए', 'नवीन + पुन्हा आलेले'], 'New only': ['सिर्फ़ नए', 'फक्त नवीन'], 'Repeat visitors': ['दोबारा आए विज़िटर', 'पुन्हा आलेले व्हिजिटर'],
+  'Scanned + manual': ['स्कैन + हाथ से दर्ज', 'स्कॅन + हाताने नोंद'], 'All events': ['सभी इवेंट', 'सर्व इव्हेंट'], 'Date': ['तारीख', 'तारीख'], 'Refresh': ['रिफ़्रेश', 'रिफ्रेश'], 'Clear filters': ['फ़िल्टर हटाएँ', 'फिल्टर काढा'], 'Export Excel': ['Excel डाउनलोड', 'Excel डाउनलोड'],
+  'Assign all customers shown below to': ['नीचे दिख रहे सभी ग्राहक इन्हें सौंपें', 'खाली दिसणारे सर्व ग्राहक यांच्याकडे सोपवा'], 'Assign': ['सौंपें', 'सोपवा'], 'Customers: {n}': ['ग्राहक: {n}', 'ग्राहक: {n}'], 'No customers match.': ['कोई ग्राहक नहीं मिला।', 'एकही ग्राहक सापडला नाही.'],
+  'Assign {n} customers to {who}?': ['{n} ग्राहक {who} को सौंपें?', '{n} ग्राहक {who} यांच्याकडे सोपवायचे?'], 'Remove the assignment from {n} customers?': ['{n} ग्राहकों से ज़िम्मेदारी हटाएँ?', '{n} ग्राहकांची जबाबदारी काढायची?'],
+  'Assigned: {n}': ['सौंपे गए: {n}', 'सोपवले: {n}'], 'Exported: {n}': ['डाउनलोड हुए: {n}', 'डाउनलोड झाले: {n}'], 'Assigning many customers needs internet': ['एक साथ कई ग्राहक सौंपने के लिए इंटरनेट चाहिए', 'एकाच वेळी अनेक ग्राहक सोपवण्यासाठी इंटरनेट हवे'], 'Up to date': ['अप-टू-डेट है', 'अद्ययावत आहे'],
+  // follow-ups
+  'Show follow-ups of': ['किसके फॉलो-अप दिखाएँ', 'कोणाचे फॉलो-अप दाखवायचे'], 'Everyone': ['सभी', 'सर्वजण'], 'Not assigned to anyone: {n}': ['किसी को नहीं सौंपे गए: {n}', 'कोणाकडेही न सोपवलेले: {n}'], 'Upcoming': ['आने वाले', 'येणारे'],
+  'No follow-up date': ['फॉलो-अप की तारीख नहीं', 'फॉलो-अपची तारीख नाही'], 'No customers are assigned to you yet.': ['अभी आपको कोई ग्राहक नहीं सौंपा गया है।', 'अजून तुमच्याकडे एकही ग्राहक सोपवलेला नाही.'], 'No follow-ups here.': ['यहाँ कोई फॉलो-अप नहीं है।', 'इथे एकही फॉलो-अप नाही.'],
+  'Closed customers (Order Confirmed / Not Interested) are not shown.': ['बंद हो चुके ग्राहक (ऑर्डर पक्का / रुचि नहीं) नहीं दिखाए जाते।', 'बंद झालेले ग्राहक (ऑर्डर निश्चित / रस नाही) दाखवले जात नाहीत.'],
+  // dashboard
+  'Event': ['इवेंट', 'इव्हेंट'], 'Loading…': ['लोड हो रहा है…', 'लोड होत आहे…'], 'Unique visitors': ['अलग-अलग विज़िटर', 'वेगवेगळे व्हिजिटर'], 'Total QR scans': ['कुल QR स्कैन', 'एकूण QR स्कॅन'],
+  'Product-wise customer interest': ['प्रोडक्ट के अनुसार ग्राहकों की रुचि', 'प्रॉडक्टनुसार ग्राहकांचा रस'], 'Tap a product to see those customers.': ['उन ग्राहकों को देखने के लिए प्रोडक्ट दबाएँ।', 'ते ग्राहक पाहण्यासाठी प्रॉडक्ट दाबा.'],
+  'Follow-ups by team member': ['टीम सदस्य के अनुसार फॉलो-अप', 'टीम सदस्यानुसार फॉलो-अप'], 'Team member': ['टीम सदस्य', 'टीम सदस्य'], 'Assigned': ['सौंपे गए', 'सोपवलेले'], 'No customers assigned yet.': ['अभी कोई ग्राहक नहीं सौंपा गया।', 'अजून एकही ग्राहक सोपवलेला नाही.'],
+  'How leads were captured': ['लीड कैसे दर्ज हुए', 'लीड कसे नोंदवले'], 'Team member performance': ['टीम सदस्यों का प्रदर्शन', 'टीम सदस्यांची कामगिरी'], 'Scans': ['स्कैन', 'स्कॅन'], 'New leads': ['नए लीड', 'नवीन लीड'], 'Repeat': ['दोबारा', 'पुन्हा'], 'No scans yet.': ['अभी कोई स्कैन नहीं।', 'अजून स्कॅन नाही.'],
+  'Customer follow-up list': ['ग्राहक फॉलो-अप सूची', 'ग्राहक फॉलो-अप यादी'], 'Customers waiting for follow-up: {n}': ['फॉलो-अप का इंतज़ार कर रहे ग्राहक: {n}', 'फॉलो-अपची वाट पाहणारे ग्राहक: {n}'], 'Nothing pending.': ['कुछ बाकी नहीं।', 'काहीही बाकी नाही.'],
+  // admin and account
+  'Exhibition / event': ['प्रदर्शनी / इवेंट', 'प्रदर्शन / इव्हेंट'], 'Active event (new scans go here)': ['चालू इवेंट (नए स्कैन यहीं जाते हैं)', 'चालू इव्हेंट (नवीन स्कॅन इथे जातात)'], 'Add new event, e.g. IPEMA Hyderabad 2026': ['नया इवेंट जोड़ें, जैसे IPEMA Hyderabad 2026', 'नवीन इव्हेंट जोडा, उदा. IPEMA Hyderabad 2026'],
+  'Add': ['जोड़ें', 'जोडा'], 'Team members': ['टीम के सदस्य', 'टीम सदस्य'], 'Add team member': ['टीम सदस्य जोड़ें', 'टीम सदस्य जोडा'], 'Full name': ['पूरा नाम', 'पूर्ण नाव'], 'Role': ['भूमिका', 'भूमिका'], 'Admin (management)': ['एडमिन (मैनेजमेंट)', 'ॲडमिन (व्यवस्थापन)'],
+  'Active (can log in)': ['चालू (लॉग इन कर सकते हैं)', 'चालू (लॉग इन करू शकतो)'], 'Clear': ['खाली करें', 'रिकामे करा'], 'Save member': ['सदस्य सेव करें', 'सदस्य सेव्ह करा'], 'Member': ['सदस्य', 'सदस्य'], 'off': ['बंद', 'बंद'], 'leave blank to keep': ['वही रखने के लिए खाली छोड़ें', 'तेच ठेवण्यासाठी रिकामे सोडा'],
+  'Event updated': ['इवेंट बदल दिया गया', 'इव्हेंट बदलला'], 'Team member saved': ['टीम सदस्य सेव हो गया', 'टीम सदस्य सेव्ह झाला'],
+  'My account': ['मेरा खाता', 'माझे खाते'], 'Language': ['भाषा', 'भाषा'], 'Current password': ['मौजूदा पासवर्ड', 'सध्याचा पासवर्ड'], 'New password': ['नया पासवर्ड', 'नवीन पासवर्ड'], 'Change password': ['पासवर्ड बदलें', 'पासवर्ड बदला'], 'Password changed': ['पासवर्ड बदल गया', 'पासवर्ड बदलला'],
+  'Current password is wrong': ['मौजूदा पासवर्ड गलत है', 'सध्याचा पासवर्ड चुकीचा आहे'], 'New password must be at least 6 characters': ['नया पासवर्ड कम से कम 6 अक्षरों का हो', 'नवीन पासवर्ड किमान 6 अक्षरांचा हवा'], 'Password must be at least 6 characters': ['पासवर्ड कम से कम 6 अक्षरों का हो', 'पासवर्ड किमान 6 अक्षरांचा हवा'],
+  "Changes waiting to sync: {n}. Don't log out until they sync.": ['सिंक के लिए बाकी बदलाव: {n}। सिंक होने तक लॉग आउट न करें।', 'सिंकसाठी बाकी बदल: {n}. सिंक होईपर्यंत लॉग आउट करू नका.'], 'Log out': ['लॉग आउट', 'लॉग आउट'], 'Server': ['सर्वर', 'सर्व्हर'],
+  'Demo mode (this phone only)': ['डेमो मोड (सिर्फ़ यह फ़ोन)', 'डेमो मोड (फक्त हा फोन)'], 'Reset demo data': ['डेमो डेटा रीसेट करें', 'डेमो माहिती रीसेट करा'], 'Reset all demo data?': ['सारा डेमो डेटा रीसेट करें?', 'सर्व डेमो माहिती रीसेट करायची?'],
+  'You have unsynced offline scans. Log out anyway? (They stay on this phone and sync after next login.)': ['कुछ ऑफ़लाइन स्कैन अभी सिंक नहीं हुए हैं। फिर भी लॉग आउट करें? (वे इसी फ़ोन में रहेंगे और अगले लॉगिन के बाद सिंक होंगे।)', 'काही ऑफलाइन स्कॅन अजून सिंक झालेले नाहीत. तरीही लॉग आउट करायचे? (ते याच फोनवर राहतील आणि पुढच्या लॉगिननंतर सिंक होतील.)'],
+  // install
+  'Install SuryaIOTech Leads': ['SuryaIOTech Leads इंस्टॉल करें', 'SuryaIOTech Leads इन्स्टॉल करा'], 'Opens full-screen, works offline': ['फुल-स्क्रीन में खुलता है, बिना इंटरनेट भी चलता है', 'फुल-स्क्रीनमध्ये उघडते, इंटरनेटशिवायही चालते'], 'Install': ['इंस्टॉल करें', 'इन्स्टॉल करा'],
+  'Install on your iPhone': ['अपने iPhone में इंस्टॉल करें', 'तुमच्या iPhone वर इन्स्टॉल करा'], 'Tap {icon} Share below, then Add to Home Screen': ['नीचे {icon} Share दबाएँ, फिर "Add to Home Screen" चुनें', 'खाली {icon} Share दाबा, मग "Add to Home Screen" निवडा'],
+  'Open this link in Safari, then Share → Add to Home Screen': ['यह लिंक Safari में खोलें, फिर Share → "Add to Home Screen"', 'ही लिंक Safari मध्ये उघडा, मग Share → "Add to Home Screen"'], 'Installed ✓  Open Surya Leads from your home screen': ['इंस्टॉल हो गया ✓  होम स्क्रीन से Surya Leads खोलें', 'इन्स्टॉल झाले ✓  होम स्क्रीनवरून Surya Leads उघडा']
+};
 function toast(msg, err) {
-  document.querySelectorAll('.toast').forEach(t => t.remove());
-  const t = document.createElement('div'); t.className = 'toast' + (err ? ' err' : ''); t.textContent = msg;
-  document.body.appendChild(t); setTimeout(() => t.remove(), err ? 4200 : 2400);
+  document.querySelectorAll('.toast').forEach(x => x.remove());
+  const el = document.createElement('div'); el.className = 'toast' + (err ? ' err' : ''); el.textContent = t(msg);
+  document.body.appendChild(el); setTimeout(() => el.remove(), err ? 4200 : 2600);
 }
 function beep(ok = true) {
   try {
@@ -155,11 +395,13 @@ function beep(ok = true) {
    vCard, MECARD, "key: value" lines, and delimited text like
    "V1023|Rahul Sharma|9876543210|rahul@x.com".                              */
 const KEYMAP = {
-  visitorId: ['tc','id','visitorid','visitor_id','vid','uid','regno','reg_no','registrationno','registration_no','registrationid','registration_id','badge','badgeid','badge_id','barcode','code','ticket','ticketid','delegateid','attendeeid','attendee_id','regid'],
+  visitorId: ['ticketcode','ticket_code','ticketno','ticket_no','tc','id','visitorid','visitor_id','vid','uid','regno','reg_no','registrationno','registration_no','registrationid','registration_id','badge','badgeid','badge_id','barcode','code','ticket','ticketid','delegateid','attendeeid','attendee_id','regid'],
   name: ['name','fullname','full_name','visitorname','visitor_name','fn','customername','attendee'],
   mobile: ['mobile','phone','mob','mobileno','mobile_no','phoneno','phone_no','contact','contactno','tel','cell','whatsapp'],
   email: ['email','e-mail','mail','emailid','email_id'],
-  jobTitle: ['designation','jobtitle','job_title','title','position','profession','occupation','company','organisation','organization','org','firm','companyname','company_name']
+  jobTitle: ['designation','jobtitle','job_title','title','position','profession','occupation'],
+  company: ['company','organisation','organization','org','firm','companyname','company_name','business','farm','farmname','farm_name'],
+  country: ['country','nation','nationality']
 };
 const keyFor = k => { k = String(k).toLowerCase().replace(/[\s.]/g, ''); for (const f in KEYMAP) if (KEYMAP[f].includes(k) || KEYMAP[f].includes(k.replace(/-/g,'_'))) return f; return null; };
 const EMAIL_RE = /[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/i;
@@ -172,7 +414,7 @@ function shortHash(s) { let h = 2166136261; for (let i = 0; i < s.length; i++) {
 
 function parseQR(raw) {
   const text = String(raw || '').trim();
-  const o = { visitorId: '', name: '', jobTitle: '', mobile: '', email: '', url: '', raw: text, format: 'id' };
+  const o = { visitorId: '', name: '', jobTitle: '', company: '', country: '', mobile: '', email: '', url: '', raw: text, format: 'id' };
   const put = (k, v) => { const f = keyFor(k); if (f && v != null && String(v).trim() && !o[f]) o[f] = String(v).trim(); };
 
   if (/^[\[{]/.test(text)) {
@@ -186,14 +428,15 @@ function parseQR(raw) {
       else if (k === 'TEL') o.mobile = o.mobile || v;
       else if (k === 'EMAIL') o.email = o.email || v;
       else if (k === 'TITLE') o.jobTitle = o.jobTitle || v;
-      else if (k === 'ORG') o.jobTitle = o.jobTitle || v.replace(/;/g, ' ');
+      else if (k === 'ORG') o.company = o.company || v.replace(/;/g, ' ');
+      else if (k === 'ADR') o.country = o.country || (v.split(';')[6] || '');
       else if (k === 'UID' || k === 'NOTE' && /id/i.test(v)) o.visitorId = o.visitorId || v;
     });
   } else if (/^MECARD:/i.test(text)) {
     o.format = 'mecard';
     text.replace(/^MECARD:/i, '').split(';').forEach(p => {
       const i = p.indexOf(':'); if (i < 0) return; const k = p.slice(0, i).toUpperCase(), v = p.slice(i + 1);
-      if (k === 'N') o.name = v.split(',').reverse().join(' ').trim(); else if (k === 'TEL') o.mobile = v; else if (k === 'EMAIL') o.email = v; else if (k === 'ORG') o.jobTitle = v;
+      if (k === 'N') o.name = v.split(',').reverse().join(' ').trim(); else if (k === 'TEL') o.mobile = v; else if (k === 'EMAIL') o.email = v; else if (k === 'ORG') o.company = v;
     });
   } else if (/^https?:\/\//i.test(text)) {
     o.format = 'url'; o.url = text;
@@ -215,7 +458,7 @@ function parseQR(raw) {
       else if (!o.mobile && /^[+\d][\d\s-]{8,}$/.test(p)) o.mobile = p;
       else if (i === 0 && /\d/.test(p) && !/\s/.test(p)) o.visitorId = p;
       else if (!o.name && /^[A-Za-z][A-Za-z .']{1,60}$/.test(p)) o.name = p;
-      else if (!o.jobTitle && /[A-Za-z]/.test(p)) o.jobTitle = p;
+      else if (!o.company && /[A-Za-z]/.test(p)) o.company = p;
     });
   }
   // Fallback: sniff email / phone anywhere in the text
@@ -230,36 +473,36 @@ function parseQR(raw) {
 /* ============================== DEMO BACKEND ==============================
    Same rules as Code.gs but stored in this browser — for trying the app only. */
 const Demo = (() => {
-  const INTERESTS = ['Heater','Controller','Full Shed Automation','Fan','Electrical Power Panel','Other'];
+  const INTERESTS = ['Green Mind', 'Climax', 'Trio', 'Power Panel', 'Gas Heater', 'Diesel Heater', 'Heater', 'Feeding System', 'Nipple System', 'Cone Fan', 'Cooling Pad'], TYPES = ['Farmer', 'Group', 'Dealer'];
   const STATUSES = ['New Lead','Follow-Up Required','Quotation Sent','Order Confirmed','Not Interested'];
-  const KEY = 'surya_demo_db_v2';
+  const KEY = 'surya_demo_db_v5';
   // Pretend badge pages, so the demo can show auto-fill (the real server opens the organiser's page instead)
   const DEMO_BADGES = {
-    'DEMO7781+Pq==': { name: 'Priya Nair', jobTitle: 'Farm Manager', email: 'priya.nair@example.com', mobile: '(+91) 9845012345' },
-    'DEMO5520+Kx==': { name: 'Suresh Yadav', jobTitle: 'Owner', email: '', mobile: '(+91) 9123456780' }
+    'DEMO7781+Pq==': { name: 'Priya Nair', jobTitle: 'Farm Manager', company: 'Kerala Poultry Co-op', country: 'India', email: 'priya.nair@example.com', mobile: '(+91) 9845012345' },
+    'DEMO5520+Kx==': { name: 'Suresh Yadav', jobTitle: 'Owner', company: 'Yadav Farms', country: 'India', email: '', mobile: '(+91) 9123456780' }
   };
   function seed() {
     const ev = 'Poultry India 2026', t = Date.now(), h = 36e5;
-    const L = (id, name, job, mob, email, by, src, ago, ints, st, rep, notes) => ({ leadId: uuid(), visitorId: id, source: src, name, jobTitle: job, mobile: mob, email,
+    const L = (id, name, job, mob, email, by, src, ago, ints, st, rep, notes, who, due) => ({ company: ({ 'Rahul Sharma': 'Sharma Agro Farms', 'Sunita Patil': 'Patil Poultry', 'Mohd. Irfan': 'Irfan Traders', 'Kavita Reddy': 'Venkateshwara Hatcheries', 'Gurpreet Singh': 'Punjab Broilers' })[name] || '', country: 'India', customerType: ({ 'Rahul Sharma': 'Group', 'Mohd. Irfan': 'Dealer', 'Gurpreet Singh': 'Group' })[name] || 'Farmer', assignedTo: who || '', followUp: due === undefined || due === null ? '' : addDays(due), leadId: uuid(), visitorId: id, source: src, name, jobTitle: job, mobile: mob, email,
       url: src === 'Scanned' ? 'https://2025.poultryindia.co.in/bc?tc=' + id : '', event: ev,
       firstScan: new Date(t - ago * h).toISOString(), lastScan: new Date(t - (rep ? ago / 3 : ago) * h).toISOString(), firstBy: by, lastBy: rep ? 'Ravi Kumar' : by,
       interests: ints, notes, repeatCount: rep, status: st, consent: true, updatedBy: by, updatedAt: new Date(t - ago * h).toISOString() });
     const leads = [
-      L('DEMOa1Rahul+Sh==','Rahul Sharma','Poultry farm owner','(+91) 9876543210','rahul.sharma@example.com','Administrator','Scanned',5,'Heater, Controller, Full Shed Automation','Follow-Up Required',1,'[demo · Administrator] Interested in complete poultry shed automation, 3 sheds.'),
-      L('DEMOb2Sunita+P==','Sunita Patil','Farmer','(+91) 9822012345','sunita.p@example.com','Ravi Kumar','Scanned',4,'Fan, Electrical Power Panel','New Lead',0,''),
-      L('M-9900112233','Mohd. Irfan','MD','(+91) 9900112233','','Ravi Kumar','Manual Entry',3,'Controller','Quotation Sent',2,'[demo · Ravi Kumar] Wants price for 2 controllers.'),
-      L('DEMOc3Kavita+R==','Kavita Reddy','Senior officer','(+91) 9811122334','kavita.r@example.com','Administrator','Scanned',2,'Heater','New Lead',0,''),
-      L('DEMOd4Gurpreet==','Gurpreet Singh','CEO','(+91) 9876001122','gurpreet@example.com','Ravi Kumar','Scanned',1,'Full Shed Automation, Fan','Order Confirmed',0,''),
+      L('DEMOa1Rahul+Sh==','Rahul Sharma','Poultry farm owner','(+91) 9876543210','rahul.sharma@example.com','Administrator','Scanned',5,'Gas Heater, Climax, Feeding System','Follow-Up Required',1,'[demo · Administrator] Wants gas heaters and Climax controllers for 3 sheds.', 'Ravi Kumar', -1),
+      L('DEMOb2Sunita+P==','Sunita Patil','Farmer','(+91) 9822012345','sunita.p@example.com','Ravi Kumar','Scanned',4,'Cone Fan, Power Panel','New Lead',0,'', 'Ravi Kumar', 0),
+      L('M-9900112233','Mohd. Irfan','MD','(+91) 9900112233','','Ravi Kumar','Manual Entry',3,'Trio','Quotation Sent',2,'[demo · Ravi Kumar] Wants dealer price for Trio.', 'Administrator', 0),
+      L('DEMOc3Kavita+R==','Kavita Reddy','Senior officer','(+91) 9811122334','kavita.r@example.com','Administrator','Scanned',2,'Diesel Heater, Nipple System','New Lead',0,'', 'Sneha Kulkarni', 2),
+      L('DEMOd4Gurpreet==','Gurpreet Singh','CEO','(+91) 9876001122','gurpreet@example.com','Ravi Kumar','Scanned',1,'Green Mind, Cooling Pad','Order Confirmed',0,'', 'Sneha Kulkarni', null),
     ];
     const scans = [];
     leads.forEach(l => { scans.push({ time: l.firstScan, leadId: l.leadId, visitorId: l.visitorId, name: l.name, event: ev, member: l.firstBy, type: 'New' });
       for (let i = 0; i < l.repeatCount; i++) scans.push({ time: l.lastScan, leadId: l.leadId, visitorId: l.visitorId, name: l.name, event: ev, member: 'Ravi Kumar', type: 'Repeat' }); });
-    return { users: [{ username: 'admin', name: 'Administrator', role: 'admin', active: true, pw: 'admin123' }, { username: 'ravi', name: 'Ravi Kumar', role: 'member', active: true, pw: 'ravi123' }],
+    return { users: [{ username: 'admin', name: 'Administrator', role: 'admin', active: true, pw: 'admin123' }, { username: 'ravi', name: 'Ravi Kumar', role: 'member', active: true, pw: 'ravi123' }, { username: 'sneha', name: 'Sneha Kulkarni', role: 'member', active: true, pw: 'sneha123' }],
       settings: { activeEvent: ev, events: [ev] }, leads, scans, tokens: {} };
   }
   const db = () => LS.get(KEY) || (LS.set(KEY, seed()), LS.get(KEY));
   const save = d => LS.set(KEY, d);
-  const settings = d => ({ ...d.settings, interests: INTERESTS, statuses: STATUSES, sources: ['Scanned', 'Manual Entry'] });
+  const settings = d => ({ ...d.settings, interests: INTERESTS, statuses: STATUSES, sources: ['Scanned', 'Manual Entry'], customerTypes: TYPES });
   const pub = u => ({ username: u.username, name: u.name, role: u.role });
   function find(d, ev, vid, mob, leadId) {
     vid = String(vid || '').trim().toLowerCase(); mob = normMob(mob); let byM = null;
@@ -302,7 +545,7 @@ const Demo = (() => {
         }
         l = { leadId: x.leadId || uuid(), visitorId: vid, source, name: x.name || '', jobTitle: x.jobTitle || '', mobile: x.mobile || '', email: x.email || '', url: x.url || '', event: ev,
           firstScan: when, lastScan: when, firstBy: me.name, lastBy: me.name, interests: '', notes: '', repeatCount: 0, status: 'New Lead', consent: !!x.consent,
-          updatedBy: me.name, updatedAt: new Date().toISOString() };
+          updatedBy: me.name, updatedAt: new Date().toISOString(), assignedTo: '', followUp: '', customerType: '', company: x.company || '', country: x.country || '' };
         d.leads.push(l); d.scans.push({ time: when, leadId: l.leadId, visitorId: vid, name: l.name, event: ev, member: me.name, type: 'New' }); save(d);
         return { status: 'new', lead: l, autoFilled: !!DEMO_BADGES[vid] };
       }
@@ -313,6 +556,9 @@ const Demo = (() => {
         if (x.noteAppend && x.noteAppend.trim()) { const line = '[' + new Date().toLocaleString('en-IN', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit', hour12: false }) + ' · ' + me.name + '] ' + x.noteAppend.trim(); l.notes = l.notes ? l.notes + '\n' + line : line; }
         if (x.status && STATUSES.includes(x.status)) l.status = x.status;
         if (x.consent !== undefined) l.consent = !!x.consent;
+        if (x.assignedTo !== undefined && me.role === 'admin') l.assignedTo = String(x.assignedTo || '').trim();
+        if (x.customerType !== undefined) l.customerType = TYPES.includes(x.customerType) ? x.customerType : '';
+        if (x.followUp !== undefined) l.followUp = /^\d{4}-\d{2}-\d{2}$/.test(x.followUp) ? x.followUp : '';
         l.updatedBy = me.name; l.updatedAt = new Date().toISOString(); save(d); return { lead: l };
       }
       case 'leads': return { leads: d.leads, settings: settings(d) };
@@ -323,6 +569,7 @@ const Demo = (() => {
         sc.forEach(s => { const t = team[s.member] = team[s.member] || { member: s.member, scans: 0, newLeads: 0, repeats: 0 }; t.scans++; s.type.startsWith('New') ? t.newLeads++ : t.repeats++; });
         return { totals: { uniqueVisitors: leads.length, totalScans: sc.length, repeatVisitors: leads.filter(l => l.repeatCount > 0).length }, byInterest, byStatus, bySource, team: Object.values(team).sort((a, b) => b.scans - a.scans) };
       }
+      case 'assignMany': { admin(); const x = req.data, ids = new Set(x.leadIds || []), out = []; d.leads.forEach(l => { if (!ids.has(l.leadId)) return; l.assignedTo = String(x.assignedTo || '').trim(); l.updatedBy = me.name; l.updatedAt = new Date().toISOString(); out.push(l); }); save(d); return { leads: out }; }
       case 'deleteLead': admin(); d.leads = d.leads.filter(l => l.leadId !== req.leadId); save(d); return {};
       case 'users': admin(); return { users: d.users.map(u => ({ ...pub(u), active: u.active })) };
       case 'saveUser': {
@@ -348,10 +595,16 @@ const S = {
   server: LS.get('surya_server', DEFAULT_SERVER),
   session: LS.get('surya_session', null),     // {token,user,settings}
   leads: LS.get('surya_leads_cache', []),
-  queue: LS.get('surya_queue', []),
+  queue: LS.get('surya_queue', []),        // changes saved on this phone, waiting to upload
+  failed: LS.get('surya_failed', []),      // changes the server refused (kept so nothing disappears silently)
+  lastSync: LS.get('surya_last_sync', 0),
+  team: LS.get('surya_team', []),
+  simOffline: false,
   tab: 'scan', view: null, online: navigator.onLine, syncing: false,
-  filters: { q: '', interest: '', status: '', member: '', from: '', to: '', type: '', event: '', source: '' }
+  filters: { q: '', interest: '', status: '', member: '', from: '', to: '', type: '', event: '', source: '', assigned: '', ctype: '' }
 };
+const isOnline = () => navigator.onLine && !S.simOffline;
+function markSynced() { S.lastSync = Date.now(); LS.set('surya_last_sync', S.lastSync); }
 class NetErr extends Error {}
 
 /** Explains the common deployment mistakes in plain words. */
@@ -381,7 +634,7 @@ function diagnoseServerPage(text, status) {
 
 async function api(action, payload = {}) {
   const body = { action, token: S.session && S.session.token, ...payload };
-  if (S.server === 'demo') return Demo.handle(body);
+  if (S.server === 'demo') { if (S.simOffline) throw new NetErr('No internet connection'); return Demo.handle(body); }
   if (!S.server) throw new Error('Server URL not set');
   const urlProblem = serverUrlProblem(S.server);
   if (urlProblem) throw new Error(urlProblem);
@@ -408,38 +661,200 @@ function cacheLead(l) {
   if (i >= 0) S.leads[i] = l; else S.leads.unshift(l);
   LS.set('surya_leads_cache', S.leads);
 }
-async function syncQueue() {
-  if (S.syncing || !S.queue.length || S.server === 'demo') return;
-  S.syncing = true; renderHeader();
+async function syncQueue(manual) {
+  if (S.syncing) return;
+  if (!S.queue.length) { if (manual) toast('Nothing is waiting to sync'); return; }
+  if (!isOnline() || !S.session) { if (manual) toast('No internet connection', true); return; }
+  S.syncing = true; renderHeader(); let done = 0;
   try {
     while (S.queue.length) {
       const job = S.queue[0];
       try {
         const res = await api(job.action, { data: job.data });
         if (res.lead) cacheLead(res.lead);
-        S.queue.shift(); saveQueue();
+        S.queue.shift(); done++; saveQueue();
       } catch (e) {
-        if (isNet(e)) break;
-        console.warn('Dropped queued job', job, e); S.queue.shift(); saveQueue();   // server rejected — don't block the queue
+        if (isNet(e) || !S.session) break;                       // no internet or logged out: keep everything, try again later
+        S.queue.shift(); S.failed.push({ ...job, error: e.message }); LS.set('surya_failed', S.failed); saveQueue();   // server refused this one: set it aside, keep going
       }
     }
-    if (!S.queue.length) toast('All offline scans synced ✓');
-  } finally { S.syncing = false; renderHeader(); }
+    if (done && !S.queue.length) { markSynced(); toast(S.failed.length ? 'Synced, but some changes could not be saved' : 'All offline changes synced ✓', !!S.failed.length); }
+  } finally {
+    S.syncing = false; renderHeader();
+    if (done && S.session && !S.view && S.tab !== 'scan') render();
+  }
 }
-window.addEventListener('online', () => { S.online = true; renderHeader(); syncQueue(); });
+window.addEventListener('online', () => { S.online = isOnline(); renderHeader(); syncQueue(); });
 window.addEventListener('offline', () => { S.online = false; renderHeader(); });
+document.addEventListener('visibilitychange', () => { if (!document.hidden) { renderHeader(); syncQueue(); } });
 setInterval(syncQueue, 30000);
 
 function logoutLocal() { S.session = null; LS.del('surya_session'); stopScanner(); render(); }
 const me = () => S.session && S.session.user;
 const isAdmin = () => me() && me().role === 'admin';
-const SET = () => (S.session && S.session.settings) || { activeEvent: '', events: [], interests: ['Heater','Controller','Full Shed Automation','Fan','Electrical Power Panel','Other'], statuses: ['New Lead','Follow-Up Required','Quotation Sent','Order Confirmed','Not Interested'] };
+const CTYPES = ['Farmer', 'Group', 'Dealer'];
+const SET = () => (S.session && S.session.settings) || { activeEvent: '', events: [], interests: ['Green Mind', 'Climax', 'Trio', 'Power Panel', 'Gas Heater', 'Diesel Heater', 'Heater', 'Feeding System', 'Nipple System', 'Cone Fan', 'Cooling Pad'], statuses: ['New Lead','Follow-Up Required','Quotation Sent','Order Confirmed','Not Interested'] };
 
 /* ============================== SCANNER ============================== */
+/* ============================== READ NAME FROM CARD ==============================
+   The badge QR holds only a link. If the organiser's page gives no name, the app reads the
+   printed name and company from a camera picture of the card, on the phone itself (works offline). */
+const CardReader = (() => {
+  const BASE = new URL('vendor/ocr/', location.href).href;
+  let worker = null, loading = null;
+  const loadScript = src => new Promise((ok, no) => {
+    if (document.querySelector(`script[src="${src}"]`)) return ok();
+    const s = document.createElement('script'); s.src = src; s.onload = ok; s.onerror = () => no(new Error('load')); document.head.appendChild(s);
+  });
+  function engine() {
+    if (worker) return Promise.resolve(worker);
+    if (!loading) loading = (async () => {
+      await Promise.all([loadScript(BASE + 'tesseract.min.js'), loadScript(BASE + 'jsQR.js')]);
+      worker = await Tesseract.createWorker('eng', 1, { workerPath: BASE + 'worker.min.js', corePath: BASE, langPath: BASE, gzip: true, workerBlobURL: false });
+      return worker;
+    })().catch(e => { loading = null; throw e; });
+    return loading;
+  }
+  /** Picture from whichever camera is showing (scanner or capture screen). */
+  function snap() {
+    const v = document.querySelector('#cap video') || document.querySelector('#reader video');
+    if (!v || !v.videoWidth) return null;
+    const c = document.createElement('canvas'); c.width = v.videoWidth; c.height = v.videoHeight;
+    c.getContext('2d').drawImage(v, 0, 0); return c;
+  }
+  function locateQR(c) {
+    if (!window.jsQR) return null;
+    const sc = Math.min(1, 900 / Math.max(c.width, c.height)), w = Math.round(c.width * sc), h = Math.round(c.height * sc);
+    const t = document.createElement('canvas'); t.width = w; t.height = h; const x = t.getContext('2d'); x.drawImage(c, 0, 0, w, h);
+    const r = jsQR(x.getImageData(0, 0, w, h).data, w, h, { inversionAttempts: 'attemptBoth' });
+    if (!r) return null;
+    const L = r.location, pts = [L.topLeftCorner, L.topRightCorner, L.bottomLeftCorner, L.bottomRightCorner];
+    const xs = pts.map(p => p.x / sc), ys = pts.map(p => p.y / sc);
+    return { x0: Math.min(...xs), x1: Math.max(...xs), y0: Math.min(...ys), y1: Math.max(...ys) };
+  }
+  /** The printed name sits just above the QR: read only that strip, enlarged. */
+  function region(c) {
+    const q = locateQR(c); let x0 = 0, y0 = 0, x1 = c.width, y1 = c.height;
+    if (q) { const qw = q.x1 - q.x0, qh = q.y1 - q.y0, cx = (q.x0 + q.x1) / 2; x0 = cx - qw * 1.9; x1 = cx + qw * 1.9; y0 = q.y0 - qh * 2.2; y1 = q.y0 + qh * 0.06; }
+    x0 = Math.max(0, x0); y0 = Math.max(0, y0); x1 = Math.min(c.width, x1); y1 = Math.min(c.height, y1);
+    if (x1 - x0 < 40 || y1 - y0 < 30) { x0 = 0; y0 = 0; x1 = c.width; y1 = c.height; }
+    const W = x1 - x0, H = y1 - y0, k = Math.max(1, Math.min(3, 1400 / W));
+    const o = document.createElement('canvas'); o.width = Math.round(W * k); o.height = Math.round(H * k);
+    const g = o.getContext('2d'); g.imageSmoothingQuality = 'high'; g.drawImage(c, x0, y0, W, H, 0, 0, o.width, o.height);
+    return { canvas: o, foundQR: !!q };
+  }
+  async function read(pic) {
+    if (pic === 'demo') { await new Promise(r => setTimeout(r, 900)); return { name: 'Anil Deshmukh Patil', company: 'DESHMUKH AGRO FARMS PVT LTD', country: '', number: '' }; }
+    const w = await engine();
+    const { canvas } = region(pic);
+    const { data } = await w.recognize(canvas);
+    return parseBadgeText(data.lines.map(l => ({ text: l.text, conf: l.confidence, h: l.words && l.words.length ? l.words.reduce((a, w) => a + (w.bbox.y1 - w.bbox.y0), 0) / l.words.length : l.bbox.y1 - l.bbox.y0 })));
+  }
+  const preload = () => { if (S.server !== 'demo' && isOnline()) engine().catch(() => {}); };
+  return { snap, read, preload };
+})();
+
+const BADGE_SKIP = /poultry\s*india|our industry show|knowledge|\bnation\b|\bexpo\b|november|novotel|hicc|hyderabad|organi[sz]ed|^(exhibitor|visitor|delegate|speaker|media|organiser|organizer|staff|vip)$|edition|ipema|\bcipa\b|www|\.com|\.in\b|scan me/i;
+const BADGE_COUNTRY = /^(india|nepal|bangladesh|sri lanka|bhutan|pakistan|u\.?a\.?e\.?|usa|u\.?s\.?a\.?|uk|china|thailand|vietnam|indonesia|malaysia|netherlands|denmark|germany|italy|spain|france|turkey|egypt|kenya|nigeria|oman|saudi arabia|qatar|kuwait|iran|myanmar|israel|belgium|brazil|japan|korea|singapore)$/i;
+/** Turns the text lines read from a badge into { name, company, country, number }.
+    Badge layout (Poultry India 2026): event date, then the name in large letters (wrapping onto
+    as many lines as it needs), then the company in smaller letters just above the QR. */
+function parseBadgeText(lines) {
+  const out = { name: '', company: '', country: '', number: '' };
+  let cands = [];
+  for (const l of lines) {
+    const raw = String(l.text || '').replace(/\s+/g, ' ').trim(); if (!raw) continue;
+    const compact = raw.replace(/\s/g, '');
+    if (/^[A-Z]{0,3}\d{4,8}$/i.test(compact)) { out.number = out.number || compact.toUpperCase(); if (cands.length) break; continue; }   // badge number under the QR
+    if (/organi[sz]ed|^(exhibitor|visitor|delegate|speaker|media|vip)$/i.test(raw)) { if (cands.length) break; continue; }            // footer
+    if (BADGE_SKIP.test(raw) || /\d/.test(raw)) { if (l.conf >= 60) cands = []; continue; }                                         // header and date: the name starts after them
+    if (l.conf < 60) continue;
+    let toks = raw.replace(/[^A-Za-z .&'()\-]/g, ' ').split(/\s+/).filter(Boolean);
+    const caps = toks.join('').replace(/[^A-Za-z]/g, ''), up = (caps.match(/[A-Z]/g) || []).length;
+    if (caps.length && up / caps.length >= 0.6) toks = toks.filter(x => x.length > 3 || x === x.toUpperCase());
+    toks = toks.filter(x => /[A-Za-z]{2,}|^[A-Z]\.?$|^&$/.test(x));
+    const txt = toks.join(' ').replace(/^[^A-Za-z]+|[^A-Za-z.)]+$/g, '');
+    const letters = txt.replace(/[^A-Za-z]/g, '').length;
+    if (letters < 2 || letters / compact.length < 0.7) continue;
+    cands.push({ txt, h: +l.h || 0 });
+  }
+  // Old layout ended with a country line
+  const ci = cands.findIndex((c, i) => i > 0 && BADGE_COUNTRY.test(c.txt));
+  if (ci >= 0) { out.country = cands[ci].txt; cands.splice(ci, 1); }
+  cands = cands.slice(0, 5);
+  let nameN = cands.length;
+  if (cands.length >= 2) {
+    const big = Math.max(...cands.map(c => c.h));
+    let k = cands.length; while (k > 1 && big && cands[k - 1].h && cands[k - 1].h <= big * 0.88) k--;   // trailing smaller lines = company
+    nameN = k < cands.length ? k : cands.length - 1;                                                      // same size: last line is the company
+  }
+  const title = s => s.toLowerCase().replace(/(^|[\s\-'(./&])([a-z])/g, (m, a, b) => a + b.toUpperCase());
+  out.name = title(cands.slice(0, nameN).map(c => c.txt).join(' ')).replace(/\s+/g, ' ').trim();
+  out.company = cands.slice(nameN).map(c => c.txt).join(' ').replace(/\s+/g, ' ').trim();   // kept as printed
+  if (out.country) out.country = title(out.country);
+  return out;
+}
+
+/* ---------- Card capture screen ---------- */
+function stopCapture() { if (S.capStream) { S.capStream.getTracks().forEach(x => x.stop()); S.capStream = null; } }
+async function openCardCapture() {
+  const leadId = S.view && S.view.lead && S.view.lead.leadId; if (!leadId) return;
+  if (S.server === 'demo') return readCardInto('demo', leadId);
+  closeSheet();
+  const w = document.createElement('div'); w.className = 'sheet'; w.id = 'sheet';
+  w.innerHTML = `<div class="sheet-in" role="dialog" aria-label="${t('Read name from card')}">
+    <div class="grab"></div>
+    <div class="sy-head"><span class="sy-ic">${I.camera}</span><div class="sy-tx"><div class="sy-t">${t('Read name from card')}</div><div class="sy-s">${t('Fit the printed name and the QR code inside the frame.')}</div></div><button class="xb" id="cap_x" aria-label="${t('Close')}">${I.close}</button></div>
+    <div class="cap" id="cap"><video playsinline muted autoplay></video><i class="cap-guide"></i></div>
+    <button class="btn block mt" id="cap_go" disabled>${t('Capture')}</button>
+  </div>`;
+  document.body.appendChild(w);
+  const close = () => { stopCapture(); closeSheet(); };
+  w.onclick = e => { if (e.target === w) close(); };
+  $('#cap_x').onclick = close;
+  try {
+    S.capStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment', width: { ideal: 1920 }, height: { ideal: 1080 } }, audio: false });
+    const v = $('#cap video'); if (!v) return stopCapture();
+    v.srcObject = S.capStream; await v.play().catch(() => {});
+    $('#cap_go').disabled = false;
+  } catch (e) {
+    $('#cap').innerHTML = `<div class="scanph">${t('Camera not available.')}<br><span class="small">${esc(e && e.message || e)}</span></div>`;
+    return;
+  }
+  $('#cap_go').onclick = () => { const pic = CardReader.snap(); close(); if (pic) readCardInto(pic, leadId); };
+}
+
+/** Reads the card and fills the empty name / company / country fields on the open customer screen. */
+async function readCardInto(pic, leadId) {
+  if (!S.view || !S.view.lead || S.view.lead.leadId !== leadId) return;
+  S.view.reading = true; S.view.cardMsg = ''; updateCardNote();
+  let r = null, failed = false;
+  try { r = await CardReader.read(pic); } catch (e) { failed = true; }
+  if (!S.view || !S.view.lead || S.view.lead.leadId !== leadId) return;
+  S.view.reading = false;
+  if (failed) { S.view.cardMsg = 'load'; return updateCardNote(); }
+  if (!r || !r.name) { S.view.cardMsg = 'none'; return updateCardNote(); }
+  S.view.card = r; S.view.cardMsg = 'ok';
+  [['name', r.name], ['company', r.company], ['country', r.country]].forEach(([k, v]) => {
+    const el = $('#e_' + k); if (!el || el.readOnly || !v) return;
+    if (!el.value.trim() || el.dataset.fromCard) { el.value = v; el.dataset.fromCard = '1'; el.classList.remove('need'); el.classList.add('fromcard'); const w = el.parentElement.querySelector('.needtxt'); if (w) w.remove(); }
+  });
+  updateCardNote();
+}
+function updateCardNote() {
+  const n = $('#cardnote'); if (!n || !S.view) return;
+  const m = S.view.reading ? ['busy', '<span class="spin dark"></span>' + t('Reading the name on the card…')]
+    : S.view.cardMsg === 'ok' ? ['ok', I.check + t('Name read from the card. Check the spelling.')]
+    : S.view.cardMsg === 'none' ? ['warn', I.alert + t("Couldn't read the name. Tap Read name from card and hold the badge steady.")]
+    : S.view.cardMsg === 'load' ? ['warn', I.alert + t('Card reader could not load. Type the name instead.')] : null;
+  n.className = 'cardnote' + (m ? ' ' + m[0] : ''); n.innerHTML = m ? m[1] : '';
+  const bn = $('#bnote'); if (bn) bn.innerHTML = S.view.reading || S.view.cardMsg === 'ok' ? '<br>' + t('Check the name and type the contact no.') : '<br>' + t('Badge details could not be read. Please type name and contact no.');
+}
+
 let qr = null, lastCode = '', lastAt = 0, busy = false;
 async function startScanner() {
   const el = $('#reader'); if (!el) return;
-  if (!window.Html5Qrcode) { el.innerHTML = '<div class="scanph">Camera scanner could not load (no internet?).<br>Use the handheld scanner box or manual entry below.</div>'; return; }
+  if (!window.Html5Qrcode) { el.innerHTML = `<div class="scanph">${t('Camera scanner could not load (no internet?).')}<br>${t('Use the handheld scanner box or manual entry below.')}</div>`; return; }
   try {
     if (qr) { try { await qr.stop(); } catch {} qr.clear(); }
     el.innerHTML = '';
@@ -448,7 +863,7 @@ async function startScanner() {
       { fps: 12, qrbox: (w, h) => { const s = Math.floor(Math.min(w, h) * 0.72); return { width: s, height: Math.floor(s * 0.85) }; }, aspectRatio: 1.15 },
       code => onCode(code), () => {});
   } catch (e) {
-    el.innerHTML = `<div class="scanph">Camera not available.<br><span class="small">${esc(e && e.message || e)}</span><br><br>Allow camera permission in your browser, or use the handheld scanner box / manual entry below.<br><br><button class="btn sm ghost" onclick="startScanner()">Try again</button></div>`;
+    el.innerHTML = `<div class="scanph">${t('Camera not available.')}<br><span class="small">${esc(e && e.message || e)}</span><br><br>${t('Allow camera permission in your browser, or use the handheld scanner box / manual entry below.')}<br><br><button class="btn sm ghost" onclick="startScanner()">${t('Try again')}</button></div>`;
   }
 }
 async function stopScanner() { if (qr) { try { await qr.stop(); } catch {} try { qr.clear(); } catch {} qr = null; } }
@@ -457,10 +872,11 @@ async function onCode(code) {
   const now = Date.now();
   if (busy || (code === lastCode && now - lastAt < 4000)) return;
   lastCode = code; lastAt = now;
-  await processScan(parseQR(code), false);
+  let pic = null; try { pic = CardReader.snap(); } catch {}
+  await processScan(parseQR(code), false, pic);
 }
 
-async function processScan(parsed, manual) {
+async function processScan(parsed, manual, pic) {
   if (busy) return; busy = true;
   const data = { ...parsed, manual, event: SET().activeEvent, leadId: uuid(), time: new Date().toISOString() };
   try {
@@ -474,7 +890,11 @@ async function processScan(parsed, manual) {
     beep(res.status === 'new');
     await stopScanner();
     S.view = { type: 'lead', lead: res.lead, status: res.status, offline: !!res.offline, parsed, autoFilled: !!res.autoFilled };
+    if (S.server === 'demo' && !pic && !manual && !res.lead.name) pic = 'demo';
+    const readIt = pic && !manual && !res.lead.name;
+    if (readIt) S.view.reading = true;
     render();
+    if (readIt) readCardInto(pic, res.lead.leadId);
   } catch (e) { beep(false); toast(e.message, true); }
   finally { busy = false; }
 }
@@ -482,60 +902,159 @@ async function processScan(parsed, manual) {
 function offlineScan(data) {
   const ev = data.event, vid = String(data.visitorId || '').toLowerCase(), mob = normMob(data.mobile);
   const l = S.leads.find(x => x.event === ev && ((vid && String(x.visitorId).toLowerCase() === vid) || (mob.length === 10 && normMob(x.mobile) === mob)));
-  S.queue.push({ action: 'scan', data }); saveQueue();
+  S.queue.push({ action: 'scan', data, at: data.time }); saveQueue();
   if (l) {
     const u = { ...l, lastScan: data.time, lastBy: me().name, repeatCount: (l.repeatCount || 0) + 1 };
     return { status: 'existing', lead: u, offline: true };
   }
   return { status: 'new', offline: true, lead: { leadId: data.leadId, visitorId: data.visitorId || (data.mobile ? 'M-' + normMob(data.mobile) : 'MAN-' + data.leadId.slice(0, 8).toUpperCase()), source: data.manual ? 'Manual Entry' : 'Scanned',
-    name: data.name || '', jobTitle: data.jobTitle || '', mobile: fmtMob(data.mobile), email: data.email || '', url: data.url || '', event: ev,
-    firstScan: data.time, lastScan: data.time, firstBy: me().name, lastBy: me().name, interests: '', notes: '', repeatCount: 0, status: 'New Lead', consent: !!data.consent } };
+    name: data.name || '', jobTitle: data.jobTitle || '', company: data.company || '', country: data.country || '', mobile: fmtMob(data.mobile), email: data.email || '', url: data.url || '', event: ev,
+    firstScan: data.time, lastScan: data.time, firstBy: me().name, lastBy: me().name, interests: '', notes: '', repeatCount: 0, status: 'New Lead', consent: !!data.consent, assignedTo: '', followUp: '' } };
+}
+
+/* ============================== FOLLOW-UP HELPERS ============================== */
+const localISO = d => d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+const today = () => localISO(new Date());
+const addDays = n => { const d = new Date(); d.setDate(d.getDate() + n); return localISO(d); };
+const fmtDay = iso => { if (!iso) return ''; const d = new Date(iso + 'T00:00:00'); return isNaN(d) ? iso : d.toLocaleDateString('en-IN', { day: '2-digit', month: 'short' }); };
+const isOpen = l => !['Order Confirmed', 'Not Interested'].includes(l.status || 'New Lead');
+const dueState = l => !l.followUp ? 'none' : l.followUp < today() ? 'over' : l.followUp === today() ? 'today' : 'later';
+const myDue = () => me() ? S.leads.filter(l => l.assignedTo === me().name && isOpen(l) && l.followUp && l.followUp <= today()) : [];
+const teamNames = () => [...new Set((S.team || []).filter(u => u.active).map(u => u.name).concat(S.leads.map(l => l.assignedTo)).filter(Boolean))].sort();
+async function loadTeam() {
+  if (!isAdmin()) return;
+  try { S.team = (await api('users')).users; LS.set('surya_team', S.team); } catch {}
+}
+function updateBadge() {
+  const n = myDue().length;
+  try { if (navigator.setAppBadge) { n ? navigator.setAppBadge(n) : navigator.clearAppBadge(); } } catch {}
+  return n;
+}
+function remindOncePerDay() {
+  if (!me()) return; const n = myDue().length, key = today() + '|' + me().username;
+  if (n && LS.get('surya_reminded', '') !== key) { LS.set('surya_reminded', key); toast(t('Follow-ups due: {n}', { n })); }
+}
+
+/* ============================== ICONS ============================== */
+const svg = (d, extra = '') => `<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ${extra}>${d}</svg>`;
+const CLOUD = '<path d="M7 18.5a4.5 4.5 0 0 1-.6-8.96A6 6 0 0 1 18 10.6a4 4 0 0 1-.5 7.9z"/>';
+const I = {
+  cloudOk: svg(CLOUD + '<path d="M9.2 13.4l2 2 3.8-3.9"/>'),
+  cloudOff: svg('<path d="M3.5 3.5l17 17"/><path d="M9.6 5.6A6 6 0 0 1 18 10.6a4 4 0 0 1 2.6 6.4M16.5 18.5H7a4.5 4.5 0 0 1-.9-8.9"/>'),
+  cloudUp: svg(CLOUD + '<path d="M12 16v-4.6M9.9 13.2L12 11.2l2.1 2"/>'),
+  cloudAlert: svg(CLOUD + '<path d="M12 10.6v3.2M12 16.2v.1"/>'),
+  phone: svg('<path d="M6.2 3.5h3l1.4 4-1.9 1.4a12 12 0 0 0 6.4 6.4l1.4-1.9 4 1.4v3a2 2 0 0 1-2.2 2A17 17 0 0 1 4.2 5.7 2 2 0 0 1 6.2 3.5z"/>'),
+  chat: svg('<path d="M20 11.6a8 8 0 0 1-11.8 7L4 20l1.4-4A8 8 0 1 1 20 11.6z"/>'),
+  check: svg('<path d="M5 12.5l4.5 4.5L19 7.5"/>'),
+  alert: svg('<path d="M12 4.2l8.6 15H3.4z"/><path d="M12 10v4.2M12 16.8v.1"/>'),
+  download: svg('<path d="M12 4v11M7.5 10.8L12 15.2l4.5-4.4M5 19.5h14"/>'),
+  refresh: svg('<path d="M19.5 12a7.5 7.5 0 1 1-2.3-5.4M19.5 4.5v4h-4"/>'),
+  back: svg('<path d="M14.5 5.5L8 12l6.5 6.5"/>'),
+  user: svg('<circle cx="12" cy="8.5" r="3.5"/><path d="M5 19.5c.9-3.3 3.7-5 7-5s6.1 1.7 7 5"/>'),
+  close: svg('<path d="M6 6l12 12M18 6L6 18"/>'),
+  scan: svg('<path d="M4 8V5.5A1.5 1.5 0 0 1 5.5 4H8M16 4h2.5A1.5 1.5 0 0 1 20 5.5V8M20 16v2.5a1.5 1.5 0 0 1-1.5 1.5H16M8 20H5.5A1.5 1.5 0 0 1 4 18.5V16M7.5 12h9"/>'),
+  edit: svg('<path d="M4.5 19.5l.8-3.8L15.8 5.2a1.8 1.8 0 0 1 2.6 0l.4.4a1.8 1.8 0 0 1 0 2.6L8.3 18.7z"/>'),
+  camera: svg('<path d="M4 8.5A1.5 1.5 0 0 1 5.5 7h2.2l1.5-2h5.6l1.5 2h2.2A1.5 1.5 0 0 1 20 8.5v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 17.5z"/><circle cx="12" cy="12.8" r="3.3"/>'),
+  bell: svg('<path d="M6.5 16.5V11a5.5 5.5 0 0 1 11 0v5.5l1.5 1.5H5z"/><path d="M10.2 20.5a2 2 0 0 0 3.6 0"/>')
+};
+
+/* ============================== SYNC STATUS ============================== */
+function syncState() {
+  const q = S.queue.length, f = S.failed.length;
+  if (S.syncing) return { k: 'syncing', cls: 'sy', icon: I.cloudUp, n: q, label: t('Syncing… {n}', { n: q }), title: t('Uploading…'), bar: t('Uploading {n}…', { n: q }) };
+  if (!isOnline()) return { k: 'offline', cls: 'off', icon: I.cloudOff, n: q, label: q ? t('Offline · {n} pending', { n: q }) : t('Offline'), title: t('You are offline'),
+    bar: q ? t('Offline. {n} saved on this phone.', { n: q }) : t('Offline. Scans are saved on this phone.'), act: t('Details') };
+  if (f) return { k: 'failed', cls: 'bad', icon: I.cloudAlert, n: f, label: t('{n} not saved', { n: f }), title: t('Changes not saved: {n}', { n: f }), bar: t('Changes not saved: {n}', { n: f }), act: t('Review') };
+  if (q) return { k: 'pending', cls: 'off', icon: I.cloudUp, n: q, label: t('{n} pending', { n: q }), title: t('{n} waiting to upload', { n: q }), bar: t('{n} waiting to upload', { n: q }), act: t('Sync now'), sync: true };
+  return { k: 'ok', cls: 'ok', icon: I.cloudOk, n: 0, label: t('Synced'), title: t('Everything is saved') };
+}
+const pendingSet = () => { const s = new Set(); S.queue.forEach(j => { if (j.data.leadId) s.add(j.data.leadId); if (j.data.visitorId) s.add('v:' + String(j.data.visitorId).toLowerCase()); }); return s; };
+const isPending = (l, set) => set.has(l.leadId) || set.has('v:' + String(l.visitorId).toLowerCase());
+const jobName = j => j.data.name || (S.leads.find(l => l.leadId === j.data.leadId || (j.data.visitorId && String(l.visitorId).toLowerCase() === String(j.data.visitorId).toLowerCase())) || {}).name || j.data.visitorId || '—';
+function closeSheet() { const s = $('#sheet'); if (s) s.remove(); if (typeof stopCapture === 'function') stopCapture(); }
+function openSync() {
+  const st = syncState(), q = S.queue, f = S.failed;
+  const explain = { ok: t('Everything on this phone is saved in the Google Sheet.'), syncing: t('Uploading saved scans to the Google Sheet…'),
+    offline: t('No internet. Keep scanning: everything is saved on this phone and uploads automatically when the internet returns.'),
+    pending: t('Some changes are waiting to upload. Tap Sync now.'), failed: t('Some changes could not be saved by the server. Retry, or discard them.') }[st.k];
+  const row = (j, bad) => `<li><span class="li-ic ${bad ? 'bad' : ''}">${j.action === 'scan' ? I.scan : I.edit}</span><span class="li-t"><b>${esc(jobName(j))}</b><small>${bad ? esc(t(j.error || 'Not saved')) : (j.action === 'scan' ? t('New scan') : t('Edit'))}</small></span><time>${j.at ? fmt(j.at) : ''}</time></li>`;
+  const reopen = !!$('#sheet'); closeSheet();
+  const w = document.createElement('div'); w.className = 'sheet' + (reopen ? ' still' : ''); w.id = 'sheet';
+  w.innerHTML = `<div class="sheet-in" role="dialog" aria-label="${t('Sync status')}">
+    <div class="grab"></div>
+    <div class="sy-head ${st.cls}"><span class="sy-ic">${st.icon}</span><div class="sy-tx"><div class="sy-t">${esc(st.title)}</div><div class="sy-s">${explain}</div></div><button class="xb" id="sh_x" aria-label="${t('Close')}">${I.close}</button></div>
+    <dl class="sy-meta"><div><dt>${t('Last synced')}</dt><dd>${S.lastSync ? fmt(new Date(S.lastSync).toISOString()) : '—'}</dd></div><div><dt>${t('Waiting to upload')}</dt><dd>${q.length}</dd></div></dl>
+    ${q.length ? `<ul class="sy-list">${q.slice(0, 6).map(j => row(j)).join('')}${q.length > 6 ? `<li class="more">+ ${q.length - 6}</li>` : ''}</ul>` : ''}
+    ${f.length ? `<ul class="sy-list">${f.slice(0, 5).map(j => row(j, 1)).join('')}</ul>
+      <div class="row mt"><button class="btn line" id="sh_retry">${t('Retry')}</button><button class="btn danger" id="sh_discard">${t('Discard')}</button></div>` : ''}
+    ${q.length ? `<button class="btn block mt" id="sh_sync" ${isOnline() && !S.syncing ? '' : 'disabled'}>${S.syncing ? '<span class="spin"></span>' : t('Sync now')}</button>` : ''}
+    ${S.server === 'demo' ? `<label class="switch"><span>${t('Demo: pretend the internet is off')}</span><input type="checkbox" id="sh_sim" ${S.simOffline ? 'checked' : ''}><i></i></label>` : ''}
+  </div>`;
+  document.body.appendChild(w);
+  w.onclick = e => { if (e.target === w) closeSheet(); };
+  $('#sh_x').onclick = closeSheet;
+  const sb = $('#sh_sync'); if (sb) sb.onclick = () => syncQueue(true);
+  const rt = $('#sh_retry'); if (rt) rt.onclick = () => { S.queue = S.failed.map(({ error, ...j }) => j).concat(S.queue); S.failed = []; LS.set('surya_failed', []); saveQueue(); syncQueue(true); };
+  const dc = $('#sh_discard'); if (dc) dc.onclick = () => { if (!confirm(t('Discard the changes that could not be saved?'))) return; S.failed = []; LS.set('surya_failed', []); renderHeader(); };
+  const sim = $('#sh_sim'); if (sim) sim.onchange = () => { S.simOffline = sim.checked; S.online = isOnline(); renderHeader(); if (!S.simOffline) syncQueue(); };
 }
 
 /* ============================== RENDER ============================== */
 const ICON = {
   scan: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 8V5a1 1 0 0 1 1-1h3M16 4h3a1 1 0 0 1 1 1v3M20 16v3a1 1 0 0 1-1 1h-3M8 20H5a1 1 0 0 1-1-1v-3M7 12h10"/></svg>',
   leads: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.6-3.4 3.3-5.5 6.5-5.5s5.9 2.1 6.5 5.5M16 4.8a3.4 3.4 0 0 1 0 6.4M18.5 14.8c1.7.8 2.8 2.6 3 5.2"/></svg>',
+  fu: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15.5" rx="2.5"/><path d="M8 3v4M16 3v4M3.5 10h17M9 15l2.2 2.2L15.5 13"/></svg>',
   dash: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>',
   admin: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>',
   me: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4.2-6 8-6s7 2 8 6"/></svg>'
 };
+const langSwitch = id => `<div class="seg" id="${id}">${Object.entries(LANGS).map(([k, v]) => `<button data-lang="${k}" class="${LANG === k ? 'on' : ''}">${v}</button>`).join('')}</div>`;
+function bindLang(id) { const el = $('#' + id); if (el) el.querySelectorAll('[data-lang]').forEach(b => b.onclick = () => { const keep = ['lu', 'lp', 'ls'].map(i => [i, $('#' + i) ? $('#' + i).value : null]); setLang(b.dataset.lang); stopScanner(); render(); keep.forEach(([i, v]) => { const el = $('#' + i); if (el && v !== null) el.value = v; }); }); }
 
 function render() {
-  const root = $('#root');
+  const root = $('#root'); closeSheet();
+  document.documentElement.lang = LANG;
   if (!S.session) { root.innerHTML = loginView(); bindLogin(); return; }
-  const tabs = isAdmin() ? [['scan','Scan'],['leads','Customers'],['dash','Dashboard'],['admin','Admin']] : [['scan','Scan'],['leads','Customers'],['me','Me']];
+  const due = updateBadge();
+  const tabs = isAdmin() ? [['scan', t('Scan')], ['leads', t('Customers')], ['fu', t('Follow-ups')], ['dash', t('Dashboard')], ['admin', t('Admin')]]
+                         : [['scan', t('Scan')], ['leads', t('Customers')], ['fu', t('Follow-ups')], ['me', t('Me')]];
   root.innerHTML = `<div class="app"><header class="top" id="hdr"></header><main id="main"></main></div>
-    <nav class="tabs"><div class="in">${tabs.map(([k, l]) => `<button data-tab="${k}" class="${S.tab === k && !S.view ? 'act' : ''}">${ICON[k]}<span>${l}</span></button>`).join('')}</div></nav>`;
+    <nav class="tabs"><div class="in">${tabs.map(([k, l]) => `<button data-tab="${k}" class="${S.tab === k && !S.view ? 'act' : ''}">${ICON[k]}${k === 'fu' && due ? `<i class="badge">${due}</i>` : ''}<span>${l}</span></button>`).join('')}</div></nav>`;
   root.querySelectorAll('[data-tab]').forEach(b => b.onclick = () => go(b.dataset.tab));
   renderHeader();
   const m = $('#main');
   if (S.view && S.view.type === 'lead') return leadView(m);
   if (S.view && S.view.type === 'manual') return manualView(m);
-  ({ scan: scanView, leads: leadsView, dash: dashView, admin: adminView, me: meView })[S.tab](m);
+  ({ scan: scanView, leads: leadsView, fu: fuView, dash: dashView, admin: adminView, me: meView })[S.tab](m);
 }
 function go(tab) { S.tab = tab; S.view = null; if (tab !== 'scan') stopScanner(); render(); window.scrollTo(0, 0); }
 function renderHeader() {
   const h = $('#hdr'); if (!h || !S.session) return;
-  const q = S.queue.length;
-  h.innerHTML = `<div class="logo"><img src="icons/mark-96.png" alt=""></div><div><h1>SuryaIOTech <b>· Leads</b></h1><div class="sub">${esc(SET().activeEvent || '')}${S.server === 'demo' ? ' · DEMO' : ''}</div></div>
-    <div class="right">${esc(me().name)}<br>${q ? `<span class="pill off">${S.syncing ? 'Syncing' : 'Offline'} · ${q} pending</span>` : (S.online ? '' : '<span class="pill off">Offline</span>')}</div>`;
+  const st = syncState();
+  h.innerHTML = `<div class="hrow"><div class="logo"><img src="icons/mark-96.png" alt=""></div><div class="ttl"><h1>SuryaIOTech Leads</h1><div class="sub">${esc(SET().activeEvent || '')}${S.server === 'demo' ? ' · DEMO' : ''}</div></div>
+      <button class="syncbtn ${st.cls}" id="syncchip" aria-label="${esc(t('Sync status') + ': ' + st.label)}" data-state="${st.k}">${st.icon}${st.n ? `<b>${st.n}</b>` : ''}</button>
+      <button class="avatar" id="avbtn" aria-label="${esc(me().name)}" title="${esc(me().name)}">${esc(initials(me().name))}</button></div>
+    ${st.bar ? `<div class="netbar ${st.cls}" id="netbar">${st.icon}<span>${esc(st.bar)}</span>${st.act ? `<button id="nb_act">${esc(st.act)}</button>` : ''}</div>` : ''}`;
+  $('#syncchip').onclick = openSync;
+  $('#avbtn').onclick = () => go(isAdmin() ? 'admin' : 'me');
+  const na = $('#nb_act'); if (na) na.onclick = () => st.sync ? syncQueue(true) : openSync();
+  if ($('#sheet')) openSync();
 }
 
 /* ---------- Login ---------- */
 function loginView() {
   return `<div class="login">
-    <div class="brandbox"><img src="icons/logo-full.png" alt="SuryaIOTech Pvt Ltd"><div class="tag2">Exhibition Lead Capture</div></div>
+    <div class="brandbox"><img src="icons/logo-full.png" alt="SuryaIOTech Pvt Ltd"><div class="tag2">${t('Exhibition Lead Capture')}</div></div>
     <div class="card">
-      <h2>Team login</h2>
-      <label class="f">Username</label><input class="i" id="lu" autocomplete="username" autocapitalize="none" value="${esc(LS.get('surya_last_user', ''))}">
-      <label class="f">Password</label><input class="i" id="lp" type="password" autocomplete="current-password">
-      <button class="btn block mt" id="lbtn">Log in</button>
-      <details ${S.server ? '' : 'open'}><summary>Server settings</summary>
-        <label class="f">Server URL (from Google Apps Script deployment)</label>
+      <div class="row" style="margin-bottom:6px"><h2 style="margin:0">${t('Team login')}</h2><div style="flex:0 0 auto">${langSwitch('lg_lang')}</div></div>
+      <label class="f">${t('Username')}</label><input class="i" id="lu" autocomplete="username" autocapitalize="none" value="${esc(LS.get('surya_last_user', ''))}">
+      <label class="f">${t('Password')}</label><input class="i" id="lp" type="password" autocomplete="current-password">
+      <button class="btn block mt" id="lbtn">${t('Log in')}</button>
+      <details ${S.server ? '' : 'open'}><summary>${t('Server settings')}</summary>
+        <label class="f">${t('Server URL (from Google Apps Script deployment)')}</label>
         <input class="i" id="ls" placeholder="https://script.google.com/macros/s/…/exec" value="${esc(S.server === 'demo' ? '' : S.server)}">
-        <button class="btn line block mt sm" id="demo">Try demo mode (no setup, data stays on this phone)</button>
-        ${S.server === 'demo' ? '<p class="small muted mb0">Demo logins: <b>admin / admin123</b> (manager) · <b>ravi / ravi123</b> (team member)</p>' : ''}
+        <button class="btn line block mt sm" id="demo">${t('Try demo mode (no setup, data stays on this phone)')}</button>
+        ${S.server === 'demo' ? `<p class="small muted mb0">${t('Demo logins')}: <b>admin / admin123</b> · <b>ravi / ravi123</b></p>` : ''}
       </details>
     </div></div>`;
 }
@@ -547,60 +1066,78 @@ function bindLogin() {
     try {
       const r = await api('login', { username: $('#lu').value.trim(), password: $('#lp').value });
       S.session = { token: r.token, user: r.user, settings: r.settings }; LS.set('surya_session', S.session); LS.set('surya_last_user', r.user.username);
-      S.tab = 'scan'; S.view = null; render(); refreshLeads(); syncQueue();
-    } catch (e) { toast(e.message, true); b.disabled = false; b.textContent = 'Log in'; }
+      S.tab = 'scan'; S.view = null; S.fuWho = undefined; render(); afterLogin();
+    } catch (e) { toast(e.message, true); b.disabled = false; b.textContent = t('Log in'); }
   };
   $('#lbtn').onclick = go; $('#lp').onkeydown = e => { if (e.key === 'Enter') go(); };
-  $('#demo').onclick = () => { S.server = 'demo'; LS.set('surya_server', 'demo'); render(); $('#lu').value = 'admin'; $('#lp').value = 'admin123'; toast('Demo mode — tap Log in'); };
+  $('#demo').onclick = () => { S.server = 'demo'; LS.set('surya_server', 'demo'); render(); $('#lu').value = 'admin'; $('#lp').value = 'admin123'; toast('Demo mode: tap Log in'); };
+  bindLang('lg_lang');
+}
+async function afterLogin() {
+  loadTeam();
+  const ok = await refreshLeads();
+  if (ok && S.session && !S.view && S.tab !== 'scan') render();
+  if (ok && S.session && S.tab === 'scan' && !S.view) { const b = $('#duecard'); if (b) b.outerHTML = dueCard(); bindDueCard(); const n = updateBadge(); const bd = document.querySelector('nav.tabs [data-tab="fu"]'); if (bd && n && !bd.querySelector('.badge')) bd.insertAdjacentHTML('afterbegin', `<i class="badge">${n}</i>`); }
+  remindOncePerDay(); syncQueue();
+  setTimeout(() => CardReader.preload(), 4000);
 }
 async function refreshLeads() {
-  try { const r = await api('leads'); S.leads = r.leads.sort((a, b) => String(b.lastScan).localeCompare(String(a.lastScan))); LS.set('surya_leads_cache', S.leads);
-    if (r.settings) { S.session.settings = r.settings; LS.set('surya_session', S.session); renderHeader(); } return true; }
+  try { const r = await api('leads'); S.leads = r.leads.sort((a, b) => String(b.lastScan).localeCompare(String(a.lastScan)));
+    // keep local, not-yet-uploaded changes visible until they sync
+    const ps = pendingSet(); if (ps.size) (LS.get('surya_leads_cache', []) || []).forEach(l => { if (!isPending(l, ps)) return; const i = S.leads.findIndex(x => x.leadId === l.leadId || (x.event === l.event && String(x.visitorId).toLowerCase() === String(l.visitorId).toLowerCase())); if (i >= 0) S.leads[i] = l; else S.leads.unshift(l); });
+    LS.set('surya_leads_cache', S.leads);
+    if (r.settings) { S.session.settings = r.settings; LS.set('surya_session', S.session); }
+    if (!S.queue.length) markSynced(); renderHeader(); return true; }
   catch (e) { if (!isNet(e)) toast(e.message, true); return false; }
 }
 
 /* ---------- Scan ---------- */
+const dueCard = () => { const n = myDue().length; return `<div id="duecard">${n ? `<div class="card duec"><div class="row"><span class="due-ic">${I.bell}</span><div><b>${t('Follow-ups due: {n}', { n })}</b><div class="small muted">${t('Customers assigned to you are waiting for a call.')}</div></div><button class="btn sm" id="duego" style="flex:0 0 auto">${t('View')}</button></div></div>` : ''}</div>`; };
+function bindDueCard() { const b = $('#duego'); if (b) b.onclick = () => { S.fuWho = undefined; go('fu'); }; }
 function scanView(m) {
+  const ps = pendingSet();
   const recent = S.leads.filter(l => l.event === SET().activeEvent).slice(0, 5);
   m.innerHTML = `
-    <div class="card"><div id="reader"><div class="scanph">Starting camera…</div></div>
-      <p class="small muted center mb0" style="margin-top:8px">Point at the QR / barcode on the visitor's badge</p></div>
+    ${dueCard()}
+    <div class="card"><div id="reader"><div class="scanph">${t('Starting camera…')}</div></div>
+      <p class="small muted center mb0" style="margin-top:8px">${t("Point at the QR / barcode on the visitor's badge")}</p></div>
     <div class="card">
-      <label class="f" style="margin-top:0">Handheld scanner / type badge ID</label>
-      <div class="row"><input class="i" id="hw" placeholder="Scan or type ID, press Enter" autocomplete="off" style="flex:3"><button class="btn" id="hwgo" style="flex:1">Go</button></div>
-      <div class="or">or</div>
-      <button class="btn ghost block" id="man">+ Enter visitor manually</button>
+      <label class="f" style="margin-top:0">${t('Handheld scanner / type badge ID')}</label>
+      <div class="row"><input class="i" id="hw" placeholder="${t('Scan or type ID, press Enter')}" autocomplete="off" style="flex:3"><button class="btn" id="hwgo" style="flex:1">${t('Go')}</button></div>
+      <div class="or">${t('or')}</div>
+      <button class="btn ghost block" id="man">${t('+ Enter visitor manually')}</button>
     </div>
-    ${S.server === 'demo' ? `<div class="card"><h2>Demo: tap a sample badge to "scan" it</h2><div class="chips">
-      ${[['https://2025.poultryindia.co.in/bc?tc=DEMOa1Rahul+Sh==', 'Rahul (already scanned)'], ['https://2025.poultryindia.co.in/bc?tc=DEMO7781+Pq==', 'Poultry India badge (auto-fill)'], ['https://2025.poultryindia.co.in/bc?tc=DEMO5520+Kx==', 'Badge without email'], ['https://2025.poultryindia.co.in/bc?tc=NEW' + Math.floor(Math.random() * 1e6) + '==', 'Badge the server can\'t read']]
+    ${S.server === 'demo' ? `<div class="card"><h2>${t('Try it: tap a sample badge to "scan" it')}</h2><div class="chips">
+      ${[['https://2025.poultryindia.co.in/bc?tc=DEMOa1Rahul+Sh==', t('Rahul (already scanned)')], ['{"ScanType":"TY7R","TicketCode":"' + (1300000 + Math.floor(Math.random() * 99999)) + '","OrderId":"2026100119' + Math.floor(Math.random() * 1e9) + '"}', t("This year's badge (name read from card)")], ['https://2025.poultryindia.co.in/bc?tc=DEMO7781+Pq==', t('Poultry India badge (auto-fill)')]]
         .map(([c, l]) => `<button class="chip" data-sample="${esc(c)}">${esc(l)}</button>`).join('')}</div></div>` : ''}
-    ${recent.length ? `<div class="card"><h2>Recent at this event</h2>${recent.map(leadRow).join('')}</div>` : ''}
-    <p class="small muted center">Privacy: ask the visitor before saving their contact details. Data is used only for SuryaIOTech follow-ups.</p>`;
+    ${recent.length ? `<div class="card"><h2>${t('Recent at this event')}</h2>${recent.map(l => leadRow(l, ps)).join('')}</div>` : ''}
+    <p class="small muted center">${t('Privacy: ask the visitor before saving their contact details. Data is used only for SuryaIOTech follow-ups.')}</p>`;
   const sub = () => { const v = $('#hw').value.trim(); if (v) { $('#hw').value = ''; processScan(parseQR(v), false); } };
   $('#hwgo').onclick = sub; $('#hw').onkeydown = e => { if (e.key === 'Enter') { e.preventDefault(); sub(); } };
   $('#man').onclick = () => { stopScanner(); S.view = { type: 'manual' }; render(); };
   m.querySelectorAll('[data-sample]').forEach(b => b.onclick = () => processScan(parseQR(b.dataset.sample), false));
-  bindLeadRows(m);
+  bindLeadRows(m); bindDueCard();
   if (matchMedia('(pointer:fine)').matches) $('#hw').focus();
   startScanner();
 }
 
 function manualView(m) {
-  m.innerHTML = `<div class="card"><h2>Add visitor manually</h2>
-    <p class="small muted" style="margin-top:-4px">Use this when the badge has no QR or the QR doesn't contain contact details.</p>
-    <label class="f">Name *</label><input class="i" id="m_name" autocomplete="off">
-    <label class="f">Job title / Farm</label><input class="i" id="m_jobTitle" autocomplete="off">
-    <label class="f">Contact no. *</label><input class="i" id="m_mobile" inputmode="tel" autocomplete="off">
-    <label class="f">Email</label><input class="i" id="m_email" inputmode="email" autocomplete="off" autocapitalize="none">
-    <label class="f">Badge / Visitor ID (optional)</label><input class="i" id="m_vid" autocomplete="off">
-    <label class="row small" style="margin-top:12px;gap:8px;justify-content:flex-start"><input type="checkbox" id="m_consent" style="flex:0;width:20px;height:20px"> <span>Visitor agreed to share contact details</span></label>
-    <div class="row mt"><button class="btn line" id="m_cancel">Cancel</button><button class="btn" id="m_save">Save &amp; continue</button></div></div>`;
+  m.innerHTML = `<div class="card"><h2>${t('Add visitor manually')}</h2>
+    <p class="small muted" style="margin-top:-4px">${t("Use this when the badge has no QR or the QR doesn't contain contact details.")}</p>
+    <label class="f">${t('Name')} *</label><input class="i" id="m_name" autocomplete="off">
+    <div class="grid2"><div><label class="f">${t('Company')}</label><input class="i" id="m_company" autocomplete="off"></div><div><label class="f">${t('Country')}</label><input class="i" id="m_country" autocomplete="off" value="India"></div></div>
+    <label class="f">${t('Job title')}</label><input class="i" id="m_jobTitle" autocomplete="off">
+    <label class="f">${t('Contact no.')} *</label><input class="i" id="m_mobile" inputmode="tel" autocomplete="off">
+    <label class="f">${t('Email')}</label><input class="i" id="m_email" inputmode="email" autocomplete="off" autocapitalize="none">
+    <label class="f">${t('Badge / Visitor ID (optional)')}</label><input class="i" id="m_vid" autocomplete="off">
+    <label class="row small" style="margin-top:12px;gap:8px;justify-content:flex-start"><input type="checkbox" id="m_consent" style="flex:0;width:20px;height:20px"> <span>${t('Visitor agreed to share contact details')}</span></label>
+    <div class="row mt"><button class="btn line" id="m_cancel">${t('Cancel')}</button><button class="btn" id="m_save">${t('Save & continue')}</button></div></div>`;
   $('#m_cancel').onclick = () => { S.view = null; render(); };
   $('#m_save').onclick = () => {
     const v = id => $('#' + id).value.trim();
     if (!v('m_name') || !v('m_mobile')) return toast('Name and contact no. are required', true);
     if (normMob(v('m_mobile')).length < 10) return toast('Contact number looks too short', true);
-    processScan({ visitorId: v('m_vid'), name: v('m_name'), jobTitle: v('m_jobTitle'), mobile: fmtMob(v('m_mobile')), email: v('m_email'), consent: $('#m_consent').checked, raw: '' }, true);
+    processScan({ visitorId: v('m_vid'), name: v('m_name'), jobTitle: v('m_jobTitle'), company: v('m_company'), country: v('m_country'), mobile: fmtMob(v('m_mobile')), email: v('m_email'), consent: $('#m_consent').checked, raw: '' }, true);
   };
 }
 
@@ -611,127 +1148,174 @@ function leadView(m) {
   const admin = isAdmin();
   const canEdit = k => admin || !L[k];
   const need = k => !L[k] && ['name', 'mobile'].includes(k);
-  const fld = (k, label, type = 'text', mode = '') => `<div><label class="f">${label}${need(k) ? ' <span style="color:var(--warn)">· not found, please type</span>' : ''}</label>
-     <input class="i ${need(k) ? 'need' : ''}" id="e_${k}" type="${type}" ${mode ? `inputmode="${mode}"` : ''} value="${esc(L[k])}" ${canEdit(k) ? '' : 'readonly style="background:#f7f8fa"'}></div>`;
+  const fld = (k, label, type = 'text', mode = '') => `<div><label class="f">${label}${need(k) && !cv(k) ? ` <span class="needtxt" style="color:var(--warn)">· ${t('not found, please type')}</span>` : ''}</label>
+     <input class="i ${need(k) && !cv(k) ? 'need' : ''}${cv(k) ? ' fromcard' : ''}" id="e_${k}" type="${type}" ${mode ? `inputmode="${mode}"` : ''} value="${esc(L[k] || cv(k))}" ${cv(k) ? 'data-from-card="1"' : ''} ${canEdit(k) ? '' : 'readonly style="background:#f7f8fa"'}></div>`;
+  const card = S.view.card; const cv = k => (!L[k] && card && ({ name: card.name, company: card.company, country: card.country })[k]) || '';
   const dup = status === 'existing';
+  const names = teamNames(); if (L.assignedTo && !names.includes(L.assignedTo)) names.push(L.assignedTo);
+  const notSynced = offline || isPending(L, pendingSet());
   m.innerHTML = `
     ${status ? `<div class="banner ${dup ? 'dup' : 'new'}">
-      <div class="t">${dup ? '⚠ ALREADY SCANNED – EXISTING CUSTOMER' : '✓ NEW VISITOR SAVED'}</div>
-      ${dup ? `<div class="kv"><span>Customer</span><b>${esc(L.name || '—')}</b><span>Mobile</span><b>${esc(L.mobile || '—')}</b><span>First scan</span><b>${fmt(L.firstScan)}</b><span>Scanned by</span><b>${esc(L.firstBy)}</b><span>Visits</span><b>${(L.repeatCount || 0) + 1}</b></div>`
-             : `<div class="d">${esc(L.source)} by ${esc(L.lastBy)} · ${fmt(L.firstScan)}${autoFilled ? '<br>Details filled in automatically from the badge ✓' : (L.source === 'Scanned' && !L.name ? '<br>Badge details could not be read. Please type name and contact no.' : '')}</div>`}
-      ${offline ? '<div class="d" style="margin-top:6px"><span class="pill off">Saved offline — will sync automatically</span></div>' : ''}
-    </div>` : `<button class="btn line sm" id="back" style="margin-bottom:10px">← Back</button>`}
+      <div class="t">${dup ? I.alert : I.check}<span>${dup ? t('ALREADY SCANNED – EXISTING CUSTOMER') : t('NEW VISITOR SAVED')}</span></div>
+      ${dup ? `<div class="kv"><span>${t('Customer')}</span><b>${esc(L.name || '—')}</b><span>${t('Mobile')}</span><b>${esc(L.mobile || '—')}</b><span>${t('First scan')}</span><b>${fmt(L.firstScan)}</b><span>${t('Scanned by')}</span><b>${esc(L.firstBy)}</b><span>${t('Visits')}</span><b>${(L.repeatCount || 0) + 1}</b></div>`
+             : `<div class="d">${esc(t(L.source || 'Scanned'))} · ${esc(L.lastBy)} · ${fmt(L.firstScan)}${autoFilled ? '<br>' + t('Details filled in automatically from the badge') + ' ✓' : (L.source === 'Scanned' && !L.name ? `<span id="bnote"><br>${t('Badge details could not be read. Please type name and contact no.')}</span>` : '')}</div>`}
+      ${notSynced ? `<div class="d" style="margin-top:6px"><span class="pill off">${t('Saved on this phone. Will sync automatically')}</span></div>` : ''}
+    </div>` : `<button class="btn line sm" id="back" style="margin-bottom:10px">${I.back}${t('Back')}</button>${notSynced ? ` <span class="pill off" style="margin-left:6px">${t('Not synced yet')}</span>` : ''}`}
 
     <div class="card">
-      <h2>Customer details</h2>
-      <div class="grid2">${fld('name', 'Name')}${fld('jobTitle', 'Job title / Farm')}</div>
-      <div class="grid2">${fld('mobile', 'Contact no.', 'tel', 'tel')}${fld('email', 'Email', 'email', 'email')}</div>
-      ${L.mobile ? `<div class="callrow"><a class="btn line sm" href="tel:${esc(L.mobile)}">📞 Call</a><a class="btn line sm" target="_blank" href="https://wa.me/${esc((normMob(L.mobile).length === 10 ? '91' : '') + normMob(L.mobile))}">💬 WhatsApp</a></div>` : ''}
-      <p class="small muted mb0" style="margin-top:10px"><span class="tag ${L.source === 'Manual Entry' ? 'rep' : ''}" style="margin:0 4px 0 0">${esc(L.source || 'Scanned')}</span>${esc(L.event)}${L.url ? ` · <a href="${esc(L.url)}" target="_blank" rel="noopener">badge link</a>` : ''}<br>First: ${fmt(L.firstScan)} by ${esc(L.firstBy)} · Last: ${fmt(L.lastScan)} by ${esc(L.lastBy)}</p>
+      <div class="row hrow2"><h2 style="margin:0">${t('Customer details')}</h2>${canEdit('name') ? `<button class="btn ghost sm" id="readcard" style="flex:0 0 auto">${I.camera}${t('Read name from card')}</button>` : ''}</div>
+      <div id="cardnote" class="cardnote"></div>
+      ${fld('name', t('Name'))}
+      <div class="grid2">${fld('company', t('Company'))}${fld('country', t('Country'))}</div>
+      <div class="grid2">${fld('mobile', t('Contact no.'), 'tel', 'tel')}${fld('email', t('Email'), 'email', 'email')}</div>
+      ${fld('jobTitle', t('Job title'))}
+      ${L.mobile ? `<div class="callrow"><a class="btn line sm" href="tel:${esc(L.mobile)}">${I.phone}${t('Call')}</a><a class="btn line sm" target="_blank" href="https://wa.me/${esc((normMob(L.mobile).length === 10 ? '91' : '') + normMob(L.mobile))}">${I.chat}WhatsApp</a></div>` : ''}
+      <p class="small muted mb0" style="margin-top:10px"><span class="tag ${L.source === 'Manual Entry' ? 'rep' : ''}" style="margin:0 4px 0 0">${esc(t(L.source || 'Scanned'))}</span>${esc(L.event)}${L.url ? ` · <a href="${esc(L.url)}" target="_blank" rel="noopener">${t('badge link')}</a>` : ''}<br>${t('First')}: ${fmt(L.firstScan)} · ${esc(L.firstBy)}<br>${t('Last')}: ${fmt(L.lastScan)} · ${esc(L.lastBy)}</p>
     </div>
 
     <div class="card">
-      <h2>Interested in <span class="muted small" style="font-weight:400">(tap all that apply)</span></h2>
-      <div class="chips" id="chips">${st.interests.map(i => `<button class="chip ${sel.has(i) ? (saved.includes(i) && !admin ? 'locked' : 'on') : ''}" data-i="${esc(i)}">${sel.has(i) ? '✓ ' : ''}${esc(i)}</button>`).join('')}</div>
-      <label class="f">Follow-up status</label>
-      <select class="i" id="e_status">${st.statuses.map(s => `<option ${s === (L.status || 'New Lead') ? 'selected' : ''}>${esc(s)}</option>`).join('')}</select>
+      <h2>${t('Interested in')} <span class="muted small" style="font-weight:400">(${t('tap all that apply')})</span></h2>
+      <label class="f" style="margin-top:0">${t('Customer type')}</label>
+      <div class="seg wide" id="ctype">${(st.customerTypes || CTYPES).map(c => `<button data-ct="${esc(c)}" class="${L.customerType === c ? 'on' : ''}" aria-pressed="${L.customerType === c}">${esc(t(c))}</button>`).join('')}</div>
+      <label class="f">${t('Products')}</label>
+      <div class="chips" id="chips">${st.interests.map(i => `<button class="chip ${sel.has(i) ? (saved.includes(i) && !admin ? 'locked' : 'on') : ''}" data-i="${esc(i)}">${esc(t(i))}</button>`).join('')}</div>
     </div>
 
     <div class="card">
-      <h2>Discussion notes</h2>
-      ${L.notes ? `<div class="notes">${esc(L.notes)}</div>` : '<p class="small muted" style="margin-top:-4px">No notes yet.</p>'}
-      <label class="f">Add a note</label>
-      <textarea class="i" id="e_note" placeholder="e.g. Has 3 sheds, wants full automation quote by next week"></textarea>
-      <label class="row small" style="margin-top:12px;gap:8px;justify-content:flex-start"><input type="checkbox" id="e_consent" ${L.consent ? 'checked' : ''} style="flex:0;width:20px;height:20px"> <span>Visitor agreed to share contact details</span></label>
+      <h2>${t('Follow-up')}</h2>
+      <label class="f" style="margin-top:0">${t('Follow-up status')}</label>
+      <select class="i" id="e_status">${st.statuses.map(s => `<option value="${esc(s)}" ${s === (L.status || 'New Lead') ? 'selected' : ''}>${esc(t(s))}</option>`).join('')}</select>
+      <div class="grid2">
+        <div><label class="f">${t('Assigned to')}</label>${admin
+          ? `<select class="i" id="e_assign"><option value="">${t('Unassigned')}</option>${names.map(n => `<option ${n === L.assignedTo ? 'selected' : ''}>${esc(n)}</option>`).join('')}</select>`
+          : `<input class="i" readonly style="background:#f7f8fa" value="${esc(L.assignedTo || t('Unassigned'))}">`}</div>
+        <div><label class="f">${t('Follow-up date')}</label><input class="i" type="date" id="e_fu" value="${esc(L.followUp || '')}"></div>
+      </div>
+      <div class="chips" style="margin-top:10px" id="fuq">${[[1, t('Tomorrow')], [3, t('In 3 days')], [7, t('In 7 days')]].map(([n, l]) => `<button class="chip sm" data-d="${n}">${l}</button>`).join('')}<button class="chip sm" data-d="x">${t('No date')}</button></div>
+      ${!admin ? `<p class="small muted mb0" style="margin-top:8px">${t('Only an admin can assign customers.')}</p>` : ''}
+    </div>
+
+    <div class="card">
+      <h2>${t('Discussion notes')}</h2>
+      ${L.notes ? `<div class="notes">${esc(L.notes)}</div>` : `<p class="small muted" style="margin-top:-4px">${t('No notes yet.')}</p>`}
+      <label class="f">${t('Add a note')}</label>
+      <textarea class="i" id="e_note" placeholder="${t('e.g. Has 3 sheds, wants full automation quote by next week')}"></textarea>
+      <label class="row small" style="margin-top:12px;gap:8px;justify-content:flex-start"><input type="checkbox" id="e_consent" ${L.consent ? 'checked' : ''} style="flex:0;width:20px;height:20px"> <span>${t('Visitor agreed to share contact details')}</span></label>
     </div>
 
     <div class="row" style="position:sticky;bottom:calc(70px + env(safe-area-inset-bottom));z-index:5">
-      <button class="btn block" id="save" style="box-shadow:0 6px 18px rgba(17,21,30,.3)">${status ? 'Save & scan next' : 'Save changes'}</button>
+      <button class="btn block" id="save" style="box-shadow:0 6px 18px rgba(17,21,30,.3)">${status ? t('Save & scan next') : t('Save changes')}</button>
     </div>
-    ${admin && !status ? `<button class="btn danger block mt" id="del">Delete this customer record</button>` : ''}
+    ${admin && !status ? `<button class="btn danger block mt" id="del">${t('Delete this customer record')}</button>` : ''}
     <div style="height:10px"></div>`;
 
   m.querySelectorAll('#chips .chip').forEach(c => c.onclick = () => {
     if (c.classList.contains('locked')) return toast('Saved interests can only be removed by an admin');
-    const i = c.dataset.i; if (sel.has(i)) { sel.delete(i); c.classList.remove('on'); c.textContent = i; } else { sel.add(i); c.classList.add('on'); c.textContent = '✓ ' + i; }
+    const i = c.dataset.i; if (sel.has(i)) { sel.delete(i); c.classList.remove('on'); c.textContent = t(i); } else { sel.add(i); c.classList.add('on'); c.textContent = t(i); }
   });
+  ['name', 'company', 'country'].forEach(k => { const el = $('#e_' + k); if (el) el.addEventListener('input', () => { delete el.dataset.fromCard; el.classList.remove('fromcard'); }); });
+  let ctype = L.customerType || '';
+  m.querySelectorAll('#ctype [data-ct]').forEach(b => b.onclick = () => { ctype = ctype === b.dataset.ct ? '' : b.dataset.ct; m.querySelectorAll('#ctype [data-ct]').forEach(x => { x.classList.toggle('on', x.dataset.ct === ctype); x.setAttribute('aria-pressed', x.dataset.ct === ctype); }); });
+  m.querySelectorAll('#fuq .chip').forEach(c => c.onclick = () => { $('#e_fu').value = c.dataset.d === 'x' ? '' : addDays(+c.dataset.d); });
   const back = $('#back'); if (back) back.onclick = () => { S.view = null; render(); };
+  const rc = $('#readcard'); if (rc) rc.onclick = openCardCapture;
+  updateCardNote();
   const del = $('#del'); if (del) del.onclick = async () => {
-    if (!confirm('Delete ' + (L.name || L.visitorId) + '? This cannot be undone.')) return;
+    if (!confirm(t('Delete {name}? This cannot be undone.', { name: L.name || L.visitorId }))) return;
     try { await api('deleteLead', { leadId: L.leadId }); S.leads = S.leads.filter(x => x.leadId !== L.leadId); LS.set('surya_leads_cache', S.leads); toast('Deleted'); S.view = null; render(); } catch (e) { toast(e.message, true); }
   };
   $('#save').onclick = async () => {
     const b = $('#save'); b.disabled = true;
-    const data = { leadId: L.leadId, visitorId: L.visitorId, event: L.event, interests: [...sel], replaceInterests: admin, status: $('#e_status').value, noteAppend: $('#e_note').value, consent: $('#e_consent').checked };
+    const data = { leadId: L.leadId, visitorId: L.visitorId, event: L.event, interests: [...sel], replaceInterests: admin, status: $('#e_status').value, noteAppend: $('#e_note').value, consent: $('#e_consent').checked, followUp: $('#e_fu').value || '', customerType: ctype };
+    if (admin) data.assignedTo = $('#e_assign').value;
     FIELDS.forEach(k => { const el = $('#e_' + k); if (el && !el.readOnly) data[k] = k === 'mobile' ? fmtMob(el.value) : el.value.trim(); });
     try {
       let lead;
       try { lead = (await api('updateLead', { data })).lead; }
       catch (e) {
         if (!isNet(e)) throw e;
-        S.queue.push({ action: 'updateLead', data }); saveQueue();
+        S.queue.push({ action: 'updateLead', data, at: new Date().toISOString() }); saveQueue();
         lead = { ...L, ...Object.fromEntries(FIELDS.filter(k => data[k] !== undefined && (admin || !L[k])).map(k => [k, data[k]])),
           interests: [...new Set(admin ? data.interests : saved.concat(data.interests))].join(', '), status: data.status, consent: data.consent,
+          followUp: data.followUp, customerType: data.customerType, assignedTo: admin ? data.assignedTo : (L.assignedTo || ''),
           notes: data.noteAppend.trim() ? (L.notes ? L.notes + '\n' : '') + '[offline · ' + me().name + '] ' + data.noteAppend.trim() : L.notes };
-        toast('Saved offline — will sync');
+        toast('Saved on this phone. Will sync automatically');
       }
       cacheLead(lead);
-      if (status) { toast('Saved ✓  Ready for next scan'); S.view = null; S.tab = 'scan'; }
-      else { toast('Saved ✓'); S.view = { type: 'lead', lead }; }
+      if (status) { if (!isPending(lead, pendingSet())) toast('Saved ✓  Ready for next scan'); S.view = null; S.tab = 'scan'; }
+      else { if (!isPending(lead, pendingSet())) toast('Saved ✓'); S.view = { type: 'lead', lead }; }
       render();
     } catch (e) { toast(e.message, true); b.disabled = false; }
   };
 }
 
 /* ---------- Customers list ---------- */
-function leadRow(l) {
+function leadRow(l, ps) {
+  const ds = dueState(l), open = isOpen(l);
+  const fu = l.assignedTo || l.followUp ? `<div class="meta fu ${open && ds === 'over' ? 'over' : open && ds === 'today' ? 'tod' : ''}">${I.user}${esc(l.assignedTo || t('Unassigned'))}${l.followUp ? ', ' + (open && ds === 'over' ? t('Overdue') + ' ' : open && ds === 'today' ? t('Due today') + ' ' : '') + fmtDay(l.followUp) : ''}</div>` : '';
   return `<div class="lead" data-lid="${esc(l.leadId)}"><div class="av">${esc(initials(l.name))}</div><div style="flex:1;min-width:0">
-    <div class="nm">${esc(l.name || '(no name)')} ${l.repeatCount ? `<span class="tag rep">${l.repeatCount + 1} visits</span>` : ''}</div>
-    ${l.jobTitle ? `<div class="meta">${esc(l.jobTitle)}</div>` : ''}
+    <div class="nm">${esc(l.name || t('(no name)'))} ${l.repeatCount ? `<span class="tag rep">${t('{n} visits', { n: l.repeatCount + 1 })}</span>` : ''}${ps && isPending(l, ps) ? `<span class="tag ns">${t('Not synced yet')}</span>` : ''}</div>
+    ${l.company || l.jobTitle ? `<div class="meta">${esc([l.company, l.jobTitle].filter(Boolean).join(' · '))}</div>` : ''}
     <div class="meta">${esc(l.mobile || '—')}${l.email ? ' · ' + esc(l.email) : ''}</div>
-    <div class="meta">${fmt(l.firstScan)} · ${esc(l.firstBy)}${l.lastBy && l.lastBy !== l.firstBy ? ' · last: ' + esc(l.lastBy) : ''}</div>
-    <div><span class="tag ${l.source === 'Manual Entry' ? 'rep' : ''}">${esc(l.source || 'Scanned')}</span>${splitInt(l.interests).map(i => `<span class="tag">${esc(i)}</span>`).join('')}<span class="tag st">${esc(l.status || 'New Lead')}</span></div></div></div>`;
+    <div class="meta">${fmt(l.firstScan)} · ${esc(l.firstBy)}${l.lastBy && l.lastBy !== l.firstBy ? ' · ' + esc(l.lastBy) : ''}</div>
+    ${fu}
+    <div>${l.customerType ? `<span class="tag ct">${esc(t(l.customerType))}</span>` : ''}<span class="tag ${l.source === 'Manual Entry' ? 'rep' : ''}">${esc(t(l.source || 'Scanned'))}</span>${splitInt(l.interests).map(i => `<span class="tag">${esc(t(i))}</span>`).join('')}<span class="tag st">${esc(t(l.status || 'New Lead'))}</span></div></div></div>`;
 }
 function bindLeadRows(m) { m.querySelectorAll('[data-lid]').forEach(r => r.onclick = () => { const l = S.leads.find(x => x.leadId === r.dataset.lid); if (l) { stopScanner(); S.view = { type: 'lead', lead: l }; render(); window.scrollTo(0, 0); } }); }
 
+const NOFILTER = () => ({ q: '', interest: '', status: '', member: '', from: '', to: '', type: '', event: '', source: '', assigned: '', ctype: '' });
 function filtered() {
   const f = S.filters, q = f.q.toLowerCase();
   return S.leads.filter(l =>
     (!f.event || l.event === f.event) &&
-    (!q || [l.name, l.jobTitle, l.mobile, l.email, l.visitorId, l.notes].join(' ').toLowerCase().includes(q)) &&
+    (!q || [l.name, l.jobTitle, l.company, l.country, l.mobile, l.email, l.visitorId, l.notes, l.assignedTo, l.customerType].join(' ').toLowerCase().includes(q)) &&
     (!f.interest || splitInt(l.interests).includes(f.interest)) &&
     (!f.status || (l.status || 'New Lead') === f.status) &&
     (!f.member || l.firstBy === f.member || l.lastBy === f.member) &&
     (!f.source || (l.source || 'Scanned') === f.source) &&
+    (!f.ctype || (f.ctype === '__none' ? !l.customerType : l.customerType === f.ctype)) &&
+    (!f.assigned || (f.assigned === '__none' ? !l.assignedTo : l.assignedTo === f.assigned)) &&
     (!f.type || (f.type === 'repeat' ? l.repeatCount > 0 : !l.repeatCount)) &&
     (!f.from || String(l.lastScan).slice(0, 10) >= f.from) &&
     (!f.to || String(l.firstScan).slice(0, 10) <= f.to));
 }
 function leadsView(m) {
-  const st = SET(), f = S.filters;
+  const st = SET(), f = S.filters, admin = isAdmin();
   const members = [...new Set(S.leads.flatMap(l => [l.firstBy, l.lastBy]).filter(Boolean))].sort();
   const events = [...new Set(S.leads.map(l => l.event).concat(st.events || []))].filter(Boolean);
-  const opt = (arr, cur, all) => `<option value="">${all}</option>` + arr.map(x => `<option ${x === cur ? 'selected' : ''}>${esc(x)}</option>`).join('');
+  const names = teamNames();
+  const opt = (arr, cur, all, tr) => `<option value="">${all}</option>` + arr.map(x => `<option value="${esc(x)}" ${x === cur ? 'selected' : ''}>${esc(tr ? t(x) : x)}</option>`).join('');
   m.innerHTML = `<div class="card">
-      <input class="i" id="fq" placeholder="Search name, mobile, email, ID, notes…" value="${esc(f.q)}">
+      <input class="i" id="fq" placeholder="${t('Search name, mobile, email, ID, notes…')}" value="${esc(f.q)}">
       <div class="filters">
-        <select class="i" data-f="interest">${opt(st.interests, f.interest, 'All products')}</select>
-        <select class="i" data-f="status">${opt(st.statuses, f.status, 'All statuses')}</select>
-        <select class="i" data-f="member">${opt(members, f.member, 'All team members')}</select>
-        <select class="i" data-f="type"><option value="">New + repeat</option><option value="new" ${f.type === 'new' ? 'selected' : ''}>New only</option><option value="repeat" ${f.type === 'repeat' ? 'selected' : ''}>Repeat visitors</option></select>
-        <select class="i" data-f="event">${opt(events, f.event, 'All events')}</select>
-        <select class="i" data-f="source">${opt(['Scanned', 'Manual Entry'], f.source, 'Scanned + manual')}</select>
-        <div class="row span2" style="gap:6px"><span class="small muted" style="flex:0 0 auto">Date</span><input class="i" type="date" data-f="from" value="${f.from}" title="From"><input class="i" type="date" data-f="to" value="${f.to}" title="To"></div>
+        <select class="i" data-f="interest">${opt(st.interests, f.interest, t('All products'), 1)}</select>
+        <select class="i" data-f="status">${opt(st.statuses, f.status, t('All statuses'), 1)}</select>
+        <select class="i" data-f="member">${opt(members, f.member, t('Scanned by: all'))}</select>
+        <select class="i" data-f="assigned"><option value="">${t('Assigned to: all')}</option><option value="__none" ${f.assigned === '__none' ? 'selected' : ''}>${t('Unassigned')}</option>${names.map(x => `<option value="${esc(x)}" ${x === f.assigned ? 'selected' : ''}>${esc(x)}</option>`).join('')}</select>
+        <select class="i" data-f="type"><option value="">${t('New + repeat')}</option><option value="new" ${f.type === 'new' ? 'selected' : ''}>${t('New only')}</option><option value="repeat" ${f.type === 'repeat' ? 'selected' : ''}>${t('Repeat visitors')}</option></select>
+        <select class="i" data-f="source">${opt(['Scanned', 'Manual Entry'], f.source, t('Scanned + manual'), 1)}</select>
+        <select class="i" data-f="ctype"><option value="">${t('All customer types')}</option>${(st.customerTypes || CTYPES).map(c => `<option value="${esc(c)}" ${c === f.ctype ? 'selected' : ''}>${esc(t(c))}</option>`).join('')}<option value="__none" ${f.ctype === '__none' ? 'selected' : ''}>${t('Type not set')}</option></select>
+        <select class="i" data-f="event">${opt(events, f.event, t('All events'))}</select>
+        <div class="row span2" style="gap:6px"><span class="small muted" style="flex:0 0 auto">${t('Date')}</span><input class="i" type="date" data-f="from" value="${f.from}"><input class="i" type="date" data-f="to" value="${f.to}"></div>
       </div>
-      <div class="row mt"><button class="btn line sm" id="rf">↻ Refresh</button><button class="btn line sm" id="clr">Clear filters</button>${isAdmin() ? '<button class="btn sm" id="xl">⬇ Export Excel</button>' : ''}</div>
+      <div class="row mt"><button class="btn line sm" id="rf">${I.refresh}${t('Refresh')}</button><button class="btn line sm" id="clr">${t('Clear filters')}</button>${admin ? `<button class="btn sm" id="xl">${I.download}${t('Export Excel')}</button>` : ''}</div>
+      ${admin ? `<div class="bulk"><label class="f" style="margin-top:0">${t('Assign all customers shown below to')}</label>
+        <div class="row"><select class="i" id="ba_who" style="flex:3"><option value="">${t('Unassigned')}</option>${names.map(x => `<option>${esc(x)}</option>`).join('')}</select><button class="btn sm" id="ba_go" style="flex:2">${t('Assign')}</button></div></div>` : ''}
     </div>
     <div class="card" id="list"></div>`;
-  const draw = () => { const L = filtered(); $('#list').innerHTML = `<div class="small muted">${L.length} customer${L.length === 1 ? '' : 's'}</div>` + (L.length ? L.map(leadRow).join('') : '<div class="empty">No customers match.</div>'); bindLeadRows(m); };
+  const draw = () => { const L = filtered(), ps = pendingSet(); $('#list').innerHTML = `<div class="small muted">${t('Customers: {n}', { n: L.length })}</div>` + (L.length ? L.map(l => leadRow(l, ps)).join('') : `<div class="empty">${t('No customers match.')}</div>`); bindLeadRows(m); };
   $('#fq').oninput = e => { f.q = e.target.value; draw(); };
   m.querySelectorAll('[data-f]').forEach(s => s.onchange = e => { f[s.dataset.f] = e.target.value; draw(); });
-  $('#clr').onclick = () => { S.filters = { q: '', interest: '', status: '', member: '', from: '', to: '', type: '', event: '', source: '' }; leadsView(m); };
+  $('#clr').onclick = () => { S.filters = NOFILTER(); leadsView(m); };
   $('#rf').onclick = async () => { $('#rf').disabled = true; if (await refreshLeads()) toast('Up to date'); leadsView(m); };
   const xl = $('#xl'); if (xl) xl.onclick = () => exportExcel(filtered(), 'Surya_Customers');
+  const ba = $('#ba_go'); if (ba) ba.onclick = async () => {
+    const L = filtered(), who = $('#ba_who').value; if (!L.length) return toast('No customers match.', true);
+    if (!confirm(who ? t('Assign {n} customers to {who}?', { n: L.length, who }) : t('Remove the assignment from {n} customers?', { n: L.length }))) return;
+    ba.disabled = true;
+    try { const r = await api('assignMany', { data: { leadIds: L.map(l => l.leadId), assignedTo: who } }); r.leads.forEach(cacheLead); toast(t('Assigned: {n}', { n: r.leads.length })); leadsView(m); }
+    catch (e) { toast(isNet(e) ? 'Assigning many customers needs internet' : e.message, true); ba.disabled = false; }
+  };
   draw();
   if (!m.dataset.loaded) { m.dataset.loaded = 1; refreshLeads().then(ok => { if (ok && S.tab === 'leads' && !S.view) draw(); }); }
 }
@@ -741,8 +1325,8 @@ function exportExcel(leads, name) {
     return `${d.getFullYear()}-${z(d.getMonth() + 1)}-${z(d.getDate())} ${z(d.getHours())}:${z(d.getMinutes())}:${z(d.getSeconds())}`; };
   const rows = leads.map(l => ({
     'scanned_by': l.firstBy, 'source': l.source || 'Scanned', 'name': l.name, 'job_title': l.jobTitle, 'email': l.email, 'contact_no': l.mobile, 'url': l.url,
-    'scan_date': ts(l.firstScan), 'event': l.event, 'interests': l.interests, 'notes': l.notes, 'follow_up_status': l.status,
-    'repeat_scans': l.repeatCount, 'last_scan': ts(l.lastScan), 'last_scanned_by': l.lastBy
+    'scan_date': ts(l.firstScan), 'company': l.company || '', 'country': l.country || '', 'event': l.event, 'interests': l.interests, 'notes': l.notes, 'follow_up_status': l.status,
+    'repeat_scans': l.repeatCount, 'last_scan': ts(l.lastScan), 'last_scanned_by': l.lastBy, 'assigned_to': l.assignedTo || '', 'follow_up_date': l.followUp || '', 'customer_type': l.customerType || ''
   }));
   const fn = name + '_' + new Date().toISOString().slice(0, 10);
   if (window.XLSX) {
@@ -752,39 +1336,81 @@ function exportExcel(leads, name) {
     const cols = Object.keys(rows[0] || {}); const csv = [cols.join(',')].concat(rows.map(r => cols.map(c => '"' + String(r[c] ?? '').replace(/"/g, '""') + '"').join(','))).join('\n');
     const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob(['﻿' + csv], { type: 'text/csv' })); a.download = fn + '.csv'; a.click();
   }
-  toast('Exported ' + rows.length + ' customers');
+  toast(t('Exported: {n}', { n: rows.length }));
+}
+
+/* ---------- Follow-ups ---------- */
+function fuView(m) {
+  const admin = isAdmin(), mine = me().name;
+  const who = admin ? (S.fuWho === undefined ? mine : S.fuWho) : mine;          // '' = everyone (admin)
+  const ps = pendingSet(), names = teamNames();
+  const all = S.leads.filter(l => l.assignedTo && isOpen(l) && (!who || l.assignedTo === who));
+  const g = { over: [], today: [], later: [], none: [] }; all.forEach(l => g[dueState(l)].push(l));
+  g.over.sort((a, b) => a.followUp.localeCompare(b.followUp)); g.later.sort((a, b) => a.followUp.localeCompare(b.followUp));
+  const unassigned = S.leads.filter(l => !l.assignedTo && isOpen(l)).length;
+  const sec = (title, arr, cls) => arr.length ? `<div class="card"><h2 class="${cls || ''}">${title} <span class="muted small" style="font-weight:400">· ${arr.length}</span></h2>${arr.map(l => leadRow(l, ps)).join('')}</div>` : '';
+  m.innerHTML = `
+    ${admin ? `<div class="card"><label class="f" style="margin-top:0">${t('Show follow-ups of')}</label>
+      <select class="i" id="fu_who"><option value="${esc(mine)}" ${who === mine ? 'selected' : ''}>${t('Me')} (${esc(mine)})</option><option value="" ${who === '' ? 'selected' : ''}>${t('Everyone')}</option>${names.filter(n => n !== mine).map(n => `<option ${n === who ? 'selected' : ''}>${esc(n)}</option>`).join('')}</select>
+      ${unassigned ? `<div class="row mt"><div class="small">${t('Not assigned to anyone: {n}', { n: unassigned })}</div><button class="btn ghost sm" id="fu_un" style="flex:0 0 auto">${t('Assign')}</button></div>` : ''}</div>` : ''}
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px">
+      <div class="stat ${g.over.length ? 'red' : ''}"><div class="n">${g.over.length}</div><div class="l">${t('Overdue')}</div></div>
+      <div class="stat"><div class="n">${g.today.length}</div><div class="l">${t('Due today')}</div></div>
+      <div class="stat"><div class="n">${g.later.length + g.none.length}</div><div class="l">${t('Upcoming')}</div></div>
+    </div>
+    ${sec(t('Overdue'), g.over, 'h-over')}${sec(t('Due today'), g.today)}${sec(t('Upcoming'), g.later)}${sec(t('No follow-up date'), g.none)}
+    ${all.length ? '' : `<div class="card"><div class="empty">${who === mine ? t('No customers are assigned to you yet.') : t('No follow-ups here.')}</div></div>`}
+    <p class="small muted center">${t('Closed customers (Order Confirmed / Not Interested) are not shown.')}</p>`;
+  const w = $('#fu_who'); if (w) w.onchange = () => { S.fuWho = w.value; fuView(m); };
+  const un = $('#fu_un'); if (un) un.onclick = () => { S.filters = { ...NOFILTER(), assigned: '__none' }; go('leads'); };
+  bindLeadRows(m);
+  if (!m.dataset.loaded) { m.dataset.loaded = 1; refreshLeads().then(ok => { if (ok && S.tab === 'fu' && !S.view) fuView(m); }); }
 }
 
 /* ---------- Dashboard ---------- */
 async function dashView(m) {
   const st = SET(); const ev = S.dashEvent ?? st.activeEvent;
-  m.innerHTML = `<div class="card"><label class="f" style="margin-top:0">Event</label><select class="i" id="dev"><option value="">All events</option>${(st.events || []).map(e => `<option ${e === ev ? 'selected' : ''}>${esc(e)}</option>`).join('')}</select></div><div id="dbody"><div class="empty">Loading…</div></div>`;
+  m.innerHTML = `<div class="card"><label class="f" style="margin-top:0">${t('Event')}</label><select class="i" id="dev"><option value="">${t('All events')}</option>${(st.events || []).map(e => `<option ${e === ev ? 'selected' : ''}>${esc(e)}</option>`).join('')}</select></div><div id="dbody"><div class="empty">${t('Loading…')}</div></div>`;
   $('#dev').onchange = e => { S.dashEvent = e.target.value; dashView(m); };
   let s;
-  try { s = await api('stats', { event: ev }); refreshLeads(); }
-  catch (e) { $('#dbody').innerHTML = `<div class="empty">${esc(e.message)}</div>`; return; }
+  try { s = await api('stats', { event: ev }); await refreshLeads(); }
+  catch (e) { $('#dbody').innerHTML = `<div class="empty">${esc(t(e.message))}</div>`; return; }
   if (S.tab !== 'dash' || S.view) return;
   const max = Math.max(1, ...Object.values(s.byInterest));
-  const fu = S.leads.filter(l => (!ev || l.event === ev) && ['New Lead', 'Follow-Up Required', 'Quotation Sent'].includes(l.status || 'New Lead') && (l.interests || l.notes));
+  const evLeads = S.leads.filter(l => !ev || l.event === ev);
+  const fu = evLeads.filter(l => ['New Lead', 'Follow-Up Required', 'Quotation Sent'].includes(l.status || 'New Lead') && (l.interests || l.notes));
+  const by = {}; evLeads.filter(l => l.assignedTo && isOpen(l)).forEach(l => { const r = by[l.assignedTo] = by[l.assignedTo] || { a: 0, t: 0, o: 0 }; r.a++; const d = dueState(l); if (d === 'today') r.t++; if (d === 'over') r.o++; });
+  const unassigned = evLeads.filter(l => !l.assignedTo && isOpen(l)).length;
+  const ps = pendingSet();
   $('#dbody').innerHTML = `
     <div class="grid3" style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px">
-      <div class="stat"><div class="n">${s.totals.uniqueVisitors}</div><div class="l">Unique visitors</div></div>
-      <div class="stat"><div class="n">${s.totals.totalScans}</div><div class="l">Total QR scans</div></div>
-      <div class="stat"><div class="n">${s.totals.repeatVisitors}</div><div class="l">Repeat visitors</div></div>
+      <div class="stat"><div class="n">${s.totals.uniqueVisitors}</div><div class="l">${t('Unique visitors')}</div></div>
+      <div class="stat"><div class="n">${s.totals.totalScans}</div><div class="l">${t('Total QR scans')}</div></div>
+      <div class="stat"><div class="n">${s.totals.repeatVisitors}</div><div class="l">${t('Repeat visitors')}</div></div>
     </div>
-    <div class="card"><h2>Product-wise customer interest</h2>
-      ${Object.entries(s.byInterest).map(([k, v]) => `<div class="bar" data-int="${esc(k)}" style="cursor:pointer"><span>${esc(k)}</span><div class="tr"><div class="fl" style="width:${(v / max * 100).toFixed(1)}%"></div></div><span class="v">${v}</span></div>`).join('')}
-      <p class="small muted mb0">Tap a product to see those customers.</p></div>
-    ${s.bySource ? `<div class="card"><h2>How leads were captured</h2>${Object.entries(s.bySource).map(([k, v]) => `<div class="bar"><span>${esc(k)}</span><div class="tr"><div class="fl" style="width:${(v / Math.max(1, s.totals.uniqueVisitors) * 100).toFixed(1)}%;background:${k === 'Manual Entry' ? '#11151e' : 'var(--gold)'}"></div></div><span class="v">${v}</span></div>`).join('')}</div>` : ''}
-    <div class="card"><h2>Team member performance</h2>
-      ${s.team.length ? `<table class="t"><tr><th>Team member</th><th style="text-align:right">Scans</th><th style="text-align:right">New leads</th><th style="text-align:right">Repeat</th></tr>
-      ${s.team.map(t => `<tr><td>${esc(t.member)}</td><td class="n">${t.scans}</td><td class="n">${t.newLeads}</td><td class="n">${t.repeats}</td></tr>`).join('')}</table>` : '<div class="empty">No scans yet.</div>'}</div>
-    <div class="card"><h2>Follow-up status</h2>
-      ${Object.entries(s.byStatus).map(([k, v]) => `<div class="bar"><span>${esc(k)}</span><div class="tr"><div class="fl" style="width:${(v / Math.max(1, s.totals.uniqueVisitors) * 100).toFixed(1)}%;background:#11151e"></div></div><span class="v">${v}</span></div>`).join('')}</div>
-    <div class="card"><div class="row"><h2 class="mb0">Customer follow-up list</h2><button class="btn sm" id="fux" style="flex:0 0 auto">⬇ Excel</button></div>
-      <div class="small muted" style="margin:4px 0 6px">${fu.length} customers waiting for follow-up</div>
-      ${fu.slice(0, 15).map(leadRow).join('') || '<div class="empty">Nothing pending.</div>'}</div>`;
+    <div class="card"><h2>${t('Product-wise customer interest')}</h2>
+      ${Object.entries(s.byInterest).map(([k, v]) => `<div class="bar" data-int="${esc(k)}" style="cursor:pointer"><span>${esc(t(k))}</span><div class="tr"><div class="fl" style="width:${(v / max * 100).toFixed(1)}%"></div></div><span class="v">${v}</span></div>`).join('')}
+      <p class="small muted mb0">${t('Tap a product to see those customers.')}</p></div>
+    <div class="card"><h2>${t('Follow-ups by team member')}</h2>
+      ${Object.keys(by).length ? `<table class="t"><tr><th>${t('Team member')}</th><th style="text-align:right">${t('Assigned')}</th><th style="text-align:right">${t('Due today')}</th><th style="text-align:right">${t('Overdue')}</th></tr>
+      ${Object.entries(by).sort((a, b) => b[1].a - a[1].a).map(([n, r]) => `<tr data-who="${esc(n)}" style="cursor:pointer"><td>${esc(n)}</td><td class="n">${r.a}</td><td class="n">${r.t}</td><td class="n" style="${r.o ? 'color:var(--bad)' : ''}">${r.o}</td></tr>`).join('')}</table>` : `<div class="empty">${t('No customers assigned yet.')}</div>`}
+      ${unassigned ? `<div class="row mt"><div class="small">${t('Not assigned to anyone: {n}', { n: unassigned })}</div><button class="btn ghost sm" id="d_un" style="flex:0 0 auto">${t('Assign')}</button></div>` : ''}</div>
+    <div class="card"><h2>${t('Customer type')}</h2>${(() => { const ty = {}; (st.customerTypes || CTYPES).forEach(c => ty[c] = 0); let none = 0; evLeads.forEach(l => l.customerType ? ty[l.customerType] = (ty[l.customerType] || 0) + 1 : none++); const mx = Math.max(1, ...Object.values(ty), none);
+      return Object.entries(ty).map(([k, v]) => `<div class="bar" data-ct="${esc(k)}" style="cursor:pointer"><span>${esc(t(k))}</span><div class="tr"><div class="fl" style="width:${(v / mx * 100).toFixed(1)}%"></div></div><span class="v">${v}</span></div>`).join('')
+        + (none ? `<div class="bar" data-ct="__none" style="cursor:pointer"><span class="muted">${t('Type not set')}</span><div class="tr"><div class="fl" style="width:${(none / mx * 100).toFixed(1)}%;background:#c9ccd4"></div></div><span class="v">${none}</span></div>` : ''); })()}</div>
+    ${s.bySource ? `<div class="card"><h2>${t('How leads were captured')}</h2>${Object.entries(s.bySource).map(([k, v]) => `<div class="bar"><span>${esc(t(k))}</span><div class="tr"><div class="fl" style="width:${(v / Math.max(1, s.totals.uniqueVisitors) * 100).toFixed(1)}%;background:${k === 'Manual Entry' ? '#11151e' : 'var(--gold)'}"></div></div><span class="v">${v}</span></div>`).join('')}</div>` : ''}
+    <div class="card"><h2>${t('Team member performance')}</h2>
+      ${s.team.length ? `<table class="t"><tr><th>${t('Team member')}</th><th style="text-align:right">${t('Scans')}</th><th style="text-align:right">${t('New leads')}</th><th style="text-align:right">${t('Repeat')}</th></tr>
+      ${s.team.map(x => `<tr><td>${esc(x.member)}</td><td class="n">${x.scans}</td><td class="n">${x.newLeads}</td><td class="n">${x.repeats}</td></tr>`).join('')}</table>` : `<div class="empty">${t('No scans yet.')}</div>`}</div>
+    <div class="card"><h2>${t('Follow-up status')}</h2>
+      ${Object.entries(s.byStatus).map(([k, v]) => `<div class="bar"><span>${esc(t(k))}</span><div class="tr"><div class="fl" style="width:${(v / Math.max(1, s.totals.uniqueVisitors) * 100).toFixed(1)}%;background:#11151e"></div></div><span class="v">${v}</span></div>`).join('')}</div>
+    <div class="card"><div class="row"><h2 class="mb0">${t('Customer follow-up list')}</h2><button class="btn sm" id="fux" style="flex:0 0 auto">${I.download}Excel</button></div>
+      <div class="small muted" style="margin:4px 0 6px">${t('Customers waiting for follow-up: {n}', { n: fu.length })}</div>
+      ${fu.slice(0, 15).map(l => leadRow(l, ps)).join('') || `<div class="empty">${t('Nothing pending.')}</div>`}</div>`;
   m.querySelectorAll('[data-int]').forEach(b => b.onclick = () => { S.filters = { ...S.filters, interest: b.dataset.int, event: ev || '' }; go('leads'); });
+  m.querySelectorAll('.bar[data-ct]').forEach(b => b.onclick = () => { S.filters = { ...NOFILTER(), ctype: b.dataset.ct, event: ev || '' }; go('leads'); });
+  m.querySelectorAll('[data-who]').forEach(b => b.onclick = () => { S.fuWho = b.dataset.who; go('fu'); });
+  const du = $('#d_un'); if (du) du.onclick = () => { S.filters = { ...NOFILTER(), assigned: '__none', event: ev || '' }; go('leads'); };
   $('#fux').onclick = () => exportExcel(fu, 'Surya_FollowUp');
   bindLeadRows(m);
 }
@@ -793,57 +1419,61 @@ async function dashView(m) {
 async function adminView(m) {
   const st = SET();
   m.innerHTML = `
-    <div class="card"><h2>Exhibition / event</h2>
-      <label class="f" style="margin-top:0">Active event (new scans go here)</label>
+    <div class="card"><h2>${t('Exhibition / event')}</h2>
+      <label class="f" style="margin-top:0">${t('Active event (new scans go here)')}</label>
       <select class="i" id="aev">${(st.events || []).map(e => `<option ${e === st.activeEvent ? 'selected' : ''}>${esc(e)}</option>`).join('')}</select>
-      <div class="row mt"><input class="i" id="newev" placeholder="Add new event, e.g. IPEMA Hyderabad 2026" style="flex:3"><button class="btn ghost" id="addev" style="flex:1">Add</button></div>
+      <div class="row mt"><input class="i" id="newev" placeholder="${t('Add new event, e.g. IPEMA Hyderabad 2026')}" style="flex:3"><button class="btn ghost" id="addev" style="flex:1">${t('Add')}</button></div>
     </div>
-    <div class="card"><h2>Team members</h2><div id="ulist"><div class="empty">Loading…</div></div></div>
-    <div class="card"><h2 id="uft">Add team member</h2>
-      <div class="grid2"><div><label class="f">Username</label><input class="i" id="u_un" autocapitalize="none" autocomplete="off"></div><div><label class="f">Full name</label><input class="i" id="u_nm" autocomplete="off"></div></div>
-      <div class="grid2"><div><label class="f">Role</label><select class="i" id="u_rl"><option value="member">Team member</option><option value="admin">Admin (management)</option></select></div>
-      <div><label class="f">Password <span id="u_pwh"></span></label><input class="i" id="u_pw" type="text" autocomplete="off"></div></div>
-      <label class="row small" style="margin-top:12px;gap:8px;justify-content:flex-start"><input type="checkbox" id="u_ac" checked style="flex:0;width:20px;height:20px"> <span>Active (can log in)</span></label>
-      <div class="row mt"><button class="btn line" id="u_clr">Clear</button><button class="btn" id="u_save">Save member</button></div>
+    <div class="card"><h2>${t('Team members')}</h2><div id="ulist"><div class="empty">${t('Loading…')}</div></div></div>
+    <div class="card"><h2 id="uft">${t('Add team member')}</h2>
+      <div class="grid2"><div><label class="f">${t('Username')}</label><input class="i" id="u_un" autocapitalize="none" autocomplete="off"></div><div><label class="f">${t('Full name')}</label><input class="i" id="u_nm" autocomplete="off"></div></div>
+      <div class="grid2"><div><label class="f">${t('Role')}</label><select class="i" id="u_rl"><option value="member">${t('Team member')}</option><option value="admin">${t('Admin (management)')}</option></select></div>
+      <div><label class="f">${t('Password')} <span id="u_pwh"></span></label><input class="i" id="u_pw" type="text" autocomplete="off"></div></div>
+      <label class="row small" style="margin-top:12px;gap:8px;justify-content:flex-start"><input type="checkbox" id="u_ac" checked style="flex:0;width:20px;height:20px"> <span>${t('Active (can log in)')}</span></label>
+      <div class="row mt"><button class="btn line" id="u_clr">${t('Clear')}</button><button class="btn" id="u_save">${t('Save member')}</button></div>
     </div>
     ${accountCard()}`;
   const saveEv = async (data) => { try { const r = await api('saveSettings', { data }); S.session.settings = r.settings; LS.set('surya_session', S.session); toast('Event updated'); adminView(m); renderHeader(); } catch (e) { toast(e.message, true); } };
   $('#aev').onchange = e => saveEv({ activeEvent: e.target.value, events: st.events });
   $('#addev').onclick = () => { const v = $('#newev').value.trim(); if (!v) return; saveEv({ activeEvent: v, events: (st.events || []).concat(v) }); };
-  const clr = () => { ['u_un','u_nm','u_pw'].forEach(i => $('#' + i).value = ''); $('#u_un').readOnly = false; $('#u_rl').value = 'member'; $('#u_ac').checked = true; $('#uft').textContent = 'Add team member'; $('#u_pwh').textContent = ''; };
+  const clr = () => { ['u_un', 'u_nm', 'u_pw'].forEach(i => $('#' + i).value = ''); $('#u_un').readOnly = false; $('#u_rl').value = 'member'; $('#u_ac').checked = true; $('#uft').textContent = t('Add team member'); $('#u_pwh').textContent = ''; };
   $('#u_clr').onclick = clr;
   $('#u_save').onclick = async () => {
     try { const r = await api('saveUser', { data: { username: $('#u_un').value.trim(), name: $('#u_nm').value.trim(), role: $('#u_rl').value, password: $('#u_pw').value, active: $('#u_ac').checked } });
-      drawUsers(r.users); clr(); toast('Team member saved'); } catch (e) { toast(e.message, true); }
+      S.team = r.users; LS.set('surya_team', S.team); drawUsers(r.users); clr(); toast('Team member saved'); } catch (e) { toast(e.message, true); }
   };
   const drawUsers = users => {
-    $('#ulist').innerHTML = `<table class="t"><tr><th>Name</th><th>Username</th><th>Role</th><th></th></tr>${users.map(u => `<tr style="${u.active ? '' : 'opacity:.5'}"><td>${esc(u.name)}</td><td>${esc(u.username)}</td><td>${u.role === 'admin' ? 'Admin' : 'Member'}${u.active ? '' : ' (off)'}</td><td style="text-align:right"><button class="btn line sm" data-u="${esc(u.username)}">Edit</button></td></tr>`).join('')}</table>`;
+    $('#ulist').innerHTML = `<table class="t"><tr><th>${t('Name')}</th><th>${t('Username')}</th><th>${t('Role')}</th><th></th></tr>${users.map(u => `<tr style="${u.active ? '' : 'opacity:.5'}"><td>${esc(u.name)}</td><td>${esc(u.username)}</td><td>${u.role === 'admin' ? t('Admin') : t('Member')}${u.active ? '' : ' (' + t('off') + ')'}</td><td style="text-align:right"><button class="btn line sm" data-u="${esc(u.username)}">${t('Edit')}</button></td></tr>`).join('')}</table>`;
     $('#ulist').querySelectorAll('[data-u]').forEach(b => b.onclick = () => { const u = users.find(x => x.username === b.dataset.u);
       $('#u_un').value = u.username; $('#u_un').readOnly = true; $('#u_nm').value = u.name; $('#u_rl').value = u.role; $('#u_ac').checked = u.active; $('#u_pw').value = '';
-      $('#uft').textContent = 'Edit ' + u.name; $('#u_pwh').textContent = '(leave blank to keep)'; $('#u_nm').scrollIntoView({ behavior: 'smooth', block: 'center' }); });
+      $('#uft').textContent = t('Edit') + ': ' + u.name; $('#u_pwh').textContent = '(' + t('leave blank to keep') + ')'; $('#u_nm').scrollIntoView({ behavior: 'smooth', block: 'center' }); });
   };
   bindAccount();
-  try { drawUsers((await api('users')).users); } catch (e) { $('#ulist').innerHTML = `<div class="empty">${esc(e.message)}</div>`; }
+  try { const us = (await api('users')).users; S.team = us; LS.set('surya_team', us); drawUsers(us); } catch (e) { $('#ulist').innerHTML = `<div class="empty">${esc(t(e.message))}</div>`; }
 }
 
 function accountCard() {
-  return `<div class="card"><h2>My account</h2>
-    <p class="small muted" style="margin-top:-4px">${esc(me().name)} · ${esc(me().username)} · ${isAdmin() ? 'Admin' : 'Team member'}</p>
-    <div class="grid2"><div><label class="f">Current password</label><input class="i" id="cp_o" type="password"></div><div><label class="f">New password</label><input class="i" id="cp_n" type="password"></div></div>
-    <button class="btn ghost block mt" id="cp">Change password</button>
-    ${S.queue.length ? `<p class="small" style="color:var(--warn)">${S.queue.length} offline change(s) waiting to sync. Don't log out until they sync.</p><button class="btn line block" id="sync">Sync now</button>` : ''}
-    <button class="btn line block mt" id="lo">Log out</button>
-    <p class="small muted center">Server: ${S.server === 'demo' ? 'Demo mode (this phone only)' : esc(S.server.replace(/^https:\/\/script\.google\.com\/macros\/s\/(.{8}).*$/, 'Google Sheet ($1…)'))}</p>
-    ${S.server === 'demo' ? '<button class="btn danger block sm" id="dreset">Reset demo data</button>' : ''}</div>`;
+  const n = S.queue.length + S.failed.length;
+  return `<div class="card"><h2>${t('My account')}</h2>
+    <p class="small muted" style="margin-top:-4px">${esc(me().name)} · ${esc(me().username)} · ${isAdmin() ? t('Admin') : t('Team member')}</p>
+    <label class="f">${t('Language')}</label>${langSwitch('ac_lang')}
+    <div class="grid2"><div><label class="f">${t('Current password')}</label><input class="i" id="cp_o" type="password"></div><div><label class="f">${t('New password')}</label><input class="i" id="cp_n" type="password"></div></div>
+    <button class="btn ghost block mt" id="cp">${t('Change password')}</button>
+    <button class="btn line block mt" id="sync">${t('Sync status')}${n ? ' · ' + n : ''}</button>
+    ${n ? `<p class="small" style="color:var(--warn)">${t("Changes waiting to sync: {n}. Don't log out until they sync.", { n })}</p>` : ''}
+    <button class="btn line block mt" id="lo">${t('Log out')}</button>
+    <p class="small muted center">${t('Server')}: ${S.server === 'demo' ? t('Demo mode (this phone only)') : esc(S.server.replace(/^https:\/\/script\.google\.com\/macros\/s\/(.{8}).*$/, 'Google Sheet ($1…)'))}</p>
+    ${S.server === 'demo' ? `<button class="btn danger block sm" id="dreset">${t('Reset demo data')}</button>` : ''}</div>`;
 }
 function bindAccount() {
   $('#cp').onclick = async () => { try { await api('changePassword', { oldPassword: $('#cp_o').value, newPassword: $('#cp_n').value }); toast('Password changed'); $('#cp_o').value = $('#cp_n').value = ''; } catch (e) { toast(e.message, true); } };
   $('#lo').onclick = async () => {
-    if (S.queue.length && !confirm('You have unsynced offline scans. Log out anyway? (They stay on this phone and sync after next login.)')) return;
+    if (S.queue.length && !confirm(t('You have unsynced offline scans. Log out anyway? (They stay on this phone and sync after next login.)'))) return;
     try { await api('logout'); } catch {} logoutLocal();
   };
-  const sy = $('#sync'); if (sy) sy.onclick = () => syncQueue();
-  const dr = $('#dreset'); if (dr) dr.onclick = () => { if (confirm('Reset all demo data?')) { Demo.reset(); LS.del('surya_leads_cache'); S.leads = []; logoutLocal(); } };
+  $('#sync').onclick = openSync;
+  bindLang('ac_lang');
+  const dr = $('#dreset'); if (dr) dr.onclick = () => { if (confirm(t('Reset all demo data?'))) { Demo.reset(); LS.del('surya_leads_cache'); S.leads = []; S.queue = []; S.failed = []; saveQueue(); LS.set('surya_failed', []); logoutLocal(); } };
 }
 function meView(m) { m.innerHTML = accountCard(); bindAccount(); }
 
@@ -868,14 +1498,14 @@ const Install = (() => {
   function maybeShow() {
     if (standalone() || dismissedRecently()) return;
     if (deferred) {
-      const d = show('<b>Install SuryaIOTech Leads</b><div class="small" style="opacity:.8">Opens full-screen, works offline</div>');
-      const b = document.createElement('button'); b.className = 'btn'; b.textContent = 'Install';
+      const d = show(`<b>${t('Install SuryaIOTech Leads')}</b><div class="small" style="opacity:.8">${t('Opens full-screen, works offline')}</div>`);
+      const b = document.createElement('button'); b.className = 'btn'; b.textContent = t('Install');
       b.onclick = async () => { hide(false); deferred.prompt(); const r = await deferred.userChoice; deferred = null; if (r.outcome !== 'accepted') LS.set('surya_install_dismissed', Date.now()); };
       d.insertBefore(b, d.querySelector('.x'));
     } else if (iosSafari) {
-      show(`<b>Install on your iPhone</b><div class="small" style="opacity:.9;margin-top:2px">Tap ${SHARE} <b>Share</b> below, then <b>Add to Home Screen</b></div>`, 'ios');
+      show(`<b>${t('Install on your iPhone')}</b><div class="small" style="opacity:.9;margin-top:2px">${t('Tap {icon} Share below, then Add to Home Screen', { icon: SHARE })}</div>`, 'ios');
     } else if (isIOS) {
-      show('<b>Install on your iPhone</b><div class="small" style="opacity:.9;margin-top:2px">Open this link in <b>Safari</b>, then Share → <b>Add to Home Screen</b></div>');
+      show(`<b>${t('Install on your iPhone')}</b><div class="small" style="opacity:.9;margin-top:2px">${t('Open this link in Safari, then Share → Add to Home Screen')}</div>`);
     }
   }
   window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); deferred = e; setTimeout(maybeShow, 1500); });
@@ -887,7 +1517,7 @@ const Install = (() => {
 /* ============================== BOOT ============================== */
 render();
 setTimeout(Install.maybeShow, 2500);
-if (S.session) { api('me').then(r => { S.session.user = r.user; S.session.settings = r.settings; LS.set('surya_session', S.session); render(); refreshLeads(); syncQueue(); }).catch(() => {}); }
+if (S.session) { api('me').then(r => { S.session.user = r.user; S.session.settings = r.settings; LS.set('surya_session', S.session); if (!S.view && S.tab !== 'scan') render(); else renderHeader(); afterLogin(); }).catch(() => {}); }
 </script>
 </body>
 </html>
