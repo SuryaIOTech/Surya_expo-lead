@@ -238,7 +238,7 @@ input.i.fromcard{border-color:var(--gold);background:#fffbf1}
    CONFIG — paste your Apps Script Web App URL here so the team never has to.
    (Leave '' to let users paste it on the login screen, or use 'demo'.)
    ========================================================================== */
-const DEFAULT_SERVER = '';
+const DEFAULT_SERVER = 'https://script.google.com/macros/s/AKfycbwSIbFAGVM7WM0L0JbJuGdnPNQeMrV3gNCoEpR3uoXLUYrL99sUjHQPsI9l4Gu3DDVr9g/exec';
 
 /* ============================== UTILITIES ============================== */
 const $ = s => document.querySelector(s);
@@ -591,6 +591,11 @@ const Demo = (() => {
 /* ============================== API + OFFLINE QUEUE ============================== */
 const urlServer = new URLSearchParams(location.search).get('server');
 if (urlServer) LS.set('surya_server', urlServer);
+// When the Server URL in this file changes (e.g. after a new Apps Script deployment), every phone switches to it.
+if (DEFAULT_SERVER && DEFAULT_SERVER !== 'demo' && LS.get('surya_server_default', '') !== DEFAULT_SERVER) {
+  if (LS.get('surya_server', '') !== 'demo') LS.set('surya_server', DEFAULT_SERVER);
+  LS.set('surya_server_default', DEFAULT_SERVER);
+}
 const S = {
   server: LS.get('surya_server', DEFAULT_SERVER),
   session: LS.get('surya_session', null),     // {token,user,settings}
