@@ -305,6 +305,7 @@ const TR = {   // 'English text': ['हिंदी', 'मराठी']
   'Check the name and type the contact no.': ['नाम जाँचें और संपर्क नंबर टाइप करें।', 'नाव तपासा आणि संपर्क क्रमांक टाइप करा.'],
   'Name read from the card. Check the spelling.': ['नाम कार्ड से पढ़ा गया। स्पेलिंग जाँच लें।', 'नाव कार्डवरून वाचले. स्पेलिंग तपासा.'],
   "Couldn't read the name. Tap Read name from card and hold the badge steady.": ['नाम पढ़ा नहीं जा सका। "कार्ड से नाम पढ़ें" दबाएँ और बैज स्थिर रखें।', 'नाव वाचता आले नाही. "कार्डवरून नाव वाचा" दाबा आणि बॅज स्थिर धरा.'],
+  'The QR code was not fully in the picture. Tap Read name from card and fit the printed name and the QR in the frame.': ['तस्वीर में QR कोड पूरा नहीं आया। "कार्ड से नाम पढ़ें" दबाएँ और छपा नाम व QR कोड फ्रेम में रखें।', 'फोटोमध्ये QR कोड पूर्ण आला नाही. "कार्डवरून नाव वाचा" दाबा आणि छापलेले नाव व QR कोड फ्रेममध्ये ठेवा.'],
   'Card reader could not load. Type the name instead.': ['कार्ड रीडर लोड नहीं हो सका। नाम टाइप करें।', 'कार्ड रीडर लोड झाला नाही. नाव टाइप करा.'],
   'Fit the printed name and the QR code inside the frame.': ['छपा हुआ नाम और QR कोड फ्रेम के अंदर रखें।', 'छापलेले नाव आणि QR कोड फ्रेममध्ये ठेवा.'], 'Capture': ['फ़ोटो लें', 'फोटो घ्या'],
   // login
@@ -752,7 +753,8 @@ const CardReader = (() => {
   async function read(pic) {
     if (pic === 'demo') { await new Promise(r => setTimeout(r, 900)); return { name: 'Anil Deshmukh Patil', company: 'DESHMUKH AGRO FARMS PVT LTD', country: '', number: '' }; }
     const w = await engine();
-    const { canvas } = region(pic);
+    const { canvas, foundQR } = region(pic);
+    if (!foundQR) return { name: '', jobTitle: '', company: '', country: '', number: '', noQR: true };   // no QR in the picture: don't guess from other text
     const { data } = await w.recognize(canvas);
     return parseBadgeText(data.lines.map(l => ({ text: l.text, conf: l.confidence, words: (l.words || []).map(w => ({ text: w.text, conf: w.confidence, h: w.bbox.y1 - w.bbox.y0 })) })));
   }
@@ -784,9 +786,10 @@ function parseBadgeText(lines) {
     if (onlyNum) { out.number = out.number || num.toUpperCase(); if (cands.length) break; continue; }                            // badge number under the QR                                             // badge number under the QR
     // keep real words: letters only, read with confidence; drop edge noise like "S$", "=.", "es" around an all-caps line
     let ws = words.map(w => ({ t: String(w.text).replace(/^[^A-Za-z(&]+|[^A-Za-z.)&]+$/g, ''), conf: +w.conf || 0, h: +w.h || 0 }))
-      .filter(w => /^[A-Za-z][A-Za-z.&'()\-]*$|^&$/.test(w.t) && w.conf >= 55);
+      .filter(w => /^[A-Za-z][A-Za-z.&'()\-]*$|^&$/.test(w.t) && w.conf >= 60);
     const caps = ws.map(w => w.t).join('').replace(/[^A-Za-z]/g, ''), up = (caps.match(/[A-Z]/g) || []).length;
-    if (caps.length && up / caps.length >= 0.6) ws = ws.filter(w => w.t === w.t.toUpperCase() || w.t.length > 3);
+    if (caps.length && up / caps.length < 0.85) continue;                                                                          // badge text is printed in CAPITALS: skip sentence-case text (letters, posters)
+    ws = ws.filter(w => w.t === w.t.toUpperCase());
     ws = ws.filter(w => /[A-Za-z]{2,}|^[A-Z]\.?$|^&$/.test(w.t));
     const letters = ws.map(w => w.t).join('').replace(/[^A-Za-z]/g, '').length;
     if (letters < 2) { if (cands.length && /\d/.test(raw)) break; continue; }
@@ -858,6 +861,7 @@ async function readCardInto(pic, leadId) {
   if (!S.view || !S.view.lead || S.view.lead.leadId !== leadId) return;
   S.view.reading = false;
   if (failed) { S.view.cardMsg = 'load'; return updateCardNote(); }
+  if (r && r.noQR) { S.view.cardMsg = 'noqr'; return updateCardNote(); }
   if (!r || !r.name) { S.view.cardMsg = 'none'; return updateCardNote(); }
   S.view.card = r; S.view.cardMsg = 'ok';
   [['name', r.name], ['jobTitle', r.jobTitle], ['company', r.company], ['country', r.country]].forEach(([k, v]) => {
@@ -871,6 +875,7 @@ function updateCardNote() {
   const m = S.view.reading ? ['busy', '<span class="spin dark"></span>' + t('Reading the name on the card…')]
     : S.view.cardMsg === 'ok' ? ['ok', I.check + t('Name read from the card. Check the spelling.')]
     : S.view.cardMsg === 'none' ? ['warn', I.alert + t("Couldn't read the name. Tap Read name from card and hold the badge steady.")]
+    : S.view.cardMsg === 'noqr' ? ['warn', I.alert + t('The QR code was not fully in the picture. Tap Read name from card and fit the printed name and the QR in the frame.')]
     : S.view.cardMsg === 'load' ? ['warn', I.alert + t('Card reader could not load. Type the name instead.')] : null;
   n.className = 'cardnote' + (m ? ' ' + m[0] : ''); n.innerHTML = m ? m[1] : '';
   const bn = $('#bnote'); if (bn) bn.innerHTML = S.view.reading || S.view.cardMsg === 'ok' ? '<br>' + t('Check the name and type the contact no.') : '<br>' + t('Badge details could not be read. Please type name and contact no.');
