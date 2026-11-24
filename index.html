@@ -238,7 +238,7 @@ input.i.fromcard{border-color:var(--gold);background:#fffbf1}
    CONFIG — paste your Apps Script Web App URL here so the team never has to.
    (Leave '' to let users paste it on the login screen, or use 'demo'.)
    ========================================================================== */
-const DEFAULT_SERVER = 'https://script.google.com/macros/s/AKfycbwSIbFAGVM7WM0L0JbJuGdnPNQeMrV3gNCoEpR3uoXLUYrL99sUjHQPsI9l4Gu3DDVr9g/exec';
+const DEFAULT_SERVER = '';
 
 /* ============================== UTILITIES ============================== */
 const $ = s => document.querySelector(s);
@@ -733,27 +733,28 @@ const CardReader = (() => {
     const t = document.createElement('canvas'); t.width = w; t.height = h; const x = t.getContext('2d'); x.drawImage(c, 0, 0, w, h);
     const r = jsQR(x.getImageData(0, 0, w, h).data, w, h, { inversionAttempts: 'attemptBoth' });
     if (!r) return null;
-    const L = r.location, pts = [L.topLeftCorner, L.topRightCorner, L.bottomLeftCorner, L.bottomRightCorner];
-    const xs = pts.map(p => p.x / sc), ys = pts.map(p => p.y / sc);
-    return { x0: Math.min(...xs), x1: Math.max(...xs), y0: Math.min(...ys), y1: Math.max(...ys) };
+    const P = k => ({ x: r.location[k].x / sc, y: r.location[k].y / sc });
+    return { tl: P('topLeftCorner'), tr: P('topRightCorner'), bl: P('bottomLeftCorner'), br: P('bottomRightCorner') };
   }
-  /** The printed name sits just above the QR: read only that strip, enlarged. */
+  /** The printed lines sit just above the QR. Turn the picture so the QR is upright (badge held sideways
+      or tilted), then cut out that strip, enlarged. */
   function region(c) {
-    const q = locateQR(c); let x0 = 0, y0 = 0, x1 = c.width, y1 = c.height;
-    if (q) { const qw = q.x1 - q.x0, qh = q.y1 - q.y0, cx = (q.x0 + q.x1) / 2; x0 = cx - qw * 1.9; x1 = cx + qw * 1.9; y0 = q.y0 - qh * 2.2; y1 = q.y0 + qh * 0.06; }
-    x0 = Math.max(0, x0); y0 = Math.max(0, y0); x1 = Math.min(c.width, x1); y1 = Math.min(c.height, y1);
-    if (x1 - x0 < 40 || y1 - y0 < 30) { x0 = 0; y0 = 0; x1 = c.width; y1 = c.height; }
-    const W = x1 - x0, H = y1 - y0, k = Math.max(1, Math.min(3, 1400 / W));
+    const q = locateQR(c);
+    if (!q) return { canvas: c, foundQR: false };
+    const cx = (q.tl.x + q.tr.x + q.bl.x + q.br.x) / 4, cy = (q.tl.y + q.tr.y + q.bl.y + q.br.y) / 4;
+    const side = Math.hypot(q.tr.x - q.tl.x, q.tr.y - q.tl.y) * 1.08, ang = Math.atan2(q.tr.y - q.tl.y, q.tr.x - q.tl.x);
+    const W = side * 3.3, H = side * 2.3, k = Math.max(1, Math.min(3, 1400 / W));        // the badge sticker: 2.3 QR-heights above the QR, 3.3 wide
     const o = document.createElement('canvas'); o.width = Math.round(W * k); o.height = Math.round(H * k);
-    const g = o.getContext('2d'); g.imageSmoothingQuality = 'high'; g.drawImage(c, x0, y0, W, H, 0, 0, o.width, o.height);
-    return { canvas: o, foundQR: !!q };
+    const g = o.getContext('2d'); g.fillStyle = '#fff'; g.fillRect(0, 0, o.width, o.height); g.imageSmoothingQuality = 'high';
+    g.scale(k, k); g.translate(W / 2, H + side / 2 - side * 0.045);   /* strip ends at the top edge of the QR */ g.rotate(-ang); g.translate(-cx, -cy); g.drawImage(c, 0, 0);
+    return { canvas: o, foundQR: true };
   }
   async function read(pic) {
     if (pic === 'demo') { await new Promise(r => setTimeout(r, 900)); return { name: 'Anil Deshmukh Patil', company: 'DESHMUKH AGRO FARMS PVT LTD', country: '', number: '' }; }
     const w = await engine();
     const { canvas } = region(pic);
     const { data } = await w.recognize(canvas);
-    return parseBadgeText(data.lines.map(l => ({ text: l.text, conf: l.confidence, h: l.words && l.words.length ? l.words.reduce((a, w) => a + (w.bbox.y1 - w.bbox.y0), 0) / l.words.length : l.bbox.y1 - l.bbox.y0 })));
+    return parseBadgeText(data.lines.map(l => ({ text: l.text, conf: l.confidence, words: (l.words || []).map(w => ({ text: w.text, conf: w.confidence, h: w.bbox.y1 - w.bbox.y0 })) })));
   }
   const preload = () => { if (S.server !== 'demo' && isOnline()) engine().catch(() => {}); };
   return { snap, read, preload };
@@ -761,41 +762,60 @@ const CardReader = (() => {
 
 const BADGE_SKIP = /poultry\s*india|our industry show|knowledge|\bnation\b|\bexpo\b|november|novotel|hicc|hyderabad|organi[sz]ed|^(exhibitor|visitor|delegate|speaker|media|organiser|organizer|staff|vip)$|edition|ipema|\bcipa\b|www|\.com|\.in\b|scan me/i;
 const BADGE_COUNTRY = /^(india|nepal|bangladesh|sri lanka|bhutan|pakistan|u\.?a\.?e\.?|usa|u\.?s\.?a\.?|uk|china|thailand|vietnam|indonesia|malaysia|netherlands|denmark|germany|italy|spain|france|turkey|egypt|kenya|nigeria|oman|saudi arabia|qatar|kuwait|iran|myanmar|israel|belgium|brazil|japan|korea|singapore)$/i;
-/** Turns the text lines read from a badge into { name, company, country, number }.
-    Badge layout (Poultry India 2026): event date, then the name in large letters (wrapping onto
-    as many lines as it needs), then the company in smaller letters just above the QR. */
+/** Turns the text lines read from a badge into { name, jobTitle, company, country, number }.
+    Badge layout (Poultry India 2026): event date, then the name in large letters (wrapping onto as many
+    lines as it needs), then in smaller letters the job title (if printed) and the company, just above the QR. */
+const COMPANY_WORDS = /\b(pvt|private|ltd|limited|llp|inc|corp|co|company|farms?|agro|poultry|hatcher(y|ies)|feeds?|foods?|traders?|trading|enterprises?|industries|group|solutions|technologies|tech|iotech|systems|equipments?|exports?|breeders?|chicks|biotech|pharma|nutrition|labs?|associates|international|global|sons|bros|brothers|corporation|udyog|kendra|krishi|dairy|integration|automation)\b/i;
+const TITLE_WORDS = /\b(engineer|manager|director|owner|proprietor|partner|ceo|cto|cfo|coo|md|gm|agm|dgm|founder|president|chairman|head|executive|officer|sales|marketing|service|technician|consultant|doctor|dr|vet|veterinarian|farmer|supervisor|incharge|in-charge|lead|assistant|associate|representative|dealer|distributor|analyst|accountant|admin|administrator|operator|coordinator|specialist|advisor|adviser|intern|trainee|student|professor|scientist)\b/i;
 function parseBadgeText(lines) {
-  const out = { name: '', company: '', country: '', number: '' };
-  let cands = [];
+  const out = { name: '', jobTitle: '', company: '', country: '', number: '' };
+  let cands = [], seenDate = false;
+  const hasDate = lines.some(l => /november|\b20\d\d\b/i.test(l.text || '') && /[A-Za-z]{3}/.test(l.text || ''));
   for (const l of lines) {
     const raw = String(l.text || '').replace(/\s+/g, ' ').trim(); if (!raw) continue;
-    const compact = raw.replace(/\s/g, '');
-    if (/^[A-Z]{0,3}\d{4,8}$/i.test(compact)) { out.number = out.number || compact.toUpperCase(); if (cands.length) break; continue; }   // badge number under the QR
-    if (/organi[sz]ed|^(exhibitor|visitor|delegate|speaker|media|vip)$/i.test(raw)) { if (cands.length) break; continue; }            // footer
-    if (BADGE_SKIP.test(raw) || /\d/.test(raw)) { if (l.conf >= 60) cands = []; continue; }                                         // header and date: the name starts after them
-    if (l.conf < 60) continue;
-    let toks = raw.replace(/[^A-Za-z .&'()\-]/g, ' ').split(/\s+/).filter(Boolean);
-    const caps = toks.join('').replace(/[^A-Za-z]/g, ''), up = (caps.match(/[A-Z]/g) || []).length;
-    if (caps.length && up / caps.length >= 0.6) toks = toks.filter(x => x.length > 3 || x === x.toUpperCase());
-    toks = toks.filter(x => /[A-Za-z]{2,}|^[A-Z]\.?$|^&$/.test(x));
-    const txt = toks.join(' ').replace(/^[^A-Za-z]+|[^A-Za-z.)]+$/g, '');
-    const letters = txt.replace(/[^A-Za-z]/g, '').length;
-    if (letters < 2 || letters / compact.length < 0.7) continue;
-    cands.push({ txt, h: +l.h || 0 });
+    const words = (l.words && l.words.length ? l.words : raw.split(' ').map(x => ({ text: x, conf: l.conf, h: l.h })));
+    const num = /november|\b20\d\d\b/i.test(raw) ? null : words.map(w => String(w.text).trim()).find(x => /^[A-Z]{0,3}\d{4,8}$/i.test(x) && /\d{4}/.test(x));
+    if (/november|\b20\d\d\b/i.test(raw) && /[A-Za-z]{3}/.test(raw)) { cands = []; seenDate = true; continue; }                 // event date: the name starts after it
+    if (hasDate && !seenDate) continue;                                                                                           // logos and header above the date
+    if (!cands.length && BADGE_SKIP.test(raw)) continue;                                                                           // header above the name
+    if (/organi[sz]ed|^(exhibitor|visitor|delegate|speaker|media|vip)$/i.test(raw)) { if (cands.length) break; continue; }          // footer
+
+    const onlyNum = num && !/[A-Za-z]{3}/.test(raw.replace(num, ''));
+    if (onlyNum) { out.number = out.number || num.toUpperCase(); if (cands.length) break; continue; }                            // badge number under the QR                                             // badge number under the QR
+    // keep real words: letters only, read with confidence; drop edge noise like "S$", "=.", "es" around an all-caps line
+    let ws = words.map(w => ({ t: String(w.text).replace(/^[^A-Za-z(&]+|[^A-Za-z.)&]+$/g, ''), conf: +w.conf || 0, h: +w.h || 0 }))
+      .filter(w => /^[A-Za-z][A-Za-z.&'()\-]*$|^&$/.test(w.t) && w.conf >= 55);
+    const caps = ws.map(w => w.t).join('').replace(/[^A-Za-z]/g, ''), up = (caps.match(/[A-Z]/g) || []).length;
+    if (caps.length && up / caps.length >= 0.6) ws = ws.filter(w => w.t === w.t.toUpperCase() || w.t.length > 3);
+    ws = ws.filter(w => /[A-Za-z]{2,}|^[A-Z]\.?$|^&$/.test(w.t));
+    const letters = ws.map(w => w.t).join('').replace(/[^A-Za-z]/g, '').length;
+    if (letters < 2) { if (cands.length && /\d/.test(raw)) break; continue; }
+    if (/\d/.test(raw) && !cands.length && letters < 6) continue;
+    const big = ws.filter(w => w.t.length > 1);
+    cands.push({ txt: ws.map(w => w.t).join(' '), h: big.length ? big.reduce((a, w) => a + w.h, 0) / big.length : 0 });
   }
   // Old layout ended with a country line
   const ci = cands.findIndex((c, i) => i > 0 && BADGE_COUNTRY.test(c.txt));
   if (ci >= 0) { out.country = cands[ci].txt; cands.splice(ci, 1); }
-  cands = cands.slice(0, 5);
+  cands = cands.slice(-6);                                                                                 // the lines nearest the QR
   let nameN = cands.length;
   if (cands.length >= 2) {
     const big = Math.max(...cands.map(c => c.h));
-    let k = cands.length; while (k > 1 && big && cands[k - 1].h && cands[k - 1].h <= big * 0.88) k--;   // trailing smaller lines = company
-    nameN = k < cands.length ? k : cands.length - 1;                                                      // same size: last line is the company
+    let k = cands.length; while (k > 1 && big && cands[k - 1].h && cands[k - 1].h <= big * 0.86) k--;   // trailing smaller lines
+    nameN = k < cands.length ? k : cands.length - 1;                                                      // same size: last line is not the name
   }
   const title = s => s.toLowerCase().replace(/(^|[\s\-'(./&])([a-z])/g, (m, a, b) => a + b.toUpperCase());
   out.name = title(cands.slice(0, nameN).map(c => c.txt).join(' ')).replace(/\s+/g, ' ').trim();
-  out.company = cands.slice(nameN).map(c => c.txt).join(' ').replace(/\s+/g, ' ').trim();   // kept as printed
+  // Smaller lines: job title (if any) first, then the company
+  const small = cands.slice(nameN).map(c => c.txt);
+  let ti = 0;
+  if (small.length >= 2) {
+    const firstCo = small.findIndex(x => COMPANY_WORDS.test(x));
+    if (firstCo > 0) ti = firstCo;
+    else if (firstCo < 0 && TITLE_WORDS.test(small[0])) ti = 1;
+  } else if (small.length === 1 && TITLE_WORDS.test(small[0]) && !COMPANY_WORDS.test(small[0])) ti = 1;
+  out.jobTitle = title(small.slice(0, ti).join(' '));
+  out.company = small.slice(ti).join(' ');                                                                  // kept as printed
   if (out.country) out.country = title(out.country);
   return out;
 }
@@ -840,7 +860,7 @@ async function readCardInto(pic, leadId) {
   if (failed) { S.view.cardMsg = 'load'; return updateCardNote(); }
   if (!r || !r.name) { S.view.cardMsg = 'none'; return updateCardNote(); }
   S.view.card = r; S.view.cardMsg = 'ok';
-  [['name', r.name], ['company', r.company], ['country', r.country]].forEach(([k, v]) => {
+  [['name', r.name], ['jobTitle', r.jobTitle], ['company', r.company], ['country', r.country]].forEach(([k, v]) => {
     const el = $('#e_' + k); if (!el || el.readOnly || !v) return;
     if (!el.value.trim() || el.dataset.fromCard) { el.value = v; el.dataset.fromCard = '1'; el.classList.remove('need'); el.classList.add('fromcard'); const w = el.parentElement.querySelector('.needtxt'); if (w) w.remove(); }
   });
@@ -1155,7 +1175,7 @@ function leadView(m) {
   const need = k => !L[k] && ['name', 'mobile'].includes(k);
   const fld = (k, label, type = 'text', mode = '') => `<div><label class="f">${label}${need(k) && !cv(k) ? ` <span class="needtxt" style="color:var(--warn)">· ${t('not found, please type')}</span>` : ''}</label>
      <input class="i ${need(k) && !cv(k) ? 'need' : ''}${cv(k) ? ' fromcard' : ''}" id="e_${k}" type="${type}" ${mode ? `inputmode="${mode}"` : ''} value="${esc(L[k] || cv(k))}" ${cv(k) ? 'data-from-card="1"' : ''} ${canEdit(k) ? '' : 'readonly style="background:#f7f8fa"'}></div>`;
-  const card = S.view.card; const cv = k => (!L[k] && card && ({ name: card.name, company: card.company, country: card.country })[k]) || '';
+  const card = S.view.card; const cv = k => (!L[k] && card && ({ name: card.name, jobTitle: card.jobTitle, company: card.company, country: card.country })[k]) || '';
   const dup = status === 'existing';
   const names = teamNames(); if (L.assignedTo && !names.includes(L.assignedTo)) names.push(L.assignedTo);
   const notSynced = offline || isPending(L, pendingSet());
@@ -1218,7 +1238,7 @@ function leadView(m) {
     if (c.classList.contains('locked')) return toast('Saved interests can only be removed by an admin');
     const i = c.dataset.i; if (sel.has(i)) { sel.delete(i); c.classList.remove('on'); c.textContent = t(i); } else { sel.add(i); c.classList.add('on'); c.textContent = t(i); }
   });
-  ['name', 'company', 'country'].forEach(k => { const el = $('#e_' + k); if (el) el.addEventListener('input', () => { delete el.dataset.fromCard; el.classList.remove('fromcard'); }); });
+  ['name', 'jobTitle', 'company', 'country'].forEach(k => { const el = $('#e_' + k); if (el) el.addEventListener('input', () => { delete el.dataset.fromCard; el.classList.remove('fromcard'); }); });
   let ctype = L.customerType || '';
   m.querySelectorAll('#ctype [data-ct]').forEach(b => b.onclick = () => { ctype = ctype === b.dataset.ct ? '' : b.dataset.ct; m.querySelectorAll('#ctype [data-ct]').forEach(x => { x.classList.toggle('on', x.dataset.ct === ctype); x.setAttribute('aria-pressed', x.dataset.ct === ctype); }); });
   m.querySelectorAll('#fuq .chip').forEach(c => c.onclick = () => { $('#e_fu').value = c.dataset.d === 'x' ? '' : addDays(+c.dataset.d); });
