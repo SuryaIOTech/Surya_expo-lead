@@ -238,7 +238,7 @@ input.i.fromcard{border-color:var(--gold);background:#fffbf1}
    CONFIG — paste your Apps Script Web App URL here so the team never has to.
    (Leave '' to let users paste it on the login screen, or use 'demo'.)
    ========================================================================== */
-const DEFAULT_SERVER = 'https://script.google.com/macros/s/AKfycbxDqV0V2pvmFqXTvLDotes_vrZQf1jiF03Rv9uOxojf_CrCPcgXF7oL0MLMmtOWaAHiag/exec';
+const DEFAULT_SERVER = 'https://script.google.com/macros/s/AKfycbzDvgFmCtqaZLbmk9FOKLkq0YpvFJ6cFbiS48cNcJWRFVKPy1_oVIOeTFfx6iEaJ6a_5A/exec';
 
 /* ============================== UTILITIES ============================== */
 const $ = s => document.querySelector(s);
@@ -306,6 +306,7 @@ const TR = {   // 'English text': ['हिंदी', 'मराठी']
   'Name read from the card. Check the spelling.': ['नाम कार्ड से पढ़ा गया। स्पेलिंग जाँच लें।', 'नाव कार्डवरून वाचले. स्पेलिंग तपासा.'],
   "Couldn't read the name. Tap Read name from card and hold the badge steady.": ['नाम पढ़ा नहीं जा सका। "कार्ड से नाम पढ़ें" दबाएँ और बैज स्थिर रखें।', 'नाव वाचता आले नाही. "कार्डवरून नाव वाचा" दाबा आणि बॅज स्थिर धरा.'],
   'The QR code was not fully in the picture. Tap Read name from card and fit the printed name and the QR in the frame.': ['तस्वीर में QR कोड पूरा नहीं आया। "कार्ड से नाम पढ़ें" दबाएँ और छपा नाम व QR कोड फ्रेम में रखें।', 'फोटोमध्ये QR कोड पूर्ण आला नाही. "कार्डवरून नाव वाचा" दाबा आणि छापलेले नाव व QR कोड फ्रेममध्ये ठेवा.'],
+  '(older version)': ['(पुराना वर्शन)', '(जुनी आवृत्ती)'],
   'Card reader could not load. Type the name instead.': ['कार्ड रीडर लोड नहीं हो सका। नाम टाइप करें।', 'कार्ड रीडर लोड झाला नाही. नाव टाइप करा.'],
   'Fit the printed name and the QR code inside the frame.': ['छपा हुआ नाम और QR कोड फ्रेम के अंदर रखें।', 'छापलेले नाव आणि QR कोड फ्रेममध्ये ठेवा.'], 'Capture': ['फ़ोटो लें', 'फोटो घ्या'],
   // login
@@ -702,6 +703,10 @@ const CTYPES = ['Farmer', 'Group', 'Dealer'];
 const SET = () => (S.session && S.session.settings) || { activeEvent: '', events: [], interests: ['Green Mind', 'Climax', 'Trio', 'Power Panel', 'Gas Heater', 'Diesel Heater', 'Heater', 'Feeding System', 'Nipple System', 'Cone Fan', 'Cooling Pad'], statuses: ['New Lead','Follow-Up Required','Quotation Sent','Order Confirmed','Not Interested'] };
 
 /* ============================== SCANNER ============================== */
+/* Headings and labels of the organiser's page: never a visitor's details (safety net if an older server sends them). */
+const PAGE_JUNK = /^(my social presence|social presence|notes?|first name|last name|full name|name|e-?mail( id)?|company( name)?|job title|designation|phone( number)?|mobile( number)?|whats?a?pp|download|share|send|save|events?|products?|information|event logo|business card|create\s*\/?\s*edit|login|log in|sign in|sign up|welcome.*|forgot password|verify.*|enter otp|submit|cancel|close|home|about( us)?|contact( us)?|whom are you sharing.*)$/i;
+const isJunk = v => { v = String(v || '').replace(/\s+/g, ' ').trim(); return !!v && (PAGE_JUNK.test(v.replace(/[:：?]+\s*$/, '').trim()) || /[:：]\s*$/.test(v)); };
+
 /* ============================== READ NAME FROM CARD ==============================
    The badge QR holds only a link. If the organiser's page gives no name, the app reads the
    printed name and company from a camera picture of the card, on the phone itself (works offline). */
@@ -807,8 +812,12 @@ function parseBadgeText(lines) {
     let k = cands.length; while (k > 1 && big && cands[k - 1].h && cands[k - 1].h <= big * 0.86) k--;   // trailing smaller lines
     nameN = k < cands.length ? k : cands.length - 1;                                                      // same size: last line is not the name
   }
+  // A job-title or company line, or a line repeated below it ("FARMER / FARMER"), is not part of the name, even when printed large
+  const isTitleOrCo = (x, i) => TITLE_WORDS.test(x) || COMPANY_WORDS.test(x) || cands.slice(i + 1).some(c => c.txt === x);
+  let firstOther = cands.findIndex((c, i) => i > 0 && isTitleOrCo(c.txt, i));
+  if (firstOther > 0 && firstOther < nameN) nameN = firstOther;
   const title = s => s.toLowerCase().replace(/(^|[\s\-'(./&])([a-z])/g, (m, a, b) => a + b.toUpperCase());
-  out.name = title(cands.slice(0, nameN).map(c => c.txt).join(' ')).replace(/\s+/g, ' ').trim();
+  out.name = title(cands.slice(0, nameN).map(c => c.txt).join(' ')).replace(/\s+/g, ' ').trim().replace(/^(mr|mrs|ms|miss|shri|smt|sri)\.?\s+/i, '');
   // Smaller lines: job title (if any) first, then the company
   const small = cands.slice(nameN).map(c => c.txt);
   let ti = 0;
@@ -819,6 +828,8 @@ function parseBadgeText(lines) {
   } else if (small.length === 1 && TITLE_WORDS.test(small[0]) && !COMPANY_WORDS.test(small[0])) ti = 1;
   out.jobTitle = title(small.slice(0, ti).join(' '));
   out.company = small.slice(ti).join(' ');                                                                  // kept as printed
+  if (out.company && out.jobTitle && out.company.toLowerCase() === out.jobTitle.toLowerCase()) out.company = '';
+  if (!out.jobTitle && out.company && TITLE_WORDS.test(out.company) && !COMPANY_WORDS.test(out.company)) { out.jobTitle = title(out.company); out.company = ''; }
   if (out.country) out.country = title(out.country);
   return out;
 }
@@ -869,6 +880,7 @@ async function readCardInto(pic, leadId) {
     if (!el.value.trim() || el.dataset.fromCard) { el.value = v; el.dataset.fromCard = '1'; el.classList.remove('need'); el.classList.add('fromcard'); const w = el.parentElement.querySelector('.needtxt'); if (w) w.remove(); }
   });
   updateCardNote();
+  if (S.view.retype) S.view.retype();
 }
 function updateCardNote() {
   const n = $('#cardnote'); if (!n || !S.view) return;
@@ -919,7 +931,8 @@ async function processScan(parsed, manual, pic) {
     cacheLead(res.lead);
     beep(res.status === 'new');
     await stopScanner();
-    S.view = { type: 'lead', lead: res.lead, status: res.status, offline: !!res.offline, parsed, autoFilled: !!res.autoFilled };
+    ['name', 'jobTitle', 'company', 'country', 'email'].forEach(k => { if (isJunk(res.lead[k])) res.lead[k] = ''; });
+    S.view = { type: 'lead', lead: res.lead, status: res.status, offline: !!res.offline, parsed, autoFilled: !!res.autoFilled && !!res.lead.name };
     if (S.server === 'demo' && !pic && !manual && !res.lead.name) pic = 'demo';
     const readIt = pic && !manual && !res.lead.name;
     if (readIt) S.view.reading = true;
@@ -1095,7 +1108,7 @@ function bindLogin() {
     const b = $('#lbtn'); b.disabled = true; b.innerHTML = '<span class="spin"></span>';
     try {
       const r = await api('login', { username: $('#lu').value.trim(), password: $('#lp').value });
-      S.session = { token: r.token, user: r.user, settings: r.settings }; LS.set('surya_session', S.session); LS.set('surya_last_user', r.user.username);
+      S.session = { token: r.token, user: r.user, settings: r.settings, version: r.version || '' }; LS.set('surya_session', S.session); LS.set('surya_last_user', r.user.username);
       S.tab = 'scan'; S.view = null; S.fuWho = undefined; render(); afterLogin();
     } catch (e) { toast(e.message, true); b.disabled = false; b.textContent = t('Log in'); }
   };
@@ -1244,8 +1257,12 @@ function leadView(m) {
     const i = c.dataset.i; if (sel.has(i)) { sel.delete(i); c.classList.remove('on'); c.textContent = t(i); } else { sel.add(i); c.classList.add('on'); c.textContent = t(i); }
   });
   ['name', 'jobTitle', 'company', 'country'].forEach(k => { const el = $('#e_' + k); if (el) el.addEventListener('input', () => { delete el.dataset.fromCard; el.classList.remove('fromcard'); }); });
+  const guessType = () => { const s2 = [L.jobTitle, L.company, $('#e_jobTitle') && $('#e_jobTitle').value].join(' '); return /\bfarmer|farm owner\b/i.test(s2) ? 'Farmer' : /\b(dealer|distributor|trader)\b/i.test(s2) ? 'Dealer' : ''; };
   let ctype = L.customerType || '';
-  m.querySelectorAll('#ctype [data-ct]').forEach(b => b.onclick = () => { ctype = ctype === b.dataset.ct ? '' : b.dataset.ct; m.querySelectorAll('#ctype [data-ct]').forEach(x => { x.classList.toggle('on', x.dataset.ct === ctype); x.setAttribute('aria-pressed', x.dataset.ct === ctype); }); });
+  const showType = () => m.querySelectorAll('#ctype [data-ct]').forEach(x => { x.classList.toggle('on', x.dataset.ct === ctype); x.setAttribute('aria-pressed', x.dataset.ct === ctype); });
+  if (!ctype && guessType()) { ctype = guessType(); showType(); }
+  S.view.retype = () => { if (!L.customerType && !S.view.typeTouched && guessType()) { ctype = guessType(); showType(); } };
+  m.querySelectorAll('#ctype [data-ct]').forEach(b => b.onclick = () => { S.view.typeTouched = true; ctype = ctype === b.dataset.ct ? '' : b.dataset.ct; m.querySelectorAll('#ctype [data-ct]').forEach(x => { x.classList.toggle('on', x.dataset.ct === ctype); x.setAttribute('aria-pressed', x.dataset.ct === ctype); }); });
   m.querySelectorAll('#fuq .chip').forEach(c => c.onclick = () => { $('#e_fu').value = c.dataset.d === 'x' ? '' : addDays(+c.dataset.d); });
   const back = $('#back'); if (back) back.onclick = () => { S.view = null; render(); };
   const rc = $('#readcard'); if (rc) rc.onclick = openCardCapture;
@@ -1492,7 +1509,7 @@ function accountCard() {
     <button class="btn line block mt" id="sync">${t('Sync status')}${n ? ' · ' + n : ''}</button>
     ${n ? `<p class="small" style="color:var(--warn)">${t("Changes waiting to sync: {n}. Don't log out until they sync.", { n })}</p>` : ''}
     <button class="btn line block mt" id="lo">${t('Log out')}</button>
-    <p class="small muted center">${t('Server')}: ${S.server === 'demo' ? t('Demo mode (this phone only)') : esc(S.server.replace(/^https:\/\/script\.google\.com\/macros\/s\/(.{8}).*$/, 'Google Sheet ($1…)'))}</p>
+    <p class="small muted center">${t('Server')}${S.session && S.session.version ? ' v' + esc(S.session.version) : (S.server === 'demo' ? '' : ' ' + t('(older version)'))}: ${S.server === 'demo' ? t('Demo mode (this phone only)') : esc(S.server.replace(/^https:\/\/script\.google\.com\/macros\/s\/(.{8}).*$/, 'Google Sheet ($1…)'))}</p>
     ${S.server === 'demo' ? `<button class="btn danger block sm" id="dreset">${t('Reset demo data')}</button>` : ''}</div>`;
 }
 function bindAccount() {
@@ -1547,7 +1564,7 @@ const Install = (() => {
 /* ============================== BOOT ============================== */
 render();
 setTimeout(Install.maybeShow, 2500);
-if (S.session) { api('me').then(r => { S.session.user = r.user; S.session.settings = r.settings; LS.set('surya_session', S.session); if (!S.view && S.tab !== 'scan') render(); else renderHeader(); afterLogin(); }).catch(() => {}); }
+if (S.session) { api('me').then(r => { S.session.user = r.user; S.session.settings = r.settings; S.session.version = r.version || ''; LS.set('surya_session', S.session); if (!S.view && S.tab !== 'scan') render(); else renderHeader(); afterLogin(); }).catch(() => {}); }
 </script>
 </body>
 </html>
