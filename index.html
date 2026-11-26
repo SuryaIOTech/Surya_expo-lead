@@ -221,6 +221,7 @@ nav.tabs button.act:before{content:"";position:absolute;top:0;left:50%;width:26p
 .cardnote.busy{display:flex;background:#f0f1f4;color:#3c4350}.cardnote.ok{display:flex;background:#fdf3dc;color:#6b4a00}.cardnote.warn{display:flex;background:var(--bad-soft);color:#8f1d13}
 .spin.dark{width:15px;height:15px;border-color:#11151e33;border-top-color:#11151e}
 input.i.fromcard{border-color:var(--gold);background:#fffbf1}
+input.i.fromserver{border-color:#35c46b;background:#f3fbf6}
 .cap{position:relative;margin-top:14px;border-radius:14px;overflow:hidden;background:#11151e;aspect-ratio:4/3}
 .cap video{width:100%;height:100%;object-fit:cover;display:block}
 .cap-guide{position:absolute;inset:12% 14%;border:2px solid var(--gold);border-radius:12px;box-shadow:0 0 0 999px rgba(17,21,30,.35)}
@@ -238,7 +239,7 @@ input.i.fromcard{border-color:var(--gold);background:#fffbf1}
    CONFIG — paste your Apps Script Web App URL here so the team never has to.
    (Leave '' to let users paste it on the login screen, or use 'demo'.)
    ========================================================================== */
-const DEFAULT_SERVER = 'https://script.google.com/macros/s/AKfycbyKfgOAtz_XfRZbX9UPiUnromwOBWcidx2H_AnlwvevxhleNtFwMTvZScIDOKg-sX2Ntg/exec';
+const DEFAULT_SERVER = '';
 
 /* ============================== UTILITIES ============================== */
 const $ = s => document.querySelector(s);
@@ -306,6 +307,7 @@ const TR = {   // 'English text': ['हिंदी', 'मराठी']
   'Name read from the card. Check the spelling.': ['नाम कार्ड से पढ़ा गया। स्पेलिंग जाँच लें।', 'नाव कार्डवरून वाचले. स्पेलिंग तपासा.'],
   "Couldn't read the name. Tap Read name from card and hold the badge steady.": ['नाम पढ़ा नहीं जा सका। "कार्ड से नाम पढ़ें" दबाएँ और बैज स्थिर रखें।', 'नाव वाचता आले नाही. "कार्डवरून नाव वाचा" दाबा आणि बॅज स्थिर धरा.'],
   'The QR code was not fully in the picture. Tap Read name from card and fit the printed name and the QR in the frame.': ['तस्वीर में QR कोड पूरा नहीं आया। "कार्ड से नाम पढ़ें" दबाएँ और छपा नाम व QR कोड फ्रेम में रखें।', 'फोटोमध्ये QR कोड पूर्ण आला नाही. "कार्डवरून नाव वाचा" दाबा आणि छापलेले नाव व QR कोड फ्रेममध्ये ठेवा.'],
+  'Getting details from the badge…': ['बैज से जानकारी ली जा रही है…', 'बॅजवरून माहिती घेत आहे…'],
   '(older version)': ['(पुराना वर्शन)', '(जुनी आवृत्ती)'],
   'Card reader could not load. Type the name instead.': ['कार्ड रीडर लोड नहीं हो सका। नाम टाइप करें।', 'कार्ड रीडर लोड झाला नाही. नाव टाइप करा.'],
   'Fit the printed name and the QR code inside the frame.': ['छपा हुआ नाम और QR कोड फ्रेम के अंदर रखें।', 'छापलेले नाव आणि QR कोड फ्रेममध्ये ठेवा.'], 'Capture': ['फ़ोटो लें', 'फोटो घ्या'],
@@ -662,11 +664,36 @@ async function api(action, payload = {}) {
   return j;
 }
 const isNet = e => e instanceof NetErr;
-function saveQueue() { LS.set('surya_queue', S.queue); renderHeader(); }
+function saveQueue() { LS.set('surya_queue', S.queue); if (S.queue.length) S.lastQueueAt = S.lastQueueAt || Date.now(); else S.lastQueueAt = 0; renderHeader(); }
 function cacheLead(l) {
   const i = S.leads.findIndex(x => x.leadId === l.leadId || (x.event === l.event && String(x.visitorId).toLowerCase() === String(l.visitorId).toLowerCase()));
   if (i >= 0) S.leads[i] = l; else S.leads.unshift(l);
   LS.set('surya_leads_cache', S.leads);
+}
+/** A background upload finished: bring its result into the customer screen if it is still open. */
+function onJobDone(job, res) {
+  if (job.action !== 'scan' || !res || !res.lead || !S.view || S.view.type !== 'lead') return;
+  const V = S.view, L = V.lead, sv = res.lead;
+  const same = L.leadId === job.data.leadId || (L.event === sv.event && String(L.visitorId).toLowerCase() === String(sv.visitorId).toLowerCase());
+  if (!same) return;
+  let filled = 0;
+  ['name', 'jobTitle', 'company', 'country', 'email', 'mobile'].forEach(k => {
+    const v = sv[k]; if (!v || isJunk(v)) return;
+    if (!L[k]) L[k] = v;
+    const el = $('#e_' + k); if (!el || el.readOnly) return;
+    if (!el.value.trim() || el.dataset.fromCard) { el.value = v; delete el.dataset.fromCard; el.classList.remove('need', 'fromcard'); el.classList.add('fromserver'); const w = el.parentElement.querySelector('.needtxt'); if (w) w.remove(); filled++; }
+  });
+  V.lead = { ...L, leadId: sv.leadId, firstScan: sv.firstScan, firstBy: sv.firstBy, repeatCount: sv.repeatCount, url: L.url || sv.url };
+  V.fetching = false;
+  const sn = $('#srvnote');
+  if (sn) sn.innerHTML = res.autoFilled ? '<br>' + t('Details filled in automatically from the badge') + ' ✓' : '';
+  if (res.status === 'existing' && V.status === 'new') {          // a teammate scanned this visitor on another phone
+    V.status = 'existing'; V.lead.repeatCount = sv.repeatCount;
+    const bn = $('.banner'); if (bn) { bn.className = 'banner dup'; bn.innerHTML = `<div class="t">${I.alert}<span>${t('ALREADY SCANNED – EXISTING CUSTOMER')}</span></div><div class="kv"><span>${t('Customer')}</span><b>${esc(sv.name || '—')}</b><span>${t('First scan')}</span><b>${fmt(sv.firstScan)}</b><span>${t('Scanned by')}</span><b>${esc(sv.firstBy)}</b><span>${t('Visits')}</span><b>${(sv.repeatCount || 0) + 1}</b></div>`; }
+    beep(false);
+  }
+  if (filled) { V.cardMsg = ''; updateCardNote(); const bn = $('#bnote'); if (bn && L.name && L.mobile) bn.innerHTML = ''; }
+  if (V.retype) V.retype();
 }
 async function syncQueue(manual) {
   if (S.syncing) return;
@@ -680,21 +707,23 @@ async function syncQueue(manual) {
         const res = await api(job.action, { data: job.data });
         if (res.lead) cacheLead(res.lead);
         S.queue.shift(); done++; saveQueue();
+        try { onJobDone(job, res); } catch (e) { console.warn(e); }
       } catch (e) {
-        if (isNet(e) || !S.session) break;                       // no internet or logged out: keep everything, try again later
+        if (isNet(e) || !S.session) { S.wasOffline = true; break; }                       // no internet or logged out: keep everything, try again later
         S.queue.shift(); S.failed.push({ ...job, error: e.message }); LS.set('surya_failed', S.failed); saveQueue();   // server refused this one: set it aside, keep going
       }
     }
-    if (done && !S.queue.length) { markSynced(); toast(S.failed.length ? 'Synced, but some changes could not be saved' : 'All offline changes synced ✓', !!S.failed.length); }
+    if (done && !S.queue.length) { markSynced(); if (S.failed.length) toast('Synced, but some changes could not be saved', true); else if (S.wasOffline) toast('All offline changes synced ✓'); S.wasOffline = false; }
   } finally {
     S.syncing = false; renderHeader();
     if (done && S.session && !S.view && S.tab !== 'scan') render();
   }
 }
 window.addEventListener('online', () => { S.online = isOnline(); renderHeader(); syncQueue(); });
-window.addEventListener('offline', () => { S.online = false; renderHeader(); });
+window.addEventListener('offline', () => { S.online = false; S.wasOffline = true; renderHeader(); });
 document.addEventListener('visibilitychange', () => { if (!document.hidden) { renderHeader(); syncQueue(); } });
 setInterval(syncQueue, 30000);
+setInterval(() => { if (S.session && isOnline() && !S.syncing && !S.queue.length && !document.hidden) refreshLeads(); }, 90000);   // keeps the on-phone duplicate check up to date with teammates' scans
 
 function logoutLocal() { S.session = null; LS.del('surya_session'); stopScanner(); render(); }
 const me = () => S.session && S.session.user;
@@ -922,22 +951,20 @@ async function processScan(parsed, manual, pic) {
   if (busy) return; busy = true;
   const data = { ...parsed, manual, event: SET().activeEvent, leadId: uuid(), time: new Date().toISOString() };
   try {
-    let res;
-    try { res = await api('scan', { data }); }
-    catch (e) {
-      if (!isNet(e)) throw e;
-      res = offlineScan(data);
-    }
+    const res = offlineScan(data);                    // instant: duplicate check on this phone; the upload runs in the background
+    res.offline = !isOnline();
     cacheLead(res.lead);
     beep(res.status === 'new');
     await stopScanner();
     ['name', 'jobTitle', 'company', 'country', 'email'].forEach(k => { if (isJunk(res.lead[k])) res.lead[k] = ''; });
-    S.view = { type: 'lead', lead: res.lead, status: res.status, offline: !!res.offline, parsed, autoFilled: !!res.autoFilled && !!res.lead.name };
+    S.view = { type: 'lead', lead: res.lead, status: res.status, offline: !!res.offline, parsed, autoFilled: false,
+      fetching: !!(data.url && isOnline() && S.server !== 'demo' && res.status === 'new' && !res.lead.email) };
     if (S.server === 'demo' && !pic && !manual && !res.lead.name) pic = 'demo';
     const readIt = pic && !manual && !res.lead.name;
     if (readIt) S.view.reading = true;
     render();
     if (readIt) readCardInto(pic, res.lead.leadId);
+    syncQueue();
   } catch (e) { beep(false); toast(e.message, true); }
   finally { busy = false; }
 }
@@ -1004,10 +1031,11 @@ const I = {
 /* ============================== SYNC STATUS ============================== */
 function syncState() {
   const q = S.queue.length, f = S.failed.length;
-  if (S.syncing) return { k: 'syncing', cls: 'sy', icon: I.cloudUp, n: q, label: t('Syncing… {n}', { n: q }), title: t('Uploading…'), bar: t('Uploading {n}…', { n: q }) };
+  if (S.syncing) return { k: 'syncing', cls: 'sy', icon: I.cloudUp, n: q, label: t('Syncing… {n}', { n: q }), title: t('Uploading…'), bar: q >= 5 ? t('Uploading {n}…', { n: q }) : '' };
   if (!isOnline()) return { k: 'offline', cls: 'off', icon: I.cloudOff, n: q, label: q ? t('Offline · {n} pending', { n: q }) : t('Offline'), title: t('You are offline'),
     bar: q ? t('Offline. {n} saved on this phone.', { n: q }) : t('Offline. Scans are saved on this phone.'), act: t('Details') };
   if (f) return { k: 'failed', cls: 'bad', icon: I.cloudAlert, n: f, label: t('{n} not saved', { n: f }), title: t('Changes not saved: {n}', { n: f }), bar: t('Changes not saved: {n}', { n: f }), act: t('Review') };
+  if (q && q < 5 && S.lastQueueAt && Date.now() - S.lastQueueAt < 20000) return { k: 'syncing', cls: 'sy', icon: I.cloudUp, n: q, label: t('Syncing… {n}', { n: q }), title: t('Uploading…'), bar: '' };
   if (q) return { k: 'pending', cls: 'off', icon: I.cloudUp, n: q, label: t('{n} pending', { n: q }), title: t('{n} waiting to upload', { n: q }), bar: t('{n} waiting to upload', { n: q }), act: t('Sync now'), sync: true };
   return { k: 'ok', cls: 'ok', icon: I.cloudOk, n: 0, label: t('Synced'), title: t('Everything is saved') };
 }
@@ -1201,8 +1229,8 @@ function leadView(m) {
     ${status ? `<div class="banner ${dup ? 'dup' : 'new'}">
       <div class="t">${dup ? I.alert : I.check}<span>${dup ? t('ALREADY SCANNED – EXISTING CUSTOMER') : t('NEW VISITOR SAVED')}</span></div>
       ${dup ? `<div class="kv"><span>${t('Customer')}</span><b>${esc(L.name || '—')}</b><span>${t('Mobile')}</span><b>${esc(L.mobile || '—')}</b><span>${t('First scan')}</span><b>${fmt(L.firstScan)}</b><span>${t('Scanned by')}</span><b>${esc(L.firstBy)}</b><span>${t('Visits')}</span><b>${(L.repeatCount || 0) + 1}</b></div>`
-             : `<div class="d">${esc(t(L.source || 'Scanned'))} · ${esc(L.lastBy)} · ${fmt(L.firstScan)}${autoFilled ? '<br>' + t('Details filled in automatically from the badge') + ' ✓' : (L.source === 'Scanned' && !L.name ? `<span id="bnote"><br>${t('Badge details could not be read. Please type name and contact no.')}</span>` : '')}</div>`}
-      ${notSynced ? `<div class="d" style="margin-top:6px"><span class="pill off">${t('Saved on this phone. Will sync automatically')}</span></div>` : ''}
+             : `<div class="d">${esc(t(L.source || 'Scanned'))} · ${esc(L.lastBy)} · ${fmt(L.firstScan)}<span id="srvnote">${S.view.fetching ? '<br><span class="spin"></span> ' + t('Getting details from the badge…') : ''}</span>${autoFilled ? '<br>' + t('Details filled in automatically from the badge') + ' ✓' : (L.source === 'Scanned' && !L.name ? `<span id="bnote"><br>${t('Badge details could not be read. Please type name and contact no.')}</span>` : '')}</div>`}
+      ${offline ? `<div class="d" style="margin-top:6px"><span class="pill off">${t('Saved on this phone. Will sync automatically')}</span></div>` : ''}
     </div>` : `<button class="btn line sm" id="back" style="margin-bottom:10px">${I.back}${t('Back')}</button>${notSynced ? ` <span class="pill off" style="margin-left:6px">${t('Not synced yet')}</span>` : ''}`}
 
     <div class="card">
@@ -1277,20 +1305,17 @@ function leadView(m) {
     if (admin) data.assignedTo = $('#e_assign').value;
     FIELDS.forEach(k => { const el = $('#e_' + k); if (el && !el.readOnly) data[k] = k === 'mobile' ? fmtMob(el.value) : el.value.trim(); });
     try {
-      let lead;
-      try { lead = (await api('updateLead', { data })).lead; }
-      catch (e) {
-        if (!isNet(e)) throw e;
-        S.queue.push({ action: 'updateLead', data, at: new Date().toISOString() }); saveQueue();
-        lead = { ...L, ...Object.fromEntries(FIELDS.filter(k => data[k] !== undefined && (admin || !L[k])).map(k => [k, data[k]])),
-          interests: [...new Set(admin ? data.interests : saved.concat(data.interests))].join(', '), status: data.status, consent: data.consent,
-          followUp: data.followUp, customerType: data.customerType, assignedTo: admin ? data.assignedTo : (L.assignedTo || ''),
-          notes: data.noteAppend.trim() ? (L.notes ? L.notes + '\n' : '') + '[offline · ' + me().name + '] ' + data.noteAppend.trim() : L.notes };
-        toast('Saved on this phone. Will sync automatically');
-      }
+      S.queue.push({ action: 'updateLead', data, at: new Date().toISOString() }); saveQueue();   // uploads in the background, after this customer's scan
+      const stamp = new Date().toLocaleString('en-IN', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit', hour12: false });
+      const lead = { ...L, ...Object.fromEntries(FIELDS.filter(k => data[k] !== undefined && (admin || !L[k] || isJunk(L[k]))).map(k => [k, data[k]])),
+        interests: [...new Set(admin ? data.interests : saved.concat(data.interests))].join(', '), status: data.status, consent: data.consent,
+        followUp: data.followUp, customerType: data.customerType, assignedTo: admin ? data.assignedTo : (L.assignedTo || ''),
+        notes: data.noteAppend.trim() ? (L.notes ? L.notes + '\n' : '') + '[' + stamp + ' · ' + me().name + '] ' + data.noteAppend.trim() : L.notes };
+      syncQueue();
       cacheLead(lead);
-      if (status) { if (!isPending(lead, pendingSet())) toast('Saved ✓  Ready for next scan'); S.view = null; S.tab = 'scan'; }
-      else { if (!isPending(lead, pendingSet())) toast('Saved ✓'); S.view = { type: 'lead', lead }; }
+      const msg = isOnline() ? null : 'Saved on this phone. Will sync automatically';
+      if (status) { toast(msg || 'Saved ✓  Ready for next scan'); S.view = null; S.tab = 'scan'; }
+      else { toast(msg || 'Saved ✓'); S.view = { type: 'lead', lead }; }
       render();
     } catch (e) { toast(e.message, true); b.disabled = false; }
   };
